@@ -73,6 +73,97 @@ export class AppService {
 
   /* ---------------------------------------------------------------------- */
 
+    //Opticals 
+  getOpticalList(obj: any) {
+    return this.http.post(this.apiUrl + "Opticals/opticalsList", obj, { headers: this.headers })
+  }
+
+  saveOptical(obj: any) {
+    return this.http.post(this.apiUrl + "Opticals/OpticalSave", obj, { headers: this.headers })
+  }
+
+  deleteOptical(obj: any) {
+    return this.http.post(this.apiUrl + "Opticals/OpticalDelete", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+
+  //ChargeDetails
+
+  getChargeList(obj: any) {
+    return this.http.post(this.apiUrl + "ChargeDetails/ChargeList", obj, { headers: this.headers })
+  }
+
+  saveCharge(obj: any) {
+    return this.http.post(this.apiUrl + "ChargeDetails/SaveCharge", obj, { headers: this.headers })
+  }
+  
+  deleteCharge(obj: any) {
+    return this.http.post(this.apiUrl + "ChargeDetails/DeleteCharge", obj, { headers: this.headers })
+  }
+  /* ---------------------------------------------------------------------- */
+
+  //OPD booking services
+    getOpdList(obj: any) {
+    return this.http.post(this.apiUrl + "OpdBooking/OpdBookingList", obj, { headers: this.headers })
+  }
+
+  saveOpd(obj: any) {
+    return this.http.post(this.apiUrl + "OpdBooking/SaveOpdBooking", obj, { headers: this.headers })
+  }
+
+  deleteOpd(obj: any) {
+    return this.http.post(this.apiUrl + "OpdBooking/DeleteOpdBooking", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+  //PaymentBooking Services
+    getPaymentDetailList(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/PaymentDetailList", obj, { headers: this.headers })
+  }
+
+  savePaymentBooking(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/SavePaymentDetail", obj, { headers: this.headers })
+  }
+
+  deletePaymentBooking(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/DeletePaymentDetail", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+  //PaymentCollection Services
+    getPaymentCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentCollection/PaymentCollectionList", obj, { headers: this.headers })
+  }
+
+  savePaymentCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentCollection/SavePaymentCollection", obj, { headers: this.headers })
+  }
+
+  deletePaymentCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentCollection/DeletePaymentCollection", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+    //PaymentDetails Services
+    getPaymentDetail(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/PaymentDetailList", obj, { headers: this.headers })
+  }
+
+  savePaymentDetail(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/SavePaymentDetail", obj, { headers: this.headers })
+  }
+
+  deletePaymentDetail(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/DeletePaymentDetail", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
   // Staff
   getStaffList(obj: any) {
     return this.http.post(this.apiUrl + "Staff/StaffList", obj, { headers: this.headers })
@@ -100,6 +191,37 @@ export class AppService {
   }
 
   /* ---------------------------------------------------------------------- */
+
+    // PackageCollection
+  getPackageCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PackageCollection/PackageCollection", obj, { headers: this.headers })
+  }
+  savePackageCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PackageCollection/SavePackageCollection", obj, { headers: this.headers })
+  }
+  deletePackageCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PackageCollection/DeletePackageCollection", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+     //    // PackageCollection
+  getPackageDetial(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/PackageDetialList", obj, { headers: this.headers })
+  }
+  savePackageDetial(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/SavePackageDetial", obj, { headers: this.headers })
+  }
+  deletePackageDetial(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/DeletePackageDetial", obj, { headers: this.headers })
+  }
+
+  PackageCollectiontypeListAll(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/PackageCollectiontypeList", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+  
   
   /* ---------------------------------------------------------------------- */
 

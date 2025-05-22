@@ -38,13 +38,13 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Booking</th>
+                                <th *ngIf="action.CanCreate">Booking</th>
+                                <th style="cursor:pointer;" (click)="sort('UHID')">UHID No.</th>
                                 <th style="cursor:pointer;" (click)="sort('PatientName')">Patient</th>
                                 <th style="cursor:pointer;" (click)="sort('Age')">Age</th>
                                 <th style="cursor:pointer;" (click)="sort('Gender')">Gender</th>
                                 <th style="cursor:pointer;" (click)="sort('Address')">Address</th>
                                 <th style="cursor:pointer;" (click)="sort('ContactNo')">Contact No.</th>
-                                <th style="cursor:pointer;" (click)="sort('UHID')">UHID</th>
                                 <th style="cursor:pointer;" (click)="sort('Status')">Status</th>
                                 <th *ngIf="action.CanEdit">Edit</th>
                                 <th *ngIf="action.CanDelete">Delete</th>
@@ -54,18 +54,18 @@
                             <tr
                                 *ngFor="let item of PatientList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
                                 <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
-                                <td *ngIf="action.CanEdit">
-                                    <a class="btn btn-sm btn-success" [routerLink]="['/admin/opd-booking']">
+                                <td *ngIf="action.CanCreate">
+                                    <button class="btn btn-sm btn-success" (click)="GotoOPDBooking(item)">
                                         <i class="bi bi-pencil-square"></i>
-                                    </a>
+                                    </button>
                                 </td>
+                                <td class="text-success">{{item.UHID}}</td>
 
                                 <td>{{item.PatientName}}</td>
                                 <td>{{item.Age}}</td>
-                                <td>{{item.Gender}}</td>
+                                <td>{{AllGenderList[item.Gender]}}</td>
                                 <td>{{item.Address}}</td>
                                 <td>{{item.ContactNo}}</td>
-                                <td>{{item.UHID}}</td>
                                 <td>
                                     <span class="p-1"
                                         [ngClass]="item.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
@@ -184,6 +184,7 @@
                         (click)="resetForm()">Cancel</button>
                     <button mat-raised-button color="primary" (click)="savePatient()">{{Patient.PatientID >
                         0 ? 'Update':'Submit'}}</button>
+                    <button mat-raised-button color="primary" (click)="savePatientAndRediectToOPD()">OPD Booking</button>
                 </div>
             </div>
         </div>

@@ -19,6 +19,10 @@ import { ChangePasswordComponent } from './admin/change-password/change-password
 import { CompanyComponent } from './admin/company/company.component';
 import { ManagePatientComponent } from './admin/manage-patient/manage-patient.component';
 import { OpdBookingComponent } from './admin/opd-booking/opd-booking.component';
+import { OpticalAddComponent } from './admin/optical-add/optical-add.component';
+import { PackageCollectionComponent } from './admin/package-collection/package-collection.component';
+import { PackageDetialComponent } from './admin/package-detial/package-detial.component';
+import { PackageBillComponent } from './admin/package-bill/package-bill.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/admin-login", pathMatch: 'full' },
@@ -42,6 +46,12 @@ const routes: Routes = [
       { path: 'company', component: CompanyComponent },
       { path: 'manage-patient', component: ManagePatientComponent },
       { path: 'opd-booking', component: OpdBookingComponent},
+      {path:'OpticalAdd',component:OpticalAddComponent},
+      {path:'PackageCollection',component:PackageCollectionComponent},
+      {path:'PackageDetail',component:PackageDetialComponent},
+      {path:'PackageBill',component:PackageBillComponent}
+      
+
     ]
   },
   { path: 'page-not-found', component: PageNotFoundComponent },

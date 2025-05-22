@@ -34,6 +34,8 @@ export class ManagePatientComponent {
   action: ActionModel = {} as ActionModel;
   staffLogin: StaffLoginModel = {} as StaffLoginModel;
   AllStatusList = Status;
+  AllGenderList = Gender;
+
   sort(key: any) {
     this.sortKey = key;
     this.reverse = !this.reverse;
@@ -71,6 +73,13 @@ export class ManagePatientComponent {
     }))
   }
 
+  GotoOPDBooking(data: any) {
+    // console.log(data.PatientID);
+    
+    this.router.navigate(['/admin/opd-booking'], { queryParams: { id: data.PatientID, redUrl: '/admin/manage-patient' } });
+
+  }
+
   @ViewChild('formPatient') formPatient: NgForm;
   resetForm() {
     this.Patient = {};
@@ -86,15 +95,17 @@ export class ManagePatientComponent {
       request: this.localService.encrypt(JSON.stringify({})).toString()
     };
 
-    console.log("Sending request:", obj);
+    // console.log("Sending request:", obj);
     this.dataLoading = true;
 
     this.service.getPatientList(obj).subscribe({
       next: r1 => {
-        console.log("API Response:", r1);
+        // console.log("API Response:", r1);
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.PatientList = response.PatientList;
+          // console.log(this.PatientList);
+          
         } else {
           this.toastr.error(response.Message);
         }
@@ -143,6 +154,42 @@ export class ManagePatientComponent {
     }))
   }
 
+  savePatientAndRediectToOPD() {
+    this.isSubmitted = true;
+    this.formPatient.control.markAllAsTouched();
+    if (this.formPatient.invalid) {
+      this.toastr.error("Fill all the required fields !!")
+      return
+    }
+    this.Patient.CreatedBy = this.staffLogin.StaffId;
+    this.Patient.UpdatedBy = this.staffLogin.StaffId;
+    var obj: RequestModel = {
+      request: this.localService.encrypt(JSON.stringify(this.Patient)).toString()
+    }
+    this.dataLoading = true;
+    this.service.savePatient(obj).subscribe(r1 => {
+      let response = r1 as any
+      if (response.Message == ConstantData.SuccessMessage) {
+        if (this.Patient.PatientID > 0) {
+          this.toastr.success("Patient Updated successfully")
+          $('#staticBackdrop').modal('hide')
+        } else {
+          this.toastr.success("Patient added successfully")
+        }
+
+        this.router.navigate(['/admin/opd-booking'], { queryParams: { id: response.PatientID, redUrl: '/admin/manage-patient' } });
+        this.resetForm()
+        this.getPatientList()
+      } else {
+        this.toastr.error(response.Message)
+        this.dataLoading = false;
+      }
+    }, (err => {
+      this.toastr.error("Error occured while submitting data")
+      this.dataLoading = false;
+    }))
+  }
+
   deletePatient(obj: any) {
     if (confirm("Are your sure you want to delete this recored")) {
       var request: RequestModel = {
@@ -169,5 +216,9 @@ export class ManagePatientComponent {
     this.resetForm()
     this.Patient = obj
   }
+
+
+
+
 
 }

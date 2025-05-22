@@ -47,11 +47,11 @@ export enum BookingType {
     Enquiry = 2
 }
 export enum PaymentMode {
-    CASH = 1,
-    ONLINE = 2,
-    CHEQUE = 3,
+    Cash = 1,
+    Online = 2,
+    Cheque = 3,
     DD = 5,
-    OTHERS = 4
+    Others = 4
 }
 export enum BillStatus {
     Paid = 1,

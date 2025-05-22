@@ -92,6 +92,19 @@ export class LoadDataService {
     }
   }
 
+newloadDateYMD(date: any) {
+    if (date == null || date == undefined)
+      return null;
+    var d = new Date(date);
+    var dformat = [
+      d.getFullYear(),
+      ("0" + (d.getMonth() + 1)).slice(-2),
+      ("0" + d.getDate()).slice(-2)
+    ].join('-')
+    return dformat;
+  }
+
+
   loadDate(date: any) {
     if (date == null || date == undefined)
       return null;

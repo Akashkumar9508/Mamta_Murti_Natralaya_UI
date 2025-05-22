@@ -556,7 +556,7 @@
   }
   
   .card-body {
-    margin-top: 20px;
+    margin-top: 10px;
   }
   
   .text-blue-sm {
@@ -677,10 +677,10 @@
     margin-right: 10px;
   }
   .card-title{
-    padding: 20px 0 15px 0 !important;
-    font-size: 18px !important;
+    padding: 0px 0 0px 0 !important;
+    font-size: 14px !important;
     font-weight: 500 !important;
-    color: #012970 !important;
+    color: #383838 !important;
     font-family: "Poppins", sans-serif !important;
   }
   .border-left{
@@ -707,4 +707,36 @@
     min-height: 100vh;
   }
   
-  
+  .mat-mdc-form-field {
+    --mat-mdc-form-field-floating-label-scale: 0.75;
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 0;
+    text-align: left;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--mat-form-field-container-text-font);
+    line-height: 25px!important;
+    font-size: var(--mat-form-field-container-text-size);
+    letter-spacing: var(--mat-form-field-container-text-tracking);
+    font-weight: var(--mat-form-field-container-text-weight)
+400
+;
+}
+.mdc-button-final {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 200px!important;
+    border: none;
+    outline: none;
+    line-height: inherit;
+    user-select: none;
+    -webkit-appearance: none;
+    overflow: visible;
+    vertical-align: middle;
+    background: rgba(0, 0, 0, 0);
+    height: 40px!important;
+}

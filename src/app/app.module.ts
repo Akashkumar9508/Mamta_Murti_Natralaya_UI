@@ -39,6 +39,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } f
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { ManagePatientComponent } from './admin/manage-patient/manage-patient.component';
 import { OpdBookingComponent } from './admin/opd-booking/opd-booking.component';
+import { OpticalAddComponent } from './admin/optical-add/optical-add.component';
+import { PackageCollectionComponent } from './admin/package-collection/package-collection.component';
+import { PackageDetialComponent } from './admin/package-detial/package-detial.component';
+import { PackageBillComponent } from './admin/package-bill/package-bill.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +70,11 @@ import { OpdBookingComponent } from './admin/opd-booking/opd-booking.component';
     FilterPipe,
     CompanyComponent,
     ManagePatientComponent,
-    OpdBookingComponent
+    OpdBookingComponent,
+    OpticalAddComponent,
+    PackageCollectionComponent,
+    PackageDetialComponent,
+    PackageBillComponent
   ],
   imports: [
     BrowserModule,

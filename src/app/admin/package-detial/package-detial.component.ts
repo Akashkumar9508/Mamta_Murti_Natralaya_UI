@@ -164,13 +164,13 @@ export class PackageDetialComponent {
     );
   }
 
-  deletePackageCollection(obj: any) {
+  deletePackageDetial(obj: any) {
     if (confirm('Are your sure you want to delete this recored')) {
       var request: RequestModel = {
         request: this.localService.encrypt(JSON.stringify(obj)).toString(),
       };
       this.dataLoading = true;
-      this.service.deletePackageCollection(request).subscribe(
+      this.service.deletePackageDetial(request).subscribe(
         (r1) => {
           let response = r1 as any;
           if (response.Message == ConstantData.SuccessMessage) {

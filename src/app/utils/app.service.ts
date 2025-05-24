@@ -216,6 +216,10 @@ export class AppService {
     return this.http.post(this.apiUrl + "PackageDetial/DeletePackageDetial", obj, { headers: this.headers })
   }
 
+   PackageDetailtypeListAll(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/PackageDetialList", obj, { headers: this.headers })
+  }
+
   PackageCollectiontypeListAll(obj: any) {
     return this.http.post(this.apiUrl + "PackageDetial/PackageCollectiontypeList", obj, { headers: this.headers })
   }

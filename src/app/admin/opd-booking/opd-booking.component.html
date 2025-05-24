@@ -292,6 +292,7 @@
                     matInput
                     type="number"
                     [(ngModel)]="Patient.PayableAmount"
+                    (Change)="updatePayment()"
                     name="PayableAmount"
                     required
                   />

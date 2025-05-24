@@ -247,46 +247,69 @@ export class OpdBookingComponent {
   }
 
 
-  saveOpd() {
-    this.isSubmitted = true;
-    // this.formPatient.control.markAllAsTouched();
-    // if (this.formPatient.invalid) {
-    //   this.toastr.error("Fill all the required fields !!")
-    //   return
-    // }
-    this.Patient.CreatedBy = this.staffLogin.StaffId;
-    this.Patient.UpdatedBy = this.staffLogin.StaffId;
-    var data = {
-      GetOpdBooking: this.Patient,
-      GetPaymentCollection: this.Patient,
-      GetPaymentBookingDetails: this.SelectedPaymentDetailList,
-      GetPaymentDetails: this.SelectedPaymentCollectionList,
-    }
-    var obj: RequestModel = {
-      request: this.localService.encrypt(JSON.stringify(data)).toString()
-    }
-    this.dataLoading = true;
-    this.service.saveOpd(obj).subscribe(r1 => {
-      let response = r1 as any
-      if (response.Message == ConstantData.SuccessMessage) {
-        if (this.Patient.OpdId > 0) {
-          this.toastr.success("Booking Updated successfully")
-          $('#staticBackdrop').modal('hide')
-        } else {
-          this.toastr.success("Booking added successfully")
-        }
-        this.SelectedPaymentDetailList = [];
-        this.SelectedPaymentCollectionList = [];
-        this.resetForm()
-      } else {
-        this.toastr.error(response.Message)
-        this.dataLoading = false;
-      }
-    }, (err => {
-      this.toastr.error("Error occured while submitting data")
-      this.dataLoading = false;
-    }))
-  }
+ saveOpd() {
+ this.isSubmitted = true;
+
+ // Optional: Enable form validation if needed
+ // this.formPatient.control.markAllAsTouched();
+ // if (this.formPatient.invalid) {
+ // this.toastr.error("Fill all the required fields !!");
+ // return;
+ // }
+
+ // ✅ Check if SelectedPaymentCollectionList is empty
+ if (!this.SelectedPaymentCollectionList || this.SelectedPaymentCollectionList.length === 0) {
+ this.toastr.error("Please add at least one payment to the list!");
+ return;
+ }
+ if (!this.SelectedPaymentDetailList || this.SelectedPaymentDetailList.length === 0) {
+ this.toastr.error("Please add at least one registration charge to the list!");
+ return;
+ }
+
+ this.Patient.CreatedBy = this.staffLogin.StaffId;
+ this.Patient.UpdatedBy = this.staffLogin.StaffId;
+
+ const data = {
+ GetOpdBooking: this.Patient,
+ GetPaymentCollection: this.Patient,
+ GetPaymentBookingDetails: this.SelectedPaymentDetailList,
+ GetPaymentDetails: this.SelectedPaymentCollectionList,
+
+};
+// console.log(this.Patient);
+console.log(data);
+
+
+ const obj: RequestModel = {
+ request: this.localService.encrypt(JSON.stringify(data)).toString()
+ };
+
+ this.dataLoading = true;
+ this.service.saveOpd(obj).subscribe(r1 => {
+ const response = r1 as any;
+
+ if (response.Message === ConstantData.SuccessMessage) {
+ if (this.Patient.OpdId > 0) {
+ this.toastr.success("Booking Updated successfully");
+ $('hashtag#staticBackdrop').modal('hide');
+ } else {
+ this.toastr.success("Booking added successfully");
+ }
+
+ this.SelectedPaymentDetailList = [];
+ this.SelectedPaymentCollectionList = [];
+ this.resetForm();
+ } else {
+ this.toastr.error(response.Message);
+ }
+
+ this.dataLoading = false;
+ }, err => {
+ this.toastr.error("Error occurred while submitting data");
+ this.dataLoading = false;
+ });
+}
 
 
   SelectedPaymentCollectionList: any[] = [];

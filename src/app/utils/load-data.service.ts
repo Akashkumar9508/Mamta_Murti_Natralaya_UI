@@ -57,17 +57,6 @@ export class LoadDataService {
       table_1.nativeElement
     );
 
-    // /* new format */
-    // var fmt = "0.00";
-    // /* change cell format of range B2:D4 */
-    // var range = { s: { r: 1, c: 1 }, e: { r: 2, c: 100000 } };
-    // for (var R = range.s.r; R <= range.e.r; ++R) {
-    //   for (var C = range.s.c; C <= range.e.c; ++C) {
-    //     var cell = ws[XLSX.utils.encode_cell({ r: R, c: C })];
-    //     if (!cell || cell.t != "n") continue; // only format numeric cells
-    //     cell.z = fmt;
-    //   }
-    // }
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
     var fmt = "@";

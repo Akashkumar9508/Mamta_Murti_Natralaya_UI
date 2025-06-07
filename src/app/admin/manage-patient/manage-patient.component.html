@@ -166,7 +166,7 @@
                                 <mat-form-field appearance="outline" class="col-sm-6">
                                     <mat-label>Status</mat-label>
                                     <mat-select #Status="ngModel" name="Status" [(ngModel)]="Patient.Status" required>
-                                        <mat-option [value]="status.Key"
+                                    <mat-option [value]="status.Key"
                                             *ngFor="let status of StatusList">{{status.Value}}</mat-option>
                                     </mat-select>
                                     <mat-error

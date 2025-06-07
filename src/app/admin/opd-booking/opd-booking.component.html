@@ -25,13 +25,43 @@
               <form #formPatientDetails="ngForm">
                 <div class="row">
                   <mat-form-field appearance="outline" class="col-lg-4">
-                    <mat-label>Patient Name</mat-label>
+                    <mat-label>Patient Name / Mobile / UHID</mat-label>
                     <input
                       matInput
+                      name="PackageCollectionName"
                       [(ngModel)]="Patient.PatientName"
-                      name="PatientName"
+                      (ngModelChange)="filterpatientList($event)"
+                      [matAutocomplete]="autoTransportPackageCollection"
+                      placeholder="Search By Package Collection"
                       required
                     />
+
+                    <mat-autocomplete
+                      #autoTransportPackageCollection="matAutocomplete"
+                      (optionSelected)="afterPatientSelected($event)"
+                    >
+                      <mat-option
+                        *ngFor="let option of filteredPatientList"
+                        [value]="option.PatientName"
+                      >
+                        {{ option.PatientName }} / {{ option.UHID }} /
+                        {{ option.ContactNo }}
+                      </mat-option>
+                    </mat-autocomplete>
+
+                    <button
+                      mat-icon-button
+                      matSuffix
+                      *ngIf="Patient.PatientName"
+                      color="primary"
+                      (click)="clearPatient()"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+
+                    <mat-error *ngIf="!Patient.PatientName"
+                      >Required field !!</mat-error
+                    >
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class="col-lg-2">
@@ -66,15 +96,21 @@
                     />
                   </mat-form-field>
 
+                
                   <mat-form-field appearance="outline" class="col-lg-2">
                     <mat-label>OPD Date</mat-label>
                     <input
-                      type="date"
                       matInput
+                      [matDatepicker]="picker"
                       [(ngModel)]="Patient.OpdDate"
-                      name="OpdDate"
+                      name="SurgeryDate"
                       required
                     />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker" class="small-datepicker-icon"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class="col-lg-4">
@@ -253,8 +289,8 @@
               <div class="row">
                 <mat-form-field
                   appearance="outline"
-                  class="col-lg-4"
-                  style="min-width: 200px"
+                  class="col-lg-3"
+                 
                 >
                   <mat-label>Total Amount</mat-label>
                   <input
@@ -268,7 +304,7 @@
 
                 <mat-form-field
                   appearance="outline"
-                  class="col-lg-4"
+                  class="col-lg-3"
                   style="min-width: 200px"
                 >
                   <mat-label>Discount</mat-label>
@@ -284,7 +320,7 @@
 
                 <mat-form-field
                   appearance="outline"
-                  class="col-lg-4"
+                  class="col-lg-3"
                   style="min-width: 200px"
                 >
                   <mat-label>Payable Amount</mat-label>
@@ -297,6 +333,22 @@
                     required
                   />
                 </mat-form-field>
+
+                 <mat-form-field appearance="outline" class="col-lg-2">
+                    <mat-label>Payment Date</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="pickers"
+                      [(ngModel)]="Patient.PaymentDate"
+                        name="PaymentDate"
+                      required
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="pickers" class="small-datepicker-icon"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #pickers></mat-datepicker>
+                  </mat-form-field>
               </div>
             </form>
           </div>
@@ -337,7 +389,7 @@
                   <input
                     matInput
                     name="Remarks"
-                    [(ngModel)]="currentPayment.Description"
+                    [(ngModel)]="currentPayment.Remarks"
                     required
                   />
                 </mat-form-field>
@@ -423,7 +475,7 @@
                       >
                         <td>{{ i + 1 }}</td>
                         <td>{{ item.Particular }}</td>
-                        <td>{{ item.Description }}</td>
+                        <td>{{ item.Remarks }}</td>
                         <td>{{ item.PaidAmount }}</td>
                         <td>{{ AllPaymentModeList[item.PaymentMode] }}</td>
                         <td>

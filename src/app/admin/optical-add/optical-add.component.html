@@ -112,7 +112,7 @@
                         <div class="container">
                             <div class="row">
 
-                                <mat-form-field appearance="outline" class="col-sm-6">
+                                <mat-form-field appearance="outline" class="col-sm-12">
                                     <mat-label>Optical Name</mat-label>
                                     <input   matInput #formOptical="ngModel" name="OpticalName"
                                         [(ngModel)]="Optical.OpticalName" required autofocus>
@@ -121,7 +121,7 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                 <mat-form-field appearance="outline" class="col-sm-6">
+                                 <mat-form-field appearance="outline" class="col-sm-12">
                                     <mat-label>Price</mat-label>
                                     <input matInput #formOptical="ngModel" name="DepartmentName"
                                         [(ngModel)]="Optical.OpticalPrice" required autofocus>
@@ -130,16 +130,16 @@
                                     </mat-error>
                                 </mat-form-field>
 
-                                 <mat-form-field appearance="outline" class="col-sm-6">
+                                 <mat-form-field appearance="outline" class="col-sm-12">
                                     <mat-label>Description</mat-label>
-                                    <input matInput #formOptical="ngModel" name="OpticalDescription"
-                                        [(ngModel)]="Optical.Description" autofocus>
+                                    <textarea matInput #formOptical="ngModel" name="OpticalDescription"
+                                        [(ngModel)]="Optical.Description" autofocus> </textarea>
                                 </mat-form-field>
 
                                 
 
 
-                                <mat-form-field appearance="outline" class="col-sm-6">
+                                <mat-form-field appearance="outline" class="col-sm-12">
                                     <mat-label>Status</mat-label>
                                     <mat-select #Status="ngModel" name="Status" [(ngModel)]="Optical.Status"
                                         required>

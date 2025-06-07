@@ -23,12 +23,19 @@ import { OpticalAddComponent } from './admin/optical-add/optical-add.component';
 import { PackageCollectionComponent } from './admin/package-collection/package-collection.component';
 import { PackageDetialComponent } from './admin/package-detial/package-detial.component';
 import { PackageBillComponent } from './admin/package-bill/package-bill.component';
+import { OpdListComponent } from './admin/opd-list/opd-list.component';
+import { SurgeryListComponent } from './admin/surgery-list/surgery-list.component';
+import { GstComponent } from './admin/gst/gst.component';
+import { OpticalBillingComponent } from './admin/optical-billing/optical-billing.component';
+import { OpticalBillingListComponent } from './admin/optical-billing-list/optical-billing-list.component';
+import { OpticalBillingListTodayComponent } from './admin/optical-billing-list-today/optical-billing-list-today.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/admin-login", pathMatch: 'full' },
   { path: 'admin-login', component: AdminLoginComponent },
   {
     path: 'admin', component: AdminMasterComponent, children: [
+      { path: 'gst', component: GstComponent },
       { path: 'admin-dashboard', component: AdminDashboardComponent },
       { path: 'designation', component: DesignationComponent },
       { path: 'department', component: DepartmentComponent },
@@ -49,9 +56,12 @@ const routes: Routes = [
       {path:'OpticalAdd',component:OpticalAddComponent},
       {path:'PackageCollection',component:PackageCollectionComponent},
       {path:'PackageDetail',component:PackageDetialComponent},
-      {path:'PackageBill',component:PackageBillComponent}
-      
-
+      {path:'PackageBill',component:PackageBillComponent},
+      {path:'opd-List',component:OpdListComponent},
+      {path:'surgery-List',component:SurgeryListComponent},
+      {path:'optical-billing',component:OpticalBillingComponent},
+      {path:'optical-billing-list',component:OpticalBillingListComponent},
+      {path:'optical-billing-list-today',component:OpticalBillingListTodayComponent}
     ]
   },
   { path: 'page-not-found', component: PageNotFoundComponent },

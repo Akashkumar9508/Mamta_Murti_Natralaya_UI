@@ -15,7 +15,7 @@
           </div>
         <div class="col-sm-4 mb-3">
             <button mat-raised-button color="primary" *ngIf="action.CanCreate" class="float-right"
-                data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="resetForm()">New Package Collection</button>
+                data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="resetForm()">New Surgery Package</button>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th style="cursor:pointer;" (click)="sort('PackageCollectionName')"> Package Collection Name</th>
+                                <th style="cursor:pointer;" (click)="sort('PackageCollectionName')">Surgery Package Name</th>
                                 <th style="cursor:pointer;" (click)="sort('CreatedBy')">Created By</th>
                                 <th style="cursor:pointer;" (click)="sort('UpdatedBy')">Updated By</th>
                                  <th style="cursor:pointer;" (click)="sort('CreatedOn')">Created On</th>
@@ -97,7 +97,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">{{PackageCollection.PackageCollectionId > 0
-                        ?'Update':'New'}} Package Collection
+                        ?'Update':'New'}} Surgery Package
                     </h1>
                     <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         (click)="resetForm()"></button>
@@ -108,16 +108,16 @@
                         <div class="container">
                             <div class="row">
 
-                                <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label> Package Collection Name</mat-label>
+                                <mat-form-field appearance="outline" class="col-sm-12">
+                                    <mat-label> Surgery Package Name</mat-label>
                                     <input   matInput #formPackageCollection="ngModel" name="PackageName"
                                         [(ngModel)]="PackageCollection.PackageName" required autofocus>
                                     <mat-error>
-                                         Package Collection name is <strong>required</strong>
+                                        Surgery Package name is <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" class="col-sm-6">
+                                <mat-form-field appearance="outline" class="col-sm-12">
                                     <mat-label>Status</mat-label>
                                     <mat-select #Status="ngModel" name="Status" [(ngModel)]="PackageCollection.Status"
                                         required>

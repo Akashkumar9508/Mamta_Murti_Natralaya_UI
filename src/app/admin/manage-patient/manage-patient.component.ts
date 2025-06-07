@@ -75,9 +75,7 @@ export class ManagePatientComponent {
 
   GotoOPDBooking(data: any) {
     // console.log(data.PatientID);
-    
     this.router.navigate(['/admin/opd-booking'], { queryParams: { id: data.PatientID, redUrl: '/admin/manage-patient' } });
-
   }
 
   @ViewChild('formPatient') formPatient: NgForm;

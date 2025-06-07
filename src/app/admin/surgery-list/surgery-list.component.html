@@ -1,0 +1,134 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main" *ngIf="action.ResponseReceived">
+  <div class="row">
+    <div class="pagetitle dashboard col-sm-8">
+      <h1>{{ action.MenuTitle }}</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="admin/admin-dashboard">Home</a>
+          </li>
+          <li class="breadcrumb-item">{{ action.ParentMenuTitle }}</li>
+          <li class="breadcrumb-item active">{{ action.MenuTitle }}</li>
+        </ol>
+      </nav>
+    </div>
+    
+  </div>
+
+  <section class="section dashboard">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-container overflow-auto">
+          <div class="dataTable-top">
+            <div class="dataTable-dropdown d-flex">
+              <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                <option *ngFor="let option of PageSize" [value]="option">
+                  {{ option }}
+                </option>
+              </select>
+              <span class="ms-2">Entries per page</span>
+            </div>
+            <div class="dataTable-search">
+              <input
+                class="dataTable-input form-control form-control-sm"
+                [(ngModel)]="Search"
+                placeholder="Search..."
+                type="text"
+              />
+            </div>
+          </div>
+
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <!-- <th>Print Bill</th> -->
+                <th style="cursor: pointer" (click)="sort('Description')">Surgery Date</th>
+                <th style="cursor: pointer" (click)="sort('PackageCode')">Surgery Code</th>
+                <th style="cursor: pointer" (click)="sort('PackageCollectionName')">Patient Code</th>
+                <th style="cursor: pointer" (click)="sort('PackageName')">Patient Name</th>
+                <th style="cursor: pointer" (click)="sort('Price')">Age</th>
+                <th style="cursor: pointer" (click)="sort('Price')">Contact</th>
+                <th style="cursor: pointer" (click)="sort('Price')">Payable Amount</th>
+                <th style="cursor: pointer" (click)="sort('Price')">AmountPaid</th>
+                <th style="cursor: pointer" (click)="sort('Price')">Due Amount</th>
+                <th style="cursor: pointer" (click)="sort('Status')">Status</th>
+                <th style="cursor: pointer" (click)="sort('Description')">Bill</th>
+                <th *ngIf="action.CanEdit">Edit</th>
+                <th *ngIf="action.CanDelete">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let item of TotalRecords
+                    | filter : Search
+                    | orderBy : sortKey : false
+                    | paginate : { itemsPerPage: itemPerPage, currentPage: p };
+                  let i = index
+                "
+              >
+              <!-- <td><Button (click)="PrintBill(item)">🖨️</Button></td> -->
+                <td>{{ itemPerPage * (p - 1) + i + 1 }}</td>
+                <td>{{ item.SurgeryDate | date:'dd-MM-yyyy' }}</td>
+                <td>{{ item.SurgeryCode }}</td>
+                <td>{{ item.UHID }}</td>
+                <td>{{ item.PatientName }}</td>
+                <td>{{ item.Age }}</td>
+                <td>{{ item.ContactNo }}</td>
+                <td>{{ item.PayableAmount }}</td>
+                <td>{{ item.PaidAmount }}</td>
+                <td>{{ item.DueAmount }}</td>
+                <!-- <td>{{ item.PaidAmount }}</td> -->
+                <!-- <td>{{ item.CreatedOn | date: 'dd-MM-yyyy' }}</td>
+                <td>{{ item.UpdatedOn | date: 'dd-MM-yyyy' }}</td> -->
+                <td>
+                  <span
+                  class="p-1"
+                  [ngClass]="
+                      item.PaymentStatus == 1
+                      ? 'badge text-bg-success'
+                      : 'badge text-bg-danger'
+                      "
+                  >
+                  {{ AllStatusList[item.PaymentStatus] }}
+                </span>
+              </td>
+                  <td>
+                    <button class="btn btn-sm btn-success" (click)="getPrint(item)">
+                                        <i class="bi bi-printer"></i>
+                                </button>
+                  </td>
+                <td *ngIf="action.CanEdit">
+                  <button
+                    class="btn btn-sm btn-warning"
+                    data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop"
+                    (click)="editPackageCollection(item)"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                </td>
+                <td *ngIf="action.CanDelete">
+                  <button class="btn btn-sm btn-danger" (click)="deleteSurgeryDetials(item)">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="dataTable-bottom">
+            <pagination-controls
+              (pageChange)="onTableDataChange($event)"
+              style="float: right"
+              class="my-pagination"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Form -->
+ 

@@ -8,7 +8,8 @@ export enum Category {
 }
 export enum PaymentStatus {
     Paid = 1,
-    Due = 2
+    Due = 2,
+    
 }
 export enum CouponStatus {
     NotGenerated = 5,
@@ -53,10 +54,18 @@ export enum PaymentMode {
     DD = 5,
     Others = 4
 }
+
 export enum BillStatus {
+    Cancel = 0,
     Paid = 1,
-    Cancel = 2
+    Due = 2,
 }
+
+export enum DeliveryStatus {
+    Delivery = 1,
+    Pending = 2
+}
+
 export enum BookingStatus {
     "Tour Pending" = 1,
     "Tour Completed" = 2,
@@ -66,6 +75,8 @@ export enum Status {
     Active = 1,
     Inactive = 2
 }
+
+
 export enum BookletStatus {
     NotSale = 1,
     Sold = 2

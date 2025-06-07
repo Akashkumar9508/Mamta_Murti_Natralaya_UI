@@ -23,7 +23,7 @@
         data-bs-target="#staticBackdrop"
         (click)="resetForm(); PackageCollectiontypeList()"
       >
-        New Package Collection
+        New Surgery Package Rate
       </button>
     </div>
   </div>
@@ -146,7 +146,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">
-            {{ PackageDetial.PackageDetialId > 0 ? 'Update' : 'New' }} Package Collection
+            {{ PackageDetial.PackageDetialId > 0 ? 'Update' : 'New' }} Surgery Package Rate
           </h1>
           <button
             type="button"
@@ -161,14 +161,14 @@
             <div class="container">
               <div class="row">
                 <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Package Collection Name</mat-label>
+                  <mat-label>Surgery Package Name</mat-label>
                   <input
                     matInput
                     name="PackageCollectionName"
                     [(ngModel)]="PackageDetial.PackageName"
                     (ngModelChange)="filterPackageCollectionList($event)"
                     [matAutocomplete]="autoTransportPackageCollection"
-                    placeholder="Search By Package Collection"
+                    placeholder="Search By Surgery Package Name"
                     required
                   />
                   <mat-autocomplete
@@ -194,7 +194,7 @@
                   <mat-error *ngIf="!PackageDetial.PackageName">Required field !!</mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-sm-6">
+                <mat-form-field appearance="outline" class="col-sm-12">
                   <mat-label>Package Name</mat-label>
                   <input
                     matInput
@@ -206,7 +206,7 @@
                   <mat-error>Package name is <strong>required</strong></mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-sm-6">
+                <mat-form-field appearance="outline" class="col-sm-12">
                   <mat-label>Package Rate</mat-label>
                   <input
                     matInput
@@ -218,15 +218,15 @@
                   <mat-error>Package Rate is <strong>required</strong></mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-sm-6">
+                <mat-form-field appearance="outline" class="col-sm-12">
                   <mat-label>Package Description</mat-label>
-                  <input
+                  <textarea
                     matInput
                     name="Description"
                     [(ngModel)]="PackageDetial.Description"
                     required
                     autofocus
-                  />
+                  ></textarea>
                   <mat-error>Package Description is <strong>required</strong></mat-error>
                 </mat-form-field>
 

@@ -14,11 +14,11 @@ import { LocalService } from '../../utils/local.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var $: any;
 @Component({
-  selector: 'app-opd-booking',
-  templateUrl: './opd-booking.component.html',
-  styleUrls: ['./opd-booking.component.css'],
+  selector: 'app-optical-billing',
+  templateUrl: './optical-billing.component.html',
+  styleUrls: ['./optical-billing.component.css'],
 })
-export class OpdBookingComponent {
+export class OpticalBillingComponent {
   dataLoading: boolean = false;
   PatientList: any = [];
   ChargeList: any = [];
@@ -46,6 +46,7 @@ export class OpdBookingComponent {
   tempData: any;
   filteredPatientList: any[] = [];
   PatientListAll: any;
+  OpticalList: any = [];
 
   sort(key: any) {
     this.sortKey = key;
@@ -69,34 +70,37 @@ export class OpdBookingComponent {
 
   ngOnInit(): void {
     this.getPatientListall(this.Patient.PatientId);
+    this.tempData = this.service.getSelectedOpticalData();
+
     this.staffLogin = this.localService.getEmployeeDetail();
     this.validiateMenu();
     this.resetForm();
-    this.getChargeList();
+    this.getOpticalList();
     this.route.queryParams.subscribe((params: any) => {
       this.Patient.PatientId = params.id;
       this.redUrl = params.redUrl;
       if (this.Patient.PatientId > 0) {
         this.getPatientList(this.Patient.PatientId);
       }
-      
     });
     this.route.queryParams.subscribe((params) => {
-      const opdId = params['id'];
-
+      const OpticalBillingId = params['id'];
       const redUrl = params['redUrl'];
-      const data = this.service.getSelectedOpdData();
-      if (data && data.GetOpdBooking.OpdId == opdId) {
+
+      const data = this.service.getSelectedOpticalData();
+      if (data && data.GetOpticalBilling.OpticalBillingId == OpticalBillingId) {
         this.Patient = {
-          ...data.GetOpdBooking,
+          ...data.GetOpticalBilling,
           ...data.GetPaymentCollection,
         };
-        console.log(this.Patient);
-        
-        this.SelectedPaymentDetailList = data.GetPaymentBookingDetails;
+        this.SelectedPaymentDetailList = data.GetOpticalsDetails;
         this.SelectedPaymentCollectionList = data.GetPaymentDetails;
+   
+      } else {
+        // Optional: fallback to fetch data again using surgeryId
       }
-      // console.log(data);
+      console.log(data);
+      
     });
   }
   validiateMenu() {
@@ -104,7 +108,7 @@ export class OpdBookingComponent {
       request: this.localService
         .encrypt(
           JSON.stringify({
-            Url: '/admin/opd-booking',
+            Url: '/admin/optical-billing',
             StaffLoginId: this.staffLogin.StaffLoginId,
           })
         )
@@ -157,14 +161,9 @@ export class OpdBookingComponent {
         if (response.Message == ConstantData.SuccessMessage) {
           this.PatientList = response.PatientList;
 
-          for (let i = 0; i < this.PatientList.length; i++) {
-            const e = this.PatientList[i];
-
-            this.Patient.PatientName = e.PatientName;
-            this.Patient.Age = e.Age;
-            this.Patient.Gender = e.Gender;
-            this.Patient.Address = e.Address;
-            this.Patient.ContactNo = e.ContactNo;
+          if (!this.Patient.BillingDate) {
+            this.Patient.BillingDate = new Date();
+            this.Patient.PaymentDate = new Date();
           }
         } else {
           this.toastr.error(response.Message);
@@ -179,21 +178,17 @@ export class OpdBookingComponent {
     });
   }
 
-  AllChargeList: any[] = [];
-  getChargeList() {
+  getOpticalList() {
     var obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify({})).toString(),
     };
     this.dataLoading = true;
-    this.service.getChargeList(obj).subscribe(
+    this.service.getOpticalList(obj).subscribe(
       (r1) => {
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
-          this.AllChargeList = response.ChargeList;
-          this.AllChargeList.map(
-            (x1) => (x1.SearchCharge = `${x1.Particular} - ${x1.Description}`)
-          );
-          this.ChargeList = this.AllChargeList;
+          this.OpticalList = response.OpticalList;
+          console.log(response.OpticalList);
         } else {
           this.toastr.error(response.Message);
         }
@@ -201,39 +196,68 @@ export class OpdBookingComponent {
       },
       (err) => {
         this.toastr.error('Error while fetching records');
-        this.dataLoading = false;
       }
     );
   }
 
   afterTransportSupplierSelected(event: any) {
-    this.Payment.RegistrationChargeId = event.option.id;
-    this.Payment.Particular = event.option.value;
+    this.Payment.OpticalId = event.option.id;
+    this.Payment.OpticalName = event.option.value;
     var Transport = this.ChargeList.find(
-      (x: any) => x.RegistrationChargeId == this.Payment.RegistrationChargeId
+      (x: any) => x.OptocalId == this.Payment.OptocalId
     );
-    this.Payment.Particular = Transport.Particular;
-    this.Payment.Amount = Transport.Amount;
+    this.Payment.OpticalName = Transport.OpticalName;
+    this.Payment.Amount = Transport.OpticalPrice;
     this.Payment.Description = Transport.Description;
-    this.Payment.RegistraionChargeId = Transport.RegistrationChargeId;
+    this.Payment.OpticalId = Transport.OpticalId;
   }
 
   filterTransportSupplierList(value: any) {
     if (value) {
       const filterValue = value.toLowerCase();
-      this.ChargeList = this.AllChargeList.filter((option: any) =>
-        option.SearchCharge.toLowerCase().includes(filterValue)
+      this.ChargeList = this.OpticalList.filter((option: any) =>
+        option.OpticalName.toLowerCase().includes(filterValue)
       );
     } else {
-      this.ChargeList = this.AllChargeList;
+      this.ChargeList = this.OpticalList;
     }
-    this.Payment.RegistrationChargeId = 0;
   }
   clearTransportSupplier() {
-    this.ChargeList = this.AllChargeList;
-    this.Payment.RegistrationChargeId = null;
+    this.ChargeList = this.OpticalList;
+    this.Payment.OpticalId = null;
     this.Payment = {};
   }
+
+
+  recalculateTotals() {
+  let totalAmount = 0;
+  let totalDiscount = 0;
+  let totalLineTotal = 0;
+
+  this.SelectedPaymentDetailList.forEach((item: { Amount: any; Discount: any; LineTotal: any; }) => {
+    totalAmount += item.Amount || 0;
+    totalDiscount += item.Discount || 0;
+    totalLineTotal += item.LineTotal || 0;
+  });
+
+  this.Patient.TotalAmount = totalAmount;
+  this.Patient.DiscountAmount = totalDiscount;
+  this.Patient.PayableAmount = totalLineTotal;
+  this.currentPayment.PaidAmount = totalLineTotal;
+}
+
+
+clearCurrentPayment() {
+  this.Payment = {
+    OpticalName: '',
+    Rate: 0,
+    Quantity: 1,
+    Amount: 0,
+    Discount: 0,
+    LineTotal: 0
+  };
+}
+
 
   SelectedPaymentDetailList: any = [];
   addPaymentDetail() {
@@ -241,15 +265,17 @@ export class OpdBookingComponent {
       this.toastr.error('Please Enter Paid Amount!!!');
       return;
     }
-    if (this.Payment.Particular == null || this.Payment.Particular == '') {
+    if (this.Payment.OpticalName == null || this.Payment.OpticalName == '') {
       this.toastr.error('Please Select Payment Mode!!!');
       return;
     }
-    this.Payment.RegistrationChargeId = this.Payment.RegistrationChargeId;
+    this.Payment.OpticalId = this.Payment.OpticalId;
     this.SelectedPaymentDetailList.push(this.Payment);
-    this.CalculateTotalAmount();
-    this.resetHotelPayment();
+    this.recalculateTotals();  // Call a function to calculate the totals
+  this.clearCurrentPayment();
   }
+
+
 
   RemoveHotel(index: number) {
     this.SelectedPaymentDetailList.splice(index, 1);
@@ -273,12 +299,15 @@ export class OpdBookingComponent {
     this.Patient.DiscountAmount = 0;
     this.Patient.PayableAmount = TotalAmount;
     this.Patient.PaidAmount = 0;
+    this.currentPayment.PaidAmount = TotalAmount;
   }
 
   updatePaymentFields() {
     this.Patient.PayableAmount =
       this.Patient.TotalAmount - this.Patient.DiscountAmount;
     this.Patient.PaidAmount =
+      this.Patient.TotalAmount - this.Patient.DiscountAmount;
+    this.currentPayment.PaidAmount =
       this.Patient.TotalAmount - this.Patient.DiscountAmount;
   }
 
@@ -287,7 +316,7 @@ export class OpdBookingComponent {
       this.Patient.PayableAmount - this.Patient.PaidAmount;
   }
 
-  saveOpd() {
+  saveOpticals() {
     this.isSubmitted = true;
 
     if (
@@ -316,16 +345,14 @@ export class OpdBookingComponent {
     if (this.tempData != undefined) {
       this.Patient.PaymentCollectionId =
         this.tempData.GetPaymentCollection.PaymentCollectionId;
-      // console.log("ye bhi kam kar rahai hai");
     }
 
     const data = {
-      GetOpdBooking: this.Patient,
+      GetPatient: this.Patient,
       GetPaymentCollection: this.Patient,
-      GetPaymentBookingDetails: this.SelectedPaymentDetailList,
+      GetOpticalsDetails: this.SelectedPaymentDetailList,
       GetPaymentDetails: this.SelectedPaymentCollectionList,
     };
-    // console.log(this.Patient);
     console.log(data);
 
     const obj: RequestModel = {
@@ -333,7 +360,7 @@ export class OpdBookingComponent {
     };
 
     this.dataLoading = true;
-    this.service.saveOpd(obj).subscribe(
+    this.service.saveOpticalsBill(obj).subscribe(
       (r1) => {
         const response = r1 as any;
 
@@ -341,12 +368,10 @@ export class OpdBookingComponent {
           if (this.Patient.OpdId > 0) {
             this.toastr.success('Booking Updated successfully');
             $('hashtag#staticBackdrop').modal('hide');
-
           } else {
             this.toastr.success('Booking added successfully');
           }
-           this.service.PrintOpdBill(response.OpdId);
-
+           this.service.PrintOpticlalBill(response.OpticalBillingId);
           this.SelectedPaymentDetailList = [];
           this.SelectedPaymentCollectionList = [];
           this.resetForm();
@@ -365,36 +390,66 @@ export class OpdBookingComponent {
 
   SelectedPaymentCollectionList: any[] = [];
 
-  addToPaymentList() {
-    if (
-      this.currentPayment.Particular &&
-      this.currentPayment.Remarks &&
-      this.currentPayment.PaidAmount != null
-    ) {
-      // Push a copy of the current input
-      this.SelectedPaymentCollectionList.push({ ...this.currentPayment });
+addToPaymentList() {
+  if (
+    
+    this.currentPayment.PaidAmount != null &&
+    this.currentPayment.PaymentMode
+  ) {
+    // Calculate the sum of already paid amounts
+    const totalPaid = this.SelectedPaymentCollectionList.reduce(
+      (sum, payment) => sum + (payment.PaidAmount || 0),
+      0
+    );
 
-      // Reset currentPayment fields
-      this.currentPayment = {
-        Particular: '',
-        Description: '',
-        PaymentMode: '',
-        PaidAmount: null,
-      };
-    } else {
-      alert('Please fill all fields!');
+    // Calculate remaining amount
+    const remainingAmount = this.Patient.PayableAmount - totalPaid;
+
+    // Validate that PaidAmount does not exceed remaining
+    if (this.currentPayment.PaidAmount > remainingAmount) {
+      alert('Paid amount cannot exceed remaining payable amount!');
+      this.currentPayment.PaidAmount = remainingAmount;
+      return;
     }
+
+    // Push a copy of the current payment into the list
+    this.SelectedPaymentCollectionList.push({ ...this.currentPayment });
+
+    // Calculate the new remaining amount after this payment
+    const newTotalPaid = totalPaid + this.currentPayment.PaidAmount;
+    const newRemainingAmount = this.Patient.PayableAmount - newTotalPaid;
+
+    // Reset currentPayment
+    this.currentPayment = {
+      Particular: '',
+      Remarks: '',
+      PaymentMode: '',
+      PaidAmount: newRemainingAmount > 0 ? newRemainingAmount : 0
+    };
+
+    // Optional: Notify if payment completed
+    if (newRemainingAmount <= 0) {
+      alert('All payments are completed!');
+    }
+
+  } else {
+    alert('Please fill all fields!');
+  }
+}
+
+
+ removePaymentItem(index: number) {
+  const removedItem = this.SelectedPaymentCollectionList[index];
+
+  // Restore the amount to currentPayment.PaidAmount
+  if (removedItem && removedItem.PaidAmount != null) {
+    this.currentPayment.PaidAmount += removedItem.PaidAmount;
   }
 
-  removePaymentItem(index: number) {
-    this.SelectedPaymentCollectionList.splice(index, 1);
-  }
+  // Remove the item from the list
+  this.SelectedPaymentCollectionList.splice(index, 1);
+}
 
-  updatePayment() {
-    // this.Patient.PayableAmount = this.Patient.PaidAmount - this.Patient.DiscountAmount;
-    this.currentPayment.PaidAmount =
-      this.Patient.TotalAmount - this.Patient.DiscountAmount;
-  }
 
   getPatientListall(PatientId: number) {
     var data = {
@@ -427,7 +482,7 @@ export class OpdBookingComponent {
     });
   }
 
-   filterpatientList(value: string) {
+  filterpatientList(value: string) {
     const filterValue = value?.toLowerCase() || '';
 
     this.filteredPatientList = this.PatientListAll.filter(
@@ -449,11 +504,43 @@ export class OpdBookingComponent {
       this.Patient = { ...selected }; // assign full patient object
       this.getPatientList(this.Patient.PatientID); // optional
     }
+    if (selected) {
+    this.Payment.OpticalItemRate = selected.Rate || 0;  // get the rate from your selected option
+    this.Payment.Quantity = 1;
+    this.onRateChange();  // calculate Amount and LineTotal
+  }
   }
 
-   clearPatient() {
+  clearPatient() {
     this.ChargeList = this.PatientListAll;
     // this.Patient.PackageCollectionId = null;
     this.Patient.PatientName = '';
+  }
+
+
+
+
+  // my code 
+  onRateChange() {
+    if (this.Payment.Quantity && this.Payment.OpticalItemRate) {
+      this.Payment.Amount = this.Payment.OpticalItemRate * this.Payment.Quantity;
+      this.updateLineTotal();
+    }
+  }
+
+  onQuantityChange() {
+    if (this.Payment.OpticalItemRate && this.Payment.Quantity) {
+      this.Payment.Amount = this.Payment.OpticalItemRate * this.Payment.Quantity;
+      this.updateLineTotal();
+    }
+  }
+
+  onDiscountChange() {
+    this.updateLineTotal();
+  }
+
+  updateLineTotal() {
+    this.Payment.LineTotal =
+      (this.Payment.Amount || 0) - (this.Payment.Discount || 0);
   }
 }

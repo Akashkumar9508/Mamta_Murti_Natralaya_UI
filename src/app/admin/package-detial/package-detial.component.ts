@@ -111,7 +111,7 @@ export class PackageDetialComponent {
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.PackageDetialList = response.PackageDetialList;
-          console.log(this.PackageDetialList);
+          // console.log(this.PackageDetialList);
         } else {
           this.toastr.error(response.Message);
         }

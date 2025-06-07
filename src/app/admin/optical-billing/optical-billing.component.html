@@ -68,11 +68,12 @@
                     <mat-label>Age</mat-label>
                     <input
                       matInput
-                      readonly
                       type="number"
                       name="Age"
                       [(ngModel)]="Patient.Age"
+                      class="no-spinner"
                       required
+                      readonly="true"
                     />
                   </mat-form-field>
 
@@ -80,14 +81,13 @@
                     <mat-label>Gender</mat-label>
                     <input
                       matInput
-                      readonly
                       name="Gender"
                       [value]="
-                        Patient.Gender !== undefined &&
-                        AllGenderList[Patient.Gender]
+                        Patient.Gender != null
                           ? AllGenderList[Patient.Gender]
-                          : ''
+                          : 'Select Gender'
                       "
+                      readonly="true"
                       required
                     />
                   </mat-form-field>
@@ -96,11 +96,11 @@
                     <mat-label>Contact No</mat-label>
                     <input
                       matInput
-                      readonly
                       type="tel"
                       name="ContactNo"
                       [(ngModel)]="Patient.ContactNo"
                       required
+                      readonly="true"
                     />
                   </mat-form-field>
 
@@ -109,7 +109,7 @@
                     <input
                       matInput
                       [matDatepicker]="picker"
-                      [(ngModel)]="Patient.SurgeryDate"
+                      [(ngModel)]="Patient.BillingDate"
                       name="SurgeryDate"
                       required
                     />
@@ -125,10 +125,10 @@
                     <mat-label>Address</mat-label>
                     <textarea
                       matInput
-                      readonly
                       name="Address"
                       [(ngModel)]="Patient.Address"
                       required
+                      readonly="true"
                     ></textarea>
                   </mat-form-field>
                 </div>
@@ -145,81 +145,104 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Package Details</h5>
+            <h5 class="card-title">Add Optical Item</h5>
             <form #formPaymentDetails="ngForm">
               <div class="row">
                 <mat-form-field appearance="outline" class="col-lg-3">
-                  <mat-label>Package Name / Package Code</mat-label>
+                  <mat-label>Select Optical Name </mat-label>
                   <input
                     matInput
-                    name="Package"
-                    [(ngModel)]="Package.PackageName"
-                    (ngModelChange)="filterpackageList($event)"
-                    [matAutocomplete]="autoTransportPackage"
-                    placeholder="Search By Package Name and Package Code"
+                    #RegistrationChargeId="ngModel"
+                    name="RegistrationChargeId"
+                    (ngModelChange)="filterTransportSupplierList($event)"
+                    placeholder="Search By Particular/Amount/Description"
+                    [(ngModel)]="Payment.OpticalName"
+                    [matAutocomplete]="autoTransportSupplier"
                     required
                   />
-
                   <mat-autocomplete
-                    #autoTransportPackage="matAutocomplete"
-                    (optionSelected)="afterPackageSelected($event)"
+                    #autoTransportSupplier="matAutocomplete"
+                    (optionSelected)="afterTransportSupplierSelected($event)"
                   >
                     <mat-option
-                      *ngFor="let opt of filteredPackageList"
-                      [value]="opt.PackageName"
+                      *ngFor="let option of ChargeList"
+                      [id]="option.OpticalId"
+                      [value]="option.OpticalName"
+                      >{{ option.OpticalName }}</mat-option
                     >
-                      {{ opt.PackageName }} / {{ opt.PackageCode }}
-                    </mat-option>
                   </mat-autocomplete>
-
                   <button
                     mat-icon-button
                     matSuffix
-                    *ngIf="Package.PackageName"
+                    *ngIf="Payment.OpticalName"
                     color="primary"
-                    (click)="PackageClear()"
+                    (click)="clearTransportSupplier()"
                   >
-                    <mat-icon>close</mat-icon>
+                    <mat-icon><i class="ri-close-circle-line"></i> </mat-icon>
                   </button>
-
-                  <mat-error *ngIf="!Package.PackageName"
-                    >Required field !!</mat-error
-                  >
+                  <mat-error>Required field !!</mat-error>
                 </mat-form-field>
-
-                <mat-form-field appearance="outline" class="col-lg-3">
-                  <mat-label>Price</mat-label>
+                <mat-form-field appearance="outline" class="col-lg-2">
+                  <mat-label>Rate</mat-label>
                   <input
                     matInput
-                    type="text"
-                    name="Price"
-                    [(ngModel)]="Package.Price"
-                    readonly
+                    type="number"
+                    name="Rate"
+                    [(ngModel)]="Payment.OpticalItemRate"
+                    (ngModelChange)="onRateChange()"
                     required
+                    class="no-spinner"
                   />
                 </mat-form-field>
-
-                <mat-form-field appearance="outline" class="col-lg-3">
-                  <mat-label>Description</mat-label>
+                <mat-form-field appearance="outline" class="col-lg-1">
+                  <mat-label>Qty.</mat-label>
                   <input
                     matInput
-                    type="text"
-                    name="Description"
-                    [(ngModel)]="Package.Description"
-                    readonly
+                    type="number"
+                    name="Quentity"
+                    [(ngModel)]="Payment.Quantity"
+                    (ngModelChange)="onQuantityChange()"
+                    required
+                    class="no-spinner"
                   />
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-2">
-                  <mat-label>Final Amount</mat-label>
+                  <mat-label>Amount</mat-label>
                   <input
                     matInput
                     type="number"
                     name="Amount"
-                    [(ngModel)]="Package.Price"
-                    readonly
+                    [(ngModel)]="Payment.Amount"
+                    required
+                    class="no-spinner"
+                    readonly="true"
                   />
                 </mat-form-field>
-
+                <mat-form-field appearance="outline" class="col-lg-1">
+                  <mat-label>Disc.</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    name="Discount"
+                    [(ngModel)]="Payment.Discount"
+                    (ngModelChange)="onDiscountChange()"
+                    required
+                    class="no-spinner"
+                  />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-lg-2">
+                  <mat-label>Line Total</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    name="LineTotal"
+                    [(ngModel)]="Payment.LineTotal"
+                    readonly
+                    required
+                    class="no-spinner"
+                    readonly="true"
+                  />
+                </mat-form-field>
                 <div appearance="outline" class="col-sm-1">
                   <button
                     mat-flat-button
@@ -242,10 +265,13 @@
                     >
                       <thead class="thead-light">
                         <tr>
-                          <th>#</th>
-                          <th>Particular</th>
-                          <th>Description</th>
-                          <th>Amount</th>
+                          <th class="text-center">#</th>
+                          <th>Optical Name</th>
+                          <th class="text-right">Rate</th>
+                          <th class="text-right">Total Amount</th>
+                          <th class="text-center">Quantity</th>
+                          <th class="text-right">Discount Amount</th>
+                          <th class="text-right">Line Amount</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -257,21 +283,29 @@
                             let i = index
                           "
                         >
-                          <td>{{ i + 1 }}</td>
+                          <td class="text-center">{{ i + 1 }}</td>
 
                           <td>
-                            {{ model.PackageName }}
+                            {{ model.OpticalName }}
                           </td>
-                          <td>
-                            {{ model.Description }}
+                          <td class="text-right">
+                            {{ model.OpticalItemRate }}
                           </td>
-                          <td>
-                            {{ model.Price }}
+                          <td class="text-right">
+                            {{ model.Amount }}
+                          </td>
+                          <td class="text-center">
+                            {{ model.Quantity }}
+                          </td>
+                          <td class="text-right">
+                            {{ model.Discount }}
+                          </td>
+                          <td class="text-right">
+                            {{ model.LineTotal }}
                           </td>
 
                           <td>
                             <button
-                              (onChange)="addPaymentDetail()"
                               (click)="RemoveHotel(i)"
                               class="btn btn-sm btn-danger"
                             >
@@ -296,20 +330,18 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Payment Collection</h5>
+            <h5 class="card-title">Payment Details</h5>
             <form #formPatientDetails="ngForm">
               <div class="row">
-                <mat-form-field
-                  appearance="outline"
-                  class="col-lg-3"
-                  style="min-width: 200px"
-                >
+                <mat-form-field appearance="outline" class="col-lg-3">
                   <mat-label>Total Amount</mat-label>
                   <input
                     matInput
                     type="number"
-                    [(ngModel)]="Package.TotalAmount"
-                    name="TotalAmount"
+                    [(ngModel)]="Patient.TotalAmount"
+                    name="TotalAmountAll"
+                    required
+                    class="no-spinner"
                     readonly="true"
                   />
                 </mat-form-field>
@@ -323,10 +355,11 @@
                   <input
                     matInput
                     type="number"
+                    [(ngModel)]="Patient.DiscountAmount"
+                    name="AllDiscountAmount"
+                    required
                     class="no-spinner"
-                    [(ngModel)]="Package.DiscountAmount"
-                    (change)="updatePaymentFields()"
-                    name="DiscountAmount"
+                    readonly="true"
                   />
                 </mat-form-field>
 
@@ -339,8 +372,10 @@
                   <input
                     matInput
                     type="number"
-                    [(ngModel)]="Package.PayableAmount"
-                    name="PayableAmount"
+                    [(ngModel)]="Patient.PayableAmount"
+                    name="LineTotalAll"
+                    required
+                    class="no-spinner"
                     readonly="true"
                   />
                 </mat-form-field>
@@ -350,7 +385,7 @@
                   <input
                     matInput
                     [matDatepicker]="pickers"
-                    [(ngModel)]="Package.PaymentDate"
+                    [(ngModel)]="Patient.PaymentDate"
                     name="PaymentDate"
                     required
                   />
@@ -374,21 +409,18 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Payment Details</h5>
+            <h5 class="card-title">Payment Collection</h5>
             <form #formPaymentCollection="ngForm">
               <div class="row">
-                <!-- Particular -->
-                <mat-form-field appearance="outline" class="col-lg-3">
-                  <mat-label>Title of Payment</mat-label>
+                <!-- Remarks -->
+                <mat-form-field appearance="outline" class="col-lg-6">
+                  <mat-label>Remarks</mat-label>
                   <input
                     matInput
-                    name="RegistrationChargeId"
-                    [(ngModel)]="currentPayment.Particular"
+                    name="Remarks"
+                    [(ngModel)]="currentPayment.Remarks"
                   />
-                  <mat-error>Required field !!</mat-error>
                 </mat-form-field>
-
-                <!-- Remarks -->
 
                 <!-- Amount -->
                 <mat-form-field appearance="outline" class="col-lg-2">
@@ -397,21 +429,21 @@
                     matInput
                     type="number"
                     name="PaidAmount"
-                    class="no-spinner"
                     [(ngModel)]="currentPayment.PaidAmount"
-                    (ngModelChange)="validateCurrentPaymentAmount()"
                     required
+                    class="no-spinner"
                   />
                 </mat-form-field>
 
                 <!-- PaymentMode -->
-                <mat-form-field appearance="outline" class="col-sm-2">
+                <mat-form-field appearance="outline" class="col-sm-3">
                   <mat-label>Payment Mode</mat-label>
                   <mat-select
                     #PaymentMode="ngModel"
                     name="PaymentMode"
                     [(ngModel)]="currentPayment.PaymentMode"
                     required
+                    class="no-spinner"
                   >
                     <mat-option
                       [value]="PaymentMode.Key"
@@ -428,15 +460,6 @@
                   >
                     Payment Mode is <strong>required</strong>
                   </mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="col-lg-4">
-                  <mat-label>Remarks</mat-label>
-                  <input
-                    matInput
-                    name="Remarks"
-                    [(ngModel)]="currentPayment.Remarks"
-                  />
                 </mat-form-field>
 
                 <!-- Add Button -->
@@ -462,8 +485,7 @@
                     <thead class="thead-light">
                       <tr>
                         <th>#</th>
-                        <th>Particular</th>
-                        <th>Description</th>
+                        <th>Remarks</th>
                         <th>Amount</th>
                         <th>Payment Mode</th>
                         <th>Action</th>
@@ -477,7 +499,6 @@
                         "
                       >
                         <td>{{ i + 1 }}</td>
-                        <td>{{ item.Particular }}</td>
                         <td>{{ item.Remarks }}</td>
                         <td>{{ item.PaidAmount }}</td>
                         <td>{{ AllPaymentModeList[item.PaymentMode] }}</td>
@@ -507,7 +528,7 @@
       mat-raised-button
       class="mdc-button-final"
       color="primary"
-      (click)="saveSurgery()"
+      (click)="saveOpticals()"
     >
       Submit
     </button>

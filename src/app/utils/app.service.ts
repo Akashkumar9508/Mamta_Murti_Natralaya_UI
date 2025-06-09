@@ -125,6 +125,13 @@ getSelectedOpticalData() {
     return this.http.post(this.apiUrl + "OpticalBilling/OpticalBillingList", obj, { headers: this.headers })
   }
 
+    saveOpticalsBillDue(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/ClearDueAmount", obj, { headers: this.headers })
+  }
+
+     DeliveryStatus(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/DeliveryStatus", obj, { headers: this.headers })
+  }
 
 
   //ChargeDetails

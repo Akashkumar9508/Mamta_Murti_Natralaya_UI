@@ -24,11 +24,10 @@
               <mat-form-field appearance="outline" class="col-sm-2">
                 <mat-label>Entries per page</mat-label>
                 <mat-select [(ngModel)]="itemPerPage">
-                  <mat-option *ngFor="let option of PageSize" [value]="option">{{ option
-                    }}</mat-option>
+                  <mat-option *ngFor="let option of PageSize" [value]="option">{{ option }}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="col-lg-2" [style]="{'margin-left': '30px'}">
+              <mat-form-field appearance="outline" class="col-lg-2" [style]="{ 'margin-left': '30px' }">
                 <mat-label>Start data</mat-label>
                 <input matInput [matDatepicker]="pickers" name="StartFrom " required #StartFrom="ngModel"
                   [(ngModel)]="filterModel.StartFrom" />
@@ -36,7 +35,7 @@
                 <mat-datepicker #pickers></mat-datepicker>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="col-lg-2" [style]="{'margin-left': '10px'}">
+              <mat-form-field appearance="outline" class="col-lg-2" [style]="{ 'margin-left': '10px' }">
                 <mat-label>End data</mat-label>
                 <input matInput [matDatepicker]="picker" name="endFrom " required #endFrom="ngModel"
                   [(ngModel)]="filterModel.EndFrom" />
@@ -44,26 +43,27 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="col-sm-1" [style]="{'margin-left': '10px'}">
+              <mat-form-field appearance="outline" class="col-sm-1" [style]="{ 'margin-left': '10px' }">
                 <mat-label> Status</mat-label>
                 <mat-select [(ngModel)]="filterModel.PaymentStatus" name="PaymentStatus">
                   <!-- ✅ FIXED -->
-                  <mat-option [value]="0">All</mat-option> <!-- Optional default filter -->
-                  <mat-option [value]="status.Key" *ngFor="let status of AmountPaymentStatusList">{{
-                    status.Value }}</mat-option>
+                  <mat-option [value]="0">All</mat-option>
+                  <!-- Optional default filter -->
+                  <mat-option [value]="status.Key" *ngFor="let status of AmountPaymentStatusList">{{ status.Value
+                    }}</mat-option>
                 </mat-select>
               </mat-form-field>
 
-              <button style="margin-top: 5px; margin-left: 10px;" (click)="getOpticalsBillList()" mat-raised-button
-                color="primary">Search</button>
-              <mat-form-field appearance="outline" class="col-sm-3" [style]="{'margin-left': '10px'}">
+              <button style="margin-top: 5px; margin-left: 10px" (click)="getOpticalsBillList()" mat-raised-button
+                color="primary">
+                Search
+              </button>
+              <mat-form-field appearance="outline" class="col-sm-3" [style]="{ 'margin-left': '10px' }">
                 <mat-label>Search</mat-label>
                 <input matInput [(ngModel)]="Search" placeholder="Search..." />
               </mat-form-field>
             </div>
-            <div class="dataTable-search">  
-
-            </div>
+            <div class="dataTable-search"></div>
           </div>
 
           <table class="table table-bordered table-hover">
@@ -83,8 +83,12 @@
                 <th style="cursor: pointer" (click)="sort('PackageName')">
                   Patient Name
                 </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('Price')">Age</th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('Price')">Contact</th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('Price')">
+                  Age
+                </th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('Price')">
+                  Contact
+                </th>
                 <th style="cursor: pointer" (click)="sort('Price')">
                   Payable Amount
                 </th>
@@ -120,7 +124,7 @@
               <tr *ngFor="
                   let item of TotalRecords
                     | filter : Search
-                    | orderBy : sortKey : reverse
+                    | orderBy : sortKey : false
                     | paginate : { itemsPerPage: itemPerPage, currentPage: p };
                   let i = index
                 ">
@@ -139,20 +143,26 @@
                 <td class="text-center">{{ item.ContactNo }}</td>
                 <td class="text-end">{{ item.PayableAmount }}</td>
                 <td class="text-end">{{ item.PaidAmount }}</td>
-                <td class="text-end" style=" color: red; font-weight: 600">
+                <td class="text-end" style="color: red; font-weight: 600">
                   {{ item.DueAmount }}
                 </td>
 
                 <td style="text-align: center">
                   <span class="p-1" [ngClass]="
-                      item.DeliveryStatus == 1
+                      item.DeliveryStatus === 1
                         ? 'badge text-bg-success'
                         : 'badge text-bg-danger'
                     ">
-                    {{  getDeliveryStatus(item?.DeliveryStatus)}}
-                    
+                    {{ getDeliveryStatus(item?.DeliveryStatus) }}
                   </span>
+
+                  <ng-container *ngIf="item.DeliveryStatus === 2">
+                    <button style="margin-left: 14px" class="btn btn-primary btn-sm" (click)="DeliveryModal(item)">
+                      <i class="bi bi-check-circle"></i>
+                    </button>
+                  </ng-container>
                 </td>
+
                 <td style="text-align: center">
                   <span class="p-1" [ngClass]="
                       item.PaymentStatus == 1
@@ -161,6 +171,12 @@
                     ">
                     {{ AllStatusList[item.PaymentStatus] }}
                   </span>
+                  <ng-container *ngIf="item.PaymentStatus === 2">
+                    <button style="margin-left: 14px" class="btn btn-warning btn-sm"
+                      (click)="openViewModalForDue(item)">
+                      <i class="bi bi-currency-rupee"></i>
+                    </button>
+                  </ng-container>
                 </td>
                 <td class="text-center">
                   <button class="btn btn-sm btn-success" (click)="getPrint(item)">
@@ -218,37 +234,64 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="viewDetailsModalLabel">Billing Details</h5>
+          <h5 class="modal-title" id="viewDetailsModalLabel">
+            Billing Details
+          </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div *ngIf="selectedBill" class="container-fluid">
+          <div *ngIf="DueBill" class="container-fluid">
             <div class="row mb-2">
-              <div class="col-6"><strong>Billing Date:</strong> {{ selectedBill.BillingDate | date: 'dd-MM-yyyy' }}
+              <div class="col-6">
+                <strong>Billing Date:</strong>
+                {{ selectedBill.BillingDate | date : "dd-MM-yyyy" }}
               </div>
-              <div class="col-6"><strong>Receipt No.:</strong> {{ selectedBill.OpticalBillingCode }}</div>
+              <div class="col-6">
+                <strong>Receipt No.:</strong>
+                {{ selectedBill.OpticalBillingCode }}
+              </div>
             </div>
             <div class="row mb-2">
-              <div class="col-6"><strong>Patient Name:</strong> {{ selectedBill.PatientName }}</div>
-              <div class="col-6"><strong>Status :</strong> {{ AllStatusList[selectedBill.PaymentStatus] }}</div>
+              <div class="col-6">
+                <strong>Patient Name:</strong> {{ selectedBill.PatientName }}
+              </div>
+              <div class="col-6">
+                <strong>Status :</strong>
+                {{ AllStatusList[selectedBill.PaymentStatus] }}
+              </div>
             </div>
             <div class="row mb-2">
-              <div class="col-6"><strong>Patient Code:</strong> {{ selectedBill.UHID }}</div>
-              <div class="col-6"><strong>Payable Amount:</strong> {{ selectedBill.PayableAmount }}</div>
+              <div class="col-6">
+                <strong>Patient Code:</strong> {{ selectedBill.UHID }}
+              </div>
+              <div class="col-6">
+                <strong>Payable Amount:</strong>
+                {{ selectedBill.PayableAmount }}
+              </div>
             </div>
             <div class="row mb-2">
-              <div class="col-6"><strong>Age:</strong> {{ selectedBill.Age }}</div>
-              <div class="col-6"><strong>Paid Amount:</strong> {{ selectedBill.PaidAmount }}</div>
+              <div class="col-6">
+                <strong>Age:</strong> {{ selectedBill.Age }}
+              </div>
+              <div class="col-6">
+                <strong>Paid Amount:</strong> {{ selectedBill.PaidAmount }}
+              </div>
             </div>
             <div class="row mb-2">
-              <div class="col-6"><strong>Contact:</strong> {{ selectedBill.ContactNo }}</div>
-              <div class="col-6"><strong>Due Amount:</strong> {{ selectedBill.DueAmount }}</div>
+              <div class="col-6">
+                <strong>Contact:</strong> {{ selectedBill.ContactNo }}
+              </div>
+              <div class="col-6">
+                <strong>Due Amount:</strong> {{ selectedBill.DueAmount }}
+              </div>
             </div>
             <div class="row mb-2">
-                <div class="col-6"><strong>Delivery Status:</strong> {{ getDeliveryStatus(selectedBill?.DeliveryStatus) }}</div>
+              <div class="col-6">
+                <strong>Delivery Status:</strong>
+                {{ getDeliveryStatus(selectedBill?.DeliveryStatus) }}
+              </div>
             </div>
           </div>
-
 
           <!-- Optical Items Table -->
           <div *ngIf="OpticalSellListALL?.length > 0">
@@ -268,11 +311,11 @@
                 <tr *ngFor="let item of OpticalSellListALL; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>{{ item.OpticalName }}</td>
-                  <td>{{ item.OpticalItemRate | number: '1.2-2' }}</td>
+                  <td>{{ item.OpticalItemRate | number : "1.2-2" }}</td>
                   <td>{{ item.Quantity }}</td>
-                  <td>{{ item.Amount | number: '1.2-2' }}</td>
-                  <td>{{ item.Discount | number: '1.2-2' }}</td>
-                  <td>{{ item.LineTotal | number: '1.2-2' }}</td>
+                  <td>{{ item.Amount | number : "1.2-2" }}</td>
+                  <td>{{ item.Discount | number : "1.2-2" }}</td>
+                  <td>{{ item.LineTotal | number : "1.2-2" }}</td>
                 </tr>
               </tbody>
             </table>
@@ -282,10 +325,77 @@
           <div *ngIf="OpticalSellListALL?.length === 0" class="alert alert-warning mt-3">
             No item details found for this bill.
           </div>
-
         </div>
       </div>
     </div>
   </div>
 
+  <!-- view model for due  -->
+  <div class="modal fade" id="viewDueModal" tabindex="-2" aria-labelledby="viewDueModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content"  >
+        <div class="modal-header" >
+          <h5 class="modal-title" id="viewDueModalLabel">Due Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div style="padding: 30px;">
+          <mat-form-field appearance="outline" class="col-lg-2 ">
+          <mat-label>Payment date</mat-label>
+          <input matInput [matDatepicker]="pickers" name="PaymentDate " required #PaymentDate="ngModel"
+            [(ngModel)]="DueBill.PaymentDate" />
+          <mat-datepicker-toggle matSuffix [for]="pickers" class="small-datepicker-icon"></mat-datepicker-toggle>
+          <mat-datepicker #pickers></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-lg-2">
+          <mat-label>Amount</mat-label>
+          <input matInput type="number" name="Amount" [(ngModel)]="DueBill.DueAmount" required class="no-spinner"
+            readonly="true" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-sm-3">
+                  <mat-label>Payment Mode</mat-label>
+                  <mat-select
+                    #PaymentMode="ngModel"
+                    name="PaymentMode"
+                    [(ngModel)]="DueBill.PaymentMode"
+                    required
+                    class="no-spinner"
+                  >
+                    <mat-option
+                      [value]="PaymentMode.Key"
+                      *ngFor="let PaymentMode of PaymentModeList"
+                      >{{ PaymentMode.Value }}</mat-option
+                    >
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      PaymentMode.dirty ||
+                      PaymentMode.touched ||
+                      (PaymentMode.invalid && isSubmitted)
+                    "
+                  >
+                    Payment Mode is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+        <button  (click)="ClearDueAmount(DueBill)" mat-raised-button
+          color="primary">
+          Make Payment
+        </button>
+      </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="DeliveryModal" tabindex="-2" aria-labelledby="viewDueModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewDueModalLabel">Delivery Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+          
+      </div>
+    </div>
+  </div>
 </main>

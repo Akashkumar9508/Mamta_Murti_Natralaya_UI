@@ -207,8 +207,9 @@ export class OpticalBillingComponent {
       (x: any) => x.OptocalId == this.Payment.OptocalId
     );
     this.Payment.OpticalName = Transport.OpticalName;
-    this.Payment.Amount = Transport.OpticalPrice;
+    this.Payment.OpticalItemRate = Transport.OpticalPrice;
     this.Payment.Description = Transport.Description;
+    this.Payment.Quantity = 1;
     this.Payment.OpticalId = Transport.OpticalId;
   }
 

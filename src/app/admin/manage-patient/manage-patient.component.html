@@ -14,7 +14,7 @@
         <div class="col-sm-4">
             <button mat-raised-button class="float-right" color="primary" *ngIf="action.CanCreate"
                 data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="resetForm()">New
-                Patient</button>
+                Patient Registration</button>
         </div>
     </div>
 
@@ -125,7 +125,7 @@
                                 <mat-form-field appearance="outline" class="col-sm-6">
                                     <mat-label>Age</mat-label>
                                     <input matInput #Age="ngModel" name="Age" [(ngModel)]="Patient.Age" required
-                                        autofocus>
+                                        autofocus maxlength="2" min="0" max="99">
                                     <mat-error *ngIf="(Age.dirty  || Age.touched) || (Age.invalid && isSubmitted)">
                                         Age is <strong>required</strong>
                                     </mat-error>
@@ -142,9 +142,9 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label>ContactNo</mat-label>
-                                    <input matInput #ContactNo="ngModel" name="ContactNo"
-                                        [(ngModel)]="Patient.ContactNo" required autofocus>
+                                    <mat-label>Contact No</mat-label>
+                                    <input type="tel" matInput #ContactNo="ngModel" name="ContactNo"
+                                        [(ngModel)]="Patient.ContactNo" required autofocus maxlength="10" min="0000000000" max="9999999999" >
                                     <mat-error
                                         *ngIf="(ContactNo.dirty  || ContactNo.touched) || (ContactNo.invalid && isSubmitted)">
                                         ContactNo is <strong>required</strong>
@@ -166,7 +166,7 @@
                                 <mat-form-field appearance="outline" class="col-sm-6">
                                     <mat-label>Status</mat-label>
                                     <mat-select #Status="ngModel" name="Status" [(ngModel)]="Patient.Status" required>
-                                    <mat-option [value]="status.Key"
+                                        <mat-option [value]="status.Key"
                                             *ngFor="let status of StatusList">{{status.Value}}</mat-option>
                                     </mat-select>
                                     <mat-error
@@ -184,7 +184,8 @@
                         (click)="resetForm()">Cancel</button>
                     <button mat-raised-button color="primary" (click)="savePatient()">{{Patient.PatientID >
                         0 ? 'Update':'Submit'}}</button>
-                    <button mat-raised-button color="primary" (click)="savePatientAndRediectToOPD()">OPD Booking</button>
+                    <button mat-raised-button color="primary" (click)="savePatientAndRediectToOPD()">OPD
+                        Booking</button>
                 </div>
             </div>
         </div>

@@ -448,6 +448,8 @@ export class OpdBookingComponent {
     if (selected) {
       this.Patient = { ...selected }; // assign full patient object
       this.getPatientList(this.Patient.PatientID); // optional
+      this.Patient.OpdDate = new Date();
+      this.Patient.PaymentDate = new Date();
     }
   }
 

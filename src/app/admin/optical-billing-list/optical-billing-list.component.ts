@@ -5,7 +5,14 @@ import { ConstantData } from '../../utils/constant-data';
 import { NgForm } from '@angular/forms';
 import { LocalService } from '../../utils/local.service';
 import { LoadDataService } from '../../utils/load-data.service';
-import { BillStatus, Status, PaymentStatus, DeliveryStatus } from '../../utils/enum';
+
+import {
+  BillStatus,
+  Status,
+  PaymentStatus,
+  DeliveryStatus,
+  PaymentMode
+} from '../../utils/enum';
 import {
   ActionModel,
   RequestModel,
@@ -19,6 +26,12 @@ declare var $: any;
   styleUrls: ['./optical-billing-list.component.css'],
 })
 export class OpticalBillingListComponent {
+DueDate: any;
+DuePayment: any;
+  Deliverystatus: any={};
+clearPayment() {
+throw new Error('Method not implemented.');
+}
   dataLoading: boolean = false;
   PackageDetialList: any = [];
   PackageDetial: any = {};
@@ -27,8 +40,7 @@ export class OpticalBillingListComponent {
   StatusList = this.loadData.GetEnumList(Status);
   AmountPaymentStatusList = this.loadData.GetEnumList(PaymentStatus);
   DeliveryStatusList = this.loadData.GetEnumList(DeliveryStatus);
- 
-  
+  PaymentModeList = this.loadData.GetEnumList(PaymentMode);
   PageSize = ConstantData.PageSizes;
   p: number = 1;
   Search: string = '';
@@ -47,10 +59,11 @@ export class OpticalBillingListComponent {
   SurgeryReceiptModel: any;
   Patient: any;
   Filter: any = {};
-  filterModel:any={};
-  OpticalTotal: any={};
-selectedBill: any={};
-  OpticalSellListALL: any={};
+  filterModel: any = {};
+  OpticalTotal: any = {};
+  selectedBill: any = {};
+  OpticalSellListALL: any = {};
+  DueBill: any={};
   constructor(
     private service: AppService,
     private toastr: ToastrService,
@@ -59,30 +72,29 @@ selectedBill: any={};
     private router: Router
   ) {}
 
-ngOnInit(): void {
-  this.staffLogin = this.localService.getEmployeeDetail();
-  this.validiateMenu();
-  this.resetForm();
-  
-  // Initialize pagination defaults
-  this.p = 1;
-  this.itemPerPage = 10; // Or your default
-  
-  // Initialize filter model
-  this.filterModel = {
-    StartFrom: null,
-    EndFrom: null,
-    PaymentStatus: 0
-  };
-  
-  // Fetch data
-  this.getOpticalsBillList();
-}
-getDeliveryStatus(value: number): string {
-  const status = this.DeliveryStatusList.find(x => x.Key === value);
-  return status ? status.Value : '-';
-}
+  ngOnInit(): void {
+    this.staffLogin = this.localService.getEmployeeDetail();
+    this.validiateMenu();
+    this.resetForm();
 
+    // Initialize pagination defaults
+    this.p = 1;
+    this.itemPerPage = 10; // Or your default
+
+    // Initialize filter model
+    this.filterModel = {
+      StartFrom: null,
+      EndFrom: null,
+      PaymentStatus: 0,
+    };
+
+    // Fetch data
+    this.getOpticalsBillList();
+  }
+  getDeliveryStatus(value: number): string {
+    const status = this.DeliveryStatusList.find((x) => x.Key === value);
+    return status ? status.Value : '-';
+  }
 
   validiateMenu() {
     var obj: RequestModel = {
@@ -137,45 +149,48 @@ getDeliveryStatus(value: number): string {
   }
 
   getOpticalsBillList() {
-  if (this.filterModel.StartFrom) {
-    this.filterModel.StartFrom = this.loadData.loadDateYMD(this.filterModel.StartFrom);
-  }
-  if (this.filterModel.EndFrom) {
-    this.filterModel.EndFrom = this.loadData.loadDateYMD(this.filterModel.EndFrom);
-  }
-
-  const requestPayload = JSON.stringify(this.filterModel);
-  const data = {
-    requestPayload,
-    Page: this.p,
-    PageSize: this.itemPerPage
-  };
-
-  const obj: RequestModel = {
-    request: this.localService.encrypt(JSON.stringify(data)).toString(),
-  };
-
-  this.dataLoading = true;
-  this.service.OpticalsBillList(obj).subscribe(
-    (r1) => {
-      let response = r1 as any;
-      if (response.Message === ConstantData.SuccessMessage) {
-        this.TotalRecords = response.OpticalBillingList;
-        this.OpticalTotal.PaidAmount  =  response.PaidAmountTotal;
-        this.OpticalTotal.TotalPayableAmount  =  response.TotalPayableAmount;
-        this.OpticalTotal.DueAmountTotal  =  response.DueAmountTotal;
-      } else {
-        this.toastr.error(response.Message);
-      }
-      this.dataLoading = false;
-    },
-    (err) => {
-      this.toastr.error('Error while fetching records');
-      this.dataLoading = false;
+    if (this.filterModel.StartFrom) {
+      this.filterModel.StartFrom = this.loadData.loadDateYMD(
+        this.filterModel.StartFrom
+      );
     }
-  );
-}
+    if (this.filterModel.EndFrom) {
+      this.filterModel.EndFrom = this.loadData.loadDateYMD(
+        this.filterModel.EndFrom
+      );
+    }
 
+    const requestPayload = JSON.stringify(this.filterModel);
+    const data = {
+      requestPayload,
+      Page: this.p,
+      PageSize: this.itemPerPage,
+    };
+
+    const obj: RequestModel = {
+      request: this.localService.encrypt(JSON.stringify(data)).toString(),
+    };
+
+    this.dataLoading = true;
+    this.service.OpticalsBillList(obj).subscribe(
+      (r1) => {
+        let response = r1 as any;
+        if (response.Message === ConstantData.SuccessMessage) {
+          this.TotalRecords = response.OpticalBillingList;
+          this.OpticalTotal.PaidAmount = response.PaidAmountTotal;
+          this.OpticalTotal.TotalPayableAmount = response.TotalPayableAmount;
+          this.OpticalTotal.DueAmountTotal = response.DueAmountTotal;
+        } else {
+          this.toastr.error(response.Message);
+        }
+        this.dataLoading = false;
+      },
+      (err) => {
+        this.toastr.error('Error while fetching records');
+        this.dataLoading = false;
+      }
+    );
+  }
 
   savePackageCollection() {
     this.isSubmitted = true;
@@ -223,13 +238,13 @@ getDeliveryStatus(value: number): string {
         request: this.localService.encrypt(JSON.stringify(obj)).toString(),
       };
       console.log(obj);
-      
+
       this.dataLoading = true;
       this.service.DeleteOpticalBilling(request).subscribe(
         (r1) => {
           let response = r1 as any;
           if (response.Message == ConstantData.SuccessMessage) {
-            this.toastr.success("the recored deleted",response.Message);
+            this.toastr.success('the recored deleted', response.Message);
             this.getOpticalsBillList();
           } else {
             this.toastr.error(response.Message);
@@ -248,8 +263,7 @@ getDeliveryStatus(value: number): string {
 
   editPackageCollection(data: any) {
     console.log(data);
-    
-    
+
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),
     };
@@ -279,34 +293,105 @@ getDeliveryStatus(value: number): string {
     );
   }
   openViewModal(item: any) {
-  this.selectedBill = item;
-  $('#viewDetailsModal').modal('show');
-  this.OpticalSellList(item);
-}
-  OpticalSellList(obj: any) {
-      var request: RequestModel = {
-        request: this.localService.encrypt(JSON.stringify(obj)).toString(),
-      };
-      this.dataLoading = true;
-      this.service.OpticalSellList(request).subscribe(
-        (r1) => {
-          let response = r1 as any;
-          if (response.Message == ConstantData.SuccessMessage) {
-            this.OpticalSellListALL = response.OpticalSellList;
-            console.log(this.OpticalSellListALL);
-            
-            this.dataLoading = false;
-          } else {
-            this.toastr.error("Error occured while Fetching  the recored");
-          }
-        },
-        (err) => {
-          this.toastr.error('Error occured while Fetching  the recored');
-          this.dataLoading = false;
-        }
-      );
-    }
-
-    
-
+    this.selectedBill = item;
+    $('#viewDetailsModal').modal('show');
+    this.OpticalSellList(item);
   }
+
+  OpticalSellList(obj: any) {
+    var request: RequestModel = {
+      request: this.localService.encrypt(JSON.stringify(obj)).toString(),
+    };
+    this.dataLoading = true;
+    this.service.OpticalSellList(request).subscribe(
+      (r1) => {
+        let response = r1 as any;
+        if (response.Message == ConstantData.SuccessMessage) {
+          this.OpticalSellListALL = response.OpticalSellList;
+          console.log(this.OpticalSellListALL);
+
+          this.dataLoading = false;
+        } else {
+          this.toastr.error('Error occured while Fetching  the recored');
+        }
+      },
+      (err) => {
+        this.toastr.error('Error occured while Fetching  the recored');
+        this.dataLoading = false;
+      }
+    );
+  }
+
+  openViewModalForDue(item: any) {
+    console.log(item);
+    this.DueBill = item;
+    this.DueBill.PaymentDate= new Date();
+    $('#viewDueModal').modal('show');
+  }
+
+    DeliveryModal(item: any) {
+    this.Deliverystatus = item;
+    console.log(this.Deliverystatus);
+    
+     this.Deliverystatus.DeliveryDate=new Date();
+    $('#DeliveryModal').modal('show');
+  }
+
+  DeliveryStatusUpdate(obj:any){
+    this.Deliverystatus.DeliveryStatuss = obj.DeliveryStatus;  
+    this.Deliverystatus.DeliveryDate= this.loadData.loadDateYMD(this.Deliverystatus.DeliveryDate);
+    console.log(this.Deliverystatus);
+    
+      var request: RequestModel = {
+      request: this.localService.encrypt(JSON.stringify(this.Deliverystatus)).toString(),
+    };
+    this.dataLoading = true;
+    this.service.DeliveryStatus(request).subscribe(
+      (r1) => {
+        let response = r1 as any;
+        if (response.Message == ConstantData.SuccessMessage) {
+          this.dataLoading = false;
+          this.toastr.success("Optical Delivered successfully");
+          this.getOpticalsBillList();
+        } else {
+          this.toastr.error('Error occured while Fetching  the recored');
+        }
+      },
+      (err) => {
+        this.toastr.error('Error occured while Fetching  the recored');
+        this.dataLoading = false;
+      }
+    );
+  }
+
+
+  ClearDueAmount(obj: any) {
+    console.log(obj);
+
+    this.DueBill = obj;
+    this.DueBill.CreatedBy = this.staffLogin.StaffId;
+    this.DueBill.PaymentDate = this.loadData.loadDateYMD(
+        this.DueBill.PaymentDate);
+    
+    var request: RequestModel = {
+      request: this.localService.encrypt(JSON.stringify(this.DueBill)).toString(),
+    };
+    this.dataLoading = true;
+    this.service.saveOpticalsBillDue(request).subscribe(
+      (r1) => {
+        let response = r1 as any;
+        if (response.Message == ConstantData.SuccessMessage) {
+          this.dataLoading = false;
+          this.toastr.success("Due amount cleared successfully");
+          this.getOpticalsBillList();
+        } else {
+          this.toastr.error('Error occured while Clearing  the Due');
+        }
+      },
+      (err) => {
+        this.toastr.error('Error occured while Fetching  the recored');
+        this.dataLoading = false;
+      }
+    );
+  }
+}

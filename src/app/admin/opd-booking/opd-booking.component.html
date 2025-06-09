@@ -72,6 +72,7 @@
                       name="Age"
                       [(ngModel)]="Patient.Age"
                       required
+                      readonly="true"
                     />
                   </mat-form-field>
 
@@ -82,6 +83,7 @@
                       name="Gender"
                       [value]="AllGenderList[Patient.Gender]"
                       required
+                      readonly="true"
                     />
                   </mat-form-field>
 
@@ -93,6 +95,7 @@
                       name="ContactNo"
                       [(ngModel)]="Patient.ContactNo"
                       required
+                      readonly="true"
                     />
                   </mat-form-field>
 
@@ -120,6 +123,7 @@
                       name="Address"
                       [(ngModel)]="Patient.Address"
                       required
+                      readonly="true"
                     ></textarea>
                   </mat-form-field>
                 </div>

@@ -14,12 +14,12 @@ import { LocalService } from '../../utils/local.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var $: any;
 @Component({
-  selector: 'app-optical-billing',
-  templateUrl: './optical-billing.component.html',
-  styleUrls: ['./optical-billing.component.css'],
+  selector: 'app-billing-item',
+  templateUrl: './billing-item.component.html',
+  styleUrls: ['./billing-item.component.css']
 })
-export class OpticalBillingComponent {
-  dataLoading: boolean = false;
+export class BillingItemComponent {
+dataLoading: boolean = false;
   PatientList: any = [];
   ChargeList: any = [];
   FeeChargeList: any = [];
@@ -47,7 +47,7 @@ export class OpticalBillingComponent {
   tempData: any;
   filteredPatientList: any[] = [];
   PatientListAll: any;
-  OpticalList: any = [];
+  BillingList: any = [];
 
   sort(key: any) {
     this.sortKey = key;
@@ -71,12 +71,12 @@ export class OpticalBillingComponent {
 
   ngOnInit(): void {
     this.getPatientListall(this.Patient.PatientId);
-    this.tempData = this.service.getSelectedOpticalData();
+    this.tempData = this.service.getSelectedBillingData();
 
     this.staffLogin = this.localService.getEmployeeDetail();
     this.validiateMenu();
     this.resetForm();
-    this.getOpticalList();
+    this.getBillingList();
     this.route.queryParams.subscribe((params: any) => {
       this.Patient.PatientId = params.id;
       this.redUrl = params.redUrl;
@@ -85,16 +85,16 @@ export class OpticalBillingComponent {
       }
     });
     this.route.queryParams.subscribe((params) => {
-      const OpticalBillingId = params['id'];
+      const BillingItemId = params['id'];
       const redUrl = params['redUrl'];
 
-      const data = this.service.getSelectedOpticalData();
-      if (data && data.GetOpticalBilling.OpticalBillingId == OpticalBillingId) {
+      const data = this.service.getSelectedBillingData();
+      if (data && data.GetBillingItem.BillingItemId == BillingItemId) {
         this.Patient = {
-          ...data.GetOpticalBilling,
+          ...data.GetBillingItem,
           ...data.GetPaymentCollection,
         };
-        this.SelectedPaymentDetailList = data.GetOpticalsDetails;
+        this.SelectedPaymentDetailList = data.GetBillingItemDetails;
         this.SelectedPaymentCollectionList = data.GetPaymentDetails;
    
       } else {
@@ -109,7 +109,7 @@ export class OpticalBillingComponent {
       request: this.localService
         .encrypt(
           JSON.stringify({
-            Url: '/admin/optical-billing',
+            Url: '/admin/billing-item',
             StaffLoginId: this.staffLogin.StaffLoginId,
           })
         )
@@ -179,17 +179,17 @@ export class OpticalBillingComponent {
     });
   }
 
-  getOpticalList() {
+  getBillingList() {
     var obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify({})).toString(),
     };
     this.dataLoading = true;
-    this.service.getOpticalList(obj).subscribe(
+    this.service.getBillingList(obj).subscribe(
       (r1) => {
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
-          this.OpticalList = response.OpticalList;
-          console.log(response.OpticalList);
+          this.BillingList = response.BillingList;
+          console.log(response.BillingList);
         } else {
           this.toastr.error(response.Message);
         }
@@ -201,32 +201,32 @@ export class OpticalBillingComponent {
     );
   }
 
-  afterTransportSupplierSelected(event: any) {
-    this.Payment.OpticalId = event.option.id;
-    this.Payment.OpticalName = event.option.value;
+  afterBillingSelected(event: any) {
+    this.Payment.BillingId = event.option.id;
+    this.Payment.BillingName = event.option.value;
     var Transport = this.ChargeList.find(
       (x: any) => x.OptocalId == this.Payment.OptocalId
     );
-    this.Payment.OpticalName = Transport.OpticalName;
-    this.Payment.OpticalItemRate = Transport.OpticalPrice;
-    this.Payment.Description = Transport.Description;
+    this.Payment.BillingName = Transport.BillingName;
+    this.Payment.BillingRate = Transport.BillingPrice;
+    this.Payment.Description = Transport.BillingDescription;
     this.Payment.Quantity = 1;
-    this.Payment.OpticalId = Transport.OpticalId;
+    this.Payment.BillingId = Transport.BillingId;
   }
 
-  filterTransportSupplierList(value: any) {
+  filterBillingList(value: any) {
     if (value) {
       const filterValue = value.toLowerCase();
-      this.ChargeList = this.OpticalList.filter((option: any) =>
-        option.OpticalName.toLowerCase().includes(filterValue)
+      this.ChargeList = this.BillingList.filter((option: any) =>
+        option.BillingName.toLowerCase().includes(filterValue)
       );
     } else {
-      this.ChargeList = this.OpticalList;
+      this.ChargeList = this.BillingList;
     }
   }
   clearTransportSupplier() {
-    this.ChargeList = this.OpticalList;
-    this.Payment.OpticalId = null;
+    this.ChargeList = this.BillingList;
+    this.Payment.BillingId = null;
     this.Payment = {};
   }
 
@@ -234,24 +234,24 @@ export class OpticalBillingComponent {
   recalculateTotals() {
   let totalAmount = 0;
   let totalDiscount = 0;
-  let totalLineTotal = 0;
+  let totalLineAmount = 0;
 
-  this.SelectedPaymentDetailList.forEach((item: { Amount: any; Discount: any; LineTotal: any; }) => {
+  this.SelectedPaymentDetailList.forEach((item: { Amount: any; Discount: any; LineAmount: any; }) => {
     totalAmount += item.Amount || 0;
     totalDiscount += item.Discount || 0;
-    totalLineTotal += item.LineTotal || 0;
+    totalLineAmount += item.LineAmount || 0;
   });
 
   this.Patient.TotalAmount = totalAmount;
   this.Patient.DiscountAmount = totalDiscount;
-  this.Patient.PayableAmount = totalLineTotal;
-  this.currentPayment.PaidAmount = totalLineTotal;
+  this.Patient.PayableAmount = totalLineAmount;
+  this.currentPayment.PaidAmount = totalLineAmount;
 }
 
 
 clearCurrentPayment() {
   this.Payment = {
-    OpticalName: '',
+    BillingName: '',
     Rate: 0,
     Quantity: 1,
     Amount: 0,
@@ -267,11 +267,11 @@ clearCurrentPayment() {
       this.toastr.error('Please Enter Paid Amount!!!');
       return;
     }
-    if (this.Payment.OpticalName == null || this.Payment.OpticalName == '') {
+    if (this.Payment.BillingName == null || this.Payment.BillingName == '') {
       this.toastr.error('Please Select Payment Mode!!!');
       return;
     }
-    this.Payment.OpticalId = this.Payment.OpticalId;
+    this.Payment.BillingId = this.Payment.BillingId;
     this.SelectedPaymentDetailList.push(this.Payment);
     this.recalculateTotals();  // Call a function to calculate the totals
   this.clearCurrentPayment();
@@ -279,7 +279,7 @@ clearCurrentPayment() {
 
 
 
-  RemoveHotel(index: number) {
+  Removepayment(index: number) {
     this.SelectedPaymentDetailList.splice(index, 1);
     this.CalculateTotalAmount();
   }
@@ -318,7 +318,7 @@ clearCurrentPayment() {
       this.Patient.PayableAmount - this.Patient.PaidAmount;
   }
 
-  saveOpticals() {
+  saveBillings() {
     this.isSubmitted = true;
 
     if (
@@ -352,7 +352,7 @@ clearCurrentPayment() {
     const data = {
       GetPatient: this.Patient,
       GetPaymentCollection: this.Patient,
-      GetOpticalsDetails: this.SelectedPaymentDetailList,
+      GetBillingItemDetails: this.SelectedPaymentDetailList,
       GetPaymentDetails: this.SelectedPaymentCollectionList,
     };
     console.log(data);
@@ -362,7 +362,7 @@ clearCurrentPayment() {
     };
 
     this.dataLoading = true;
-    this.service.saveOpticalsBill(obj).subscribe(
+    this.service.saveBillingsBill(obj).subscribe(
       (r1) => {
         const response = r1 as any;
 
@@ -373,7 +373,7 @@ clearCurrentPayment() {
           } else {
             this.toastr.success('Booking added successfully');
           }
-           this.service.PrintOpticlalBill(response.OpticalBillingId);
+           this.service.PrintBillItem(response.BillingItemId);
           this.SelectedPaymentDetailList = [];
           this.SelectedPaymentCollectionList = [];
           this.resetForm();
@@ -507,7 +507,7 @@ addToPaymentList() {
       this.getPatientList(this.Patient.PatientID); // optional
     }
     if (selected) {
-    this.Payment.OpticalItemRate = selected.Rate || 0;  // get the rate from your selected option
+    this.Payment.BillingRate = selected.Rate || 0;  // get the rate from your selected option
     this.Payment.Quantity = 1;
     this.onRateChange();  // calculate Amount and LineTotal
   }
@@ -524,15 +524,15 @@ addToPaymentList() {
 
   // my code 
   onRateChange() {
-    if (this.Payment.Quantity && this.Payment.OpticalItemRate) {
-      this.Payment.Amount = this.Payment.OpticalItemRate * this.Payment.Quantity;
+    if (this.Payment.Quantity && this.Payment.BillingRate) {
+      this.Payment.Amount = this.Payment.BillingRate * this.Payment.Quantity;
       this.updateLineTotal();
     }
   }
 
   onQuantityChange() {
-    if (this.Payment.OpticalItemRate && this.Payment.Quantity) {
-      this.Payment.Amount = this.Payment.OpticalItemRate * this.Payment.Quantity;
+    if (this.Payment.BillingRate && this.Payment.Quantity) {
+      this.Payment.Amount = this.Payment.BillingRate * this.Payment.Quantity;
       this.updateLineTotal();
     }
   }
@@ -542,7 +542,7 @@ addToPaymentList() {
   }
 
   updateLineTotal() {
-    this.Payment.LineTotal =
+    this.Payment.LineAmount =
       (this.Payment.Amount || 0) - (this.Payment.Discount || 0);
   }
 }

@@ -109,21 +109,21 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Add Optical Item</h5>
+            <h5 class="card-title">Add Billing Item</h5>
             <form #formPaymentDetails="ngForm">
               <div class="row">
                 <mat-form-field appearance="outline" class="col-lg-3">
-                  <mat-label>Select Optical Name </mat-label>
+                  <mat-label>Select Billing Name </mat-label>
                   <input matInput #RegistrationChargeId="ngModel" name="RegistrationChargeId"
-                    (ngModelChange)="filterTransportSupplierList($event)"
-                    placeholder="Search By Particular/Amount/Description" [(ngModel)]="Payment.OpticalName"
+                    (ngModelChange)="filterBillingList($event)"
+                    placeholder="Search By Particular/Amount/Description" [(ngModel)]="Payment.BillingName"
                     [matAutocomplete]="autoTransportSupplier" required />
                   <mat-autocomplete #autoTransportSupplier="matAutocomplete"
-                    (optionSelected)="afterTransportSupplierSelected($event)">
-                    <mat-option *ngFor="let option of ChargeList" [id]="option.OpticalId"
-                      [value]="option.OpticalName">{{ option.OpticalName }}</mat-option>
+                    (optionSelected)="afterBillingSelected($event)">
+                    <mat-option *ngFor="let option of ChargeList" [id]="option.BillingId"
+                      [value]="option.BillingName">{{ option.BillingName }}</mat-option>
                   </mat-autocomplete>
-                  <button mat-icon-button matSuffix *ngIf="Payment.OpticalName" color="primary"
+                  <button mat-icon-button matSuffix *ngIf="Payment.BillingName" color="primary"
                     (click)="clearTransportSupplier()">
                     <mat-icon><i class="ri-close-circle-line"></i> </mat-icon>
                   </button>
@@ -131,7 +131,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-2">
                   <mat-label>Rate</mat-label>
-                  <input matInput type="number" name="Rate" [(ngModel)]="Payment.OpticalItemRate"
+                  <input matInput type="number" name="Rate" [(ngModel)]="Payment.BillingRate"
                     (ngModelChange)="onRateChange()" required class="no-spinner" />
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-1">
@@ -151,7 +151,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-lg-2">
                   <mat-label>Line Total</mat-label>
-                  <input matInput type="number" name="LineTotal" [(ngModel)]="Payment.LineTotal" readonly required
+                  <input matInput type="number" name="LineTotal" [(ngModel)]="Payment.LineAmount" readonly required
                     class="no-spinner" readonly="true" />
                 </mat-form-field>
                 <div appearance="outline" class="col-sm-1">
@@ -167,7 +167,7 @@
                       <thead class="thead-light">
                         <tr>
                           <th class="text-center">#</th>
-                          <th>Optical Name</th>
+                          <th>Billing Name</th>
                           <th class="text-right">Rate</th>
                           <th class="text-right">Total Amount</th>
                           <th class="text-center">Quantity</th>
@@ -185,10 +185,10 @@
                           <td class="text-center">{{ i + 1 }}</td>
 
                           <td>
-                            {{ model.OpticalName }}
+                            {{ model.BillingName }}
                           </td>
                           <td class="text-right">
-                            {{ model.OpticalItemRate }}
+                            {{ model.BillingItemRate }}
                           </td>
                           <td class="text-right">
                             {{ model.Amount }}
@@ -204,7 +204,7 @@
                           </td>
 
                           <td>
-                            <button (click)="RemoveHotel(i)" class="btn btn-sm btn-danger">
+                            <button (click)="Removepayment(i)" class="btn btn-sm btn-danger">
                               <i class="bi bi-trash-fill"></i>
                             </button>
                           </td>
@@ -349,7 +349,7 @@
   </div>
 
   <div class="d-flex justify-content-center items-center">
-    <button type="submit" mat-raised-button class="mdc-button-final" color="primary" (click)="saveOpticals()">
+    <button type="submit" mat-raised-button class="mdc-button-final" color="primary" (click)="saveBillings()">
       Submit
     </button>
   </div>

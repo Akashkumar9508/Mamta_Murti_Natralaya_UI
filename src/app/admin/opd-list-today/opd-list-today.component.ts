@@ -10,14 +10,13 @@ import { LocalService } from '../../utils/local.service';
 import { Router } from '@angular/router';
 import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 declare var $: any
-
 @Component({
-  selector: 'app-opd-list',
-  templateUrl: './opd-list.component.html',
-  styleUrls: ['./opd-list.component.css']
+  selector: 'app-opd-list-today',
+  templateUrl: './opd-list-today.component.html',
+  styleUrls: ['./opd-list-today.component.css']
 })
-export class OpdListComponent {
-  opdList: any = [];
+export class OpdListTodayComponent {
+opdList: any = [];
   dataLoading = false;
   PageSize = ConstantData.PageSizes;
   p: number = 1;
@@ -67,12 +66,13 @@ export class OpdListComponent {
   ngOnInit() {
     this.staffLogin = this.localService.getEmployeeDetail();
     this.validiateMenu();
-    this.getOpdList();
-     this.filterModel = {
-      StartFrom: null,
-      EndFrom: null,
+    const date = new Date();
+    this.filterModel = {
+      StartFrom: date,
+      EndFrom: date,
       PaymentStatus: 0,
     };
+    this.getOpdList();
   }
 
   validiateMenu() {
@@ -251,4 +251,3 @@ ClearDueAmount(obj: any) {
   }
 
 }
-

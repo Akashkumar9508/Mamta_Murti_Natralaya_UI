@@ -15,7 +15,7 @@
           </div>
         <div class="col-sm-4 mb-3">
             <button mat-raised-button color="primary" *ngIf="action.CanCreate" class="float-right"
-                data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="resetForm()">New Opticals</button>
+                data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="resetForm()">New Billing Item</button>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">S.No</th>
-                                <th  style="cursor:pointer;" (click)="sort('OpticalsName')">Opticals Name</th>
+                                <th  style="cursor:pointer;" (click)="sort('BillingsName')">Billing Name</th>
                                 <th class="text-right" style="cursor:pointer;" (click)="sort('Rate')">Rate</th>
                                 <th  style="cursor:pointer;" (click)="sort('Description')">Description</th>
                                 <th style="cursor:pointer;" (click)="sort('CreatedBy')">Created By</th>
@@ -54,11 +54,11 @@
                         </thead>
                         <tbody>
                             <tr
-                                *ngFor="let item of OpticalList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                                *ngFor="let item of BillingList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
                                 <td class="text-center">{{(itemPerPage * (p -1)) +i+ 1}}</td>
-                                <td>{{item.OpticalName}}</td>
-                                 <td class="text-right">{{item.OpticalPrice}}</td> 
-                                 <td>{{item.Description}}</td> 
+                                <td>{{item.BillingName}}</td>
+                                 <td class="text-right">{{item.BillingPrice}}</td> 
+                                 <td>{{item.BillingDescription}}</td> 
                                  <td>{{item.CreatedBy}}</td>
                                  <td>{{item.UpdatedBy}}</td>
                                  <td>{{ item.CreatedOn | date:'dd-MM-yyyy' }}</td>
@@ -72,12 +72,12 @@
 
                                 <td class="text-center" *ngIf="action.CanEdit">
                                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop" (click)="editOpticals(item)">
+                                        data-bs-target="#staticBackdrop" (click)="editBillings(item)">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
                                 </td>
                                 <td class="text-center" *ngIf="action.CanDelete">
-                                    <button class="btn btn-sm btn-danger" (click)="deleteOptical(item)">
+                                    <button class="btn btn-sm btn-danger" (click)="deleteBilling(item)">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </td>
@@ -100,40 +100,37 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{Optical.OpticalId > 0
-                        ?'Update':'New'}} Opticals
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{Billing.BillingId > 0
+                        ?'Update':'New'}} Billing
                     </h1>
                     <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         (click)="resetForm()"></button>
                 </div>
                 <div class="modal-body">
 
-                    <form #formOptical="ngForm" class="d-flex justify-content-evenly flex-wrap">
+                    <form #formBilling="ngForm" class="d-flex justify-content-evenly flex-wrap">
                         <div class="container">
                             <div class="row">
 
                                 <mat-form-field appearance="outline" class="col-sm-12">
-                                    <mat-label>Optical Name</mat-label>
-                                    <input   matInput #formOptical="ngModel" name="OpticalName"
-                                        [(ngModel)]="Optical.OpticalName" required autofocus>
+                                    <mat-label>Billing Name</mat-label>
+                                    <input   matInput #formBilling="ngModel" name="BillingName"
+                                        [(ngModel)]="Billing.BillingName" required autofocus>
                                     <mat-error>
-                                        Opticals name is <strong>required</strong>
+                                        Billing name is <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
 
                                  <mat-form-field appearance="outline" class="col-sm-12">
                                     <mat-label>Price</mat-label>
-                                    <input matInput #formOptical="ngModel" name="DepartmentName"
-                                        [(ngModel)]="Optical.OpticalPrice" required autofocus>
-                                    <mat-error>
-                                        Opticals Price is <strong>required</strong>
-                                    </mat-error>
+                                    <input matInput #formBilling="ngModel" name="DepartmentName"
+                                        [(ngModel)]="Billing.BillingPrice"  autofocus>
                                 </mat-form-field>
 
                                  <mat-form-field appearance="outline" class="col-sm-12">
                                     <mat-label>Description</mat-label>
-                                    <textarea matInput #formOptical="ngModel" name="OpticalDescription"
-                                        [(ngModel)]="Optical.Description" autofocus> </textarea>
+                                    <textarea matInput #formBilling="ngModel" name="BillingDescription"
+                                        [(ngModel)]="Billing.BillingDescription" autofocus> </textarea>
                                 </mat-form-field>
 
                                 
@@ -141,7 +138,7 @@
 
                                 <mat-form-field appearance="outline" class="col-sm-12">
                                     <mat-label>Status</mat-label>
-                                    <mat-select #Status="ngModel" name="Status" [(ngModel)]="Optical.Status"
+                                    <mat-select #Status="ngModel" name="Status" [(ngModel)]="Billing.Status"
                                         required>
                                         <mat-option [value]="status.Key"
                                             *ngFor="let status of StatusList">{{status.Value}}</mat-option>
@@ -158,7 +155,7 @@
                 <div class="modal-footer">
                     <button type="button" mat-raised-button color="warn" class="me-2" data-bs-dismiss="modal"
                         (click)="resetForm()">Cancel</button>
-                    <button mat-raised-button color="primary" (click)="saveOptical()">{{Optical.OpticalId >
+                    <button mat-raised-button color="primary" (click)="saveBilling()">{{Billing.BillingId >
                         0 ? 'Update':'Submit'}}</button>
                 </div>
             </div>

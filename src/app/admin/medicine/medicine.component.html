@@ -1,0 +1,220 @@
+
+<app-progress *ngIf="dataLoading"></app-progress>
+
+<main id="main" class="main" *ngIf="action.ResponseReceived">
+
+    <div class="pagetitle">
+        <h1>Medicine Master
+            <button *ngIf="action.CanCreate" class="btn btn-primary btn-sm" style="float: right;" (click)="newMedicine()"> Add
+                New</button>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/admin/admin-dashboard">Home</a></li>
+                <li class="breadcrumb-item">Pharmacy</li>
+                <li class="breadcrumb-item active">Medicine Master</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="dataTable-top">
+                                <div class="dataTable-dropdown">
+                                    <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                                        <option *ngFor="let option of pageSize" [value]="option">{{option}} </option>
+                                    </select>
+                                  &nbsp;  entries per page
+                                </div>
+                                <div class="dataTable-search"><input
+                                        class="dataTable-input form-control form-control-sm" [(ngModel)]="Search" placeholder="Search..."
+                                        type="text"></div>
+                            </div>
+                            <div class="col-lg-12 table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                        <th>#</th>
+                                        <th style="cursor: pointer;" (click)="sort('Name')">Name</th>
+                                        <th style="cursor: pointer;" (click)="sort('HSNCode')">HSN Code</th>
+                                        <th style="cursor: pointer;" (click)="sort('CategoryName')">Category Name</th>
+                                        <th style="cursor: pointer;" (click)="sort('ManufacturerName')">Manufacturer Name</th>
+                                        <th style="cursor: pointer;" (click)="sort('UnitName')">Unit Name</th>
+                                        <th style="cursor: pointer;" (click)="sort('GSTValue')">GST</th>
+                                        <th style="cursor: pointer;" (click)="sort('StatusName')">Status</th>
+                                        <th *ngIf="action.CanEdit">Edit</th>
+                                        <th *ngIf="action.CanDelete">Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let model of MedicineList|filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; let i = index">
+                                            <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                                            <td>{{model.Name}}</td>
+                                            <td>{{model.HSNCode}}</td>
+                                            <td>{{model.CategoryName}}</td>
+                                            <td>{{model.ManufacturerName}}</td>
+                                            <td>{{model.UnitName}}</td>
+                                            <td>{{model.GSTValue}} %</td>
+                                            <td><span [ngClass]="model.Status == 2 ?'badge bg-warning':'badge bg-success'">
+                                                    {{AllStatusList[model.Status]}}</span></td>
+                                            <td *ngIf="action.CanEdit">
+                                                <button class="btn btn-sm btn-warning" (click)="editMedicine(model)"><i
+                                                        class="bi bi-pencil-square"></i> </button>
+                                            </td>
+                                            <td *ngIf="action.CanDelete">
+                                                <button class="btn btn-sm btn-danger" (click)="deleteMedicine(model)"><i
+                                                        class="bi bi-trash-fill"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                            <div class="dataTable-bottom">
+                                <pagination-controls (pageChange)="onTableDataChange($event)" style="float: right;"
+                                class="my-pagination"></pagination-controls>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<div id="modal_popUp" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{Medicine.MedicineId > 0 ? 'Update' : 'New'}} Medicine</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #formMedicine="ngForm">
+                    <div class="row">
+                        <div class="col-sm-4 form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" placeholder="Enter Name" #Name="ngModel"
+                                [(ngModel)]="Medicine.Name" name="Name" class="form-control"
+                                [ngClass]="{'is-invalid':submitted && Name.invalid}" required autofocus>
+
+                            <div *ngIf="Name.invalid && (Name.dirty || Name.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="Name.errors?.['required']">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 form-group">
+                            <label class="form-label">HSN Code</label>
+                            <input type="text" placeholder="Enter HSN Code" #HSNCode="ngModel"
+                                [(ngModel)]="Medicine.HSNCode" name="HSNCode" class="form-control"
+                                [ngClass]="{'is-invalid':submitted && HSNCode.invalid}" required autofocus>
+
+                            <div *ngIf="HSNCode.invalid && (HSNCode.dirty || HSNCode.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="HSNCode.errors?.['required']">
+                                    HSN Code is required.
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-sm-4 form-group">
+                            <label class="form-label">GST</label>
+                            <select class="form-select" #GSTId="ngModel" [(ngModel)]="Medicine.GSTId" name="GSTId"
+                                [ngClass]="{'is-invalid':submitted && GSTId.invalid}" required autofocus required [autofocus]="true">
+                                <option value="">--Select GST--</option>
+                                <option [value]="model.GSTId" *ngFor="let model of GSTList">
+                                    {{model.GSTName}}</option>
+                            </select>
+                            <div *ngIf="GSTId.invalid && (GSTId.dirty || GSTId.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="GSTId.errors?.['required']">
+                                    GST is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" #CategoryId="ngModel" [(ngModel)]="Medicine.CategoryId" name="CategoryId"
+                                [ngClass]="{'is-invalid':submitted && CategoryId.invalid}" required autofocus required [autofocus]="true">
+                                <option value="">--Select Category--</option>
+                                <option [value]="model.CategoryId" *ngFor="let model of MedicineList">
+                                    {{model.CategoryName}}</option>
+                            </select>
+                            <div *ngIf="CategoryId.invalid && (CategoryId.dirty || CategoryId.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="CategoryId.errors?.['required']">
+                                    Category is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 form-group">
+                            <label class="form-label">Unit</label>
+                            <select class="form-select" #UnitId="ngModel" [(ngModel)]="Medicine.UnitId" name="UnitId"
+                                [ngClass]="{'is-invalid':submitted && UnitId.invalid}" required autofocus required [autofocus]="true">
+                                <option value="">--Select Unit--</option>
+                                <option [value]="model.UnitId" *ngFor="let model of MedicineList">
+                                    {{model.UnitName}}</option>
+                            </select>
+                            <div *ngIf="UnitId.invalid && (UnitId.dirty || UnitId.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="UnitId.errors?.['required']">
+                                    Unit is required.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 form-group">
+                            <label class="form-label">Manufacturer</label>
+                            <select class="form-select" #ManufacturerId="ngModel" [(ngModel)]="Medicine.ManufacturerId" name="ManufacturerId"
+                                [ngClass]="{'is-invalid':submitted && ManufacturerId.invalid}" required autofocus required [autofocus]="true">
+                                <option value="">--Select Manufacturer--</option>
+                                <option [value]="model.ManufacturerId" *ngFor="let model of ManufacturerList">
+                                    {{model.ManufacturerName}}</option>
+                            </select>
+                            <div *ngIf="ManufacturerId.invalid && (ManufacturerId.dirty || ManufacturerId.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="ManufacturerId.errors?.['required']">
+                                    Manufacturer is required.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-4 form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" #Status="ngModel" [(ngModel)]="Medicine.Status" name="Status"
+                                [ngClass]="{'is-invalid':submitted && Status.invalid}" required autofocus>
+                                <option value="">--Select Status--</option>
+                                <option [value]="model.Key" *ngFor="let model of StatusList">
+                                    {{model.Value}}</option>
+                            </select>
+                            <div *ngIf="Status.invalid && (Status.dirty || Status.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="Status.errors?.['required']">
+                                    Status is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="saveMedicine()">{{Medicine.MedicineId > 0 ?"Update": "Save"}}</button>
+            </div>
+
+        </div>
+    </div>
+</div>

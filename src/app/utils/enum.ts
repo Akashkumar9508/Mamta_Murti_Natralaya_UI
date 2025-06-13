@@ -33,6 +33,8 @@ export enum Gender {
     Female = 1,
     Other = 3
 }
+
+
 export enum StaffType {
     SuperAdmin = 1,
     Admin = 2,

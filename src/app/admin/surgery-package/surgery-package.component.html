@@ -56,7 +56,6 @@
               <tr>
                 <th>S.No</th>
                 <th style="cursor: pointer" (click)="sort('PackageCode')">Package Code</th>
-                <th style="cursor: pointer" (click)="sort('PackageCollectionName')">Package Collection Name</th>
                 <th style="cursor: pointer" (click)="sort('PackageName')">Package Name</th>
                 <th style="cursor: pointer" (click)="sort('Price')">Price</th>
                 <th style="cursor: pointer" (click)="sort('Description')">Description</th>
@@ -81,7 +80,6 @@
               >
                 <td>{{ itemPerPage * (p - 1) + i + 1 }}</td>
                 <td>{{ item.PackageCode }}</td>
-                <td>{{ item.PackageCatogeryTitle }}</td>
                 <td>{{ item.PackageName }}</td>
                 <td>{{ item.Price }}</td>
                 <td>{{ item.Description }}</td>
@@ -160,40 +158,6 @@
           <form #formPackageCollection="ngForm" class="d-flex justify-content-evenly flex-wrap">
             <div class="container">
               <div class="row">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Surgery Package Name</mat-label>
-                  <input
-                    matInput
-                    name="PackageCollectionName"
-                    [(ngModel)]="PackageDetial.PackageName"
-                    (ngModelChange)="filterPackageCollectionList($event)"
-                    [matAutocomplete]="autoTransportPackageCollection"
-                    placeholder="Search By Surgery Package Name"
-                    required
-                  />
-                  <mat-autocomplete
-                    #autoTransportPackageCollection="matAutocomplete"
-                    (optionSelected)="afterPackageCollectionSelected($event)"
-                  >
-                    <mat-option
-                      *ngFor="let option of ChargeList"
-                      [value]="option.PackageName"
-                    >
-                      {{ option.PackageName }}
-                    </mat-option>
-                  </mat-autocomplete>
-                  <button
-                    mat-icon-button
-                    matSuffix
-                    *ngIf="PackageDetial.PackageName"
-                    color="primary"
-                    (click)="clearTransportSupplier()"
-                  >
-                    <mat-icon>close</mat-icon>
-                  </button>
-                  <mat-error *ngIf="!PackageDetial.PackageName">Required field !!</mat-error>
-                </mat-form-field>
-
                 <mat-form-field appearance="outline" class="col-sm-12">
                   <mat-label>Package Name</mat-label>
                   <input

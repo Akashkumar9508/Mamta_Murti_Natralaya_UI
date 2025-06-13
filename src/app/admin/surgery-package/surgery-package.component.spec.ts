@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PackageDetialComponent } from './package-detial.component';
+import { SurgeryPackageComponent } from './surgery-package.component';
 
 describe('PackageDetialComponent', () => {
-  let component: PackageDetialComponent;
-  let fixture: ComponentFixture<PackageDetialComponent>;
+  let component: SurgeryPackageComponent;
+  let fixture: ComponentFixture<SurgeryPackageComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PackageDetialComponent]
+      declarations: [SurgeryPackageComponent]
     });
-    fixture = TestBed.createComponent(PackageDetialComponent);
+    fixture = TestBed.createComponent(SurgeryPackageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

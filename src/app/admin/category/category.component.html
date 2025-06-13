@@ -1,0 +1,131 @@
+
+<app-progress *ngIf="dataLoading"></app-progress>
+
+<main id="main" class="main" *ngIf="action.ResponseReceived">
+
+    <div class="pagetitle">
+        <h1>Category Master
+            <button *ngIf="action.CanCreate" class="btn btn-primary btn-sm" style="float: right;" (click)="newCategory()"> Add
+                New</button>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="/admin/admin-dashboard">Home</a></li>
+                <li class="breadcrumb-item">Pharmacy</li>
+                <li class="breadcrumb-item active">Category Master</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="dataTable-top">
+                                <div class="dataTable-dropdown">
+                                    <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                                        <option *ngFor="let option of pageSize" [value]="option">{{option}} </option>
+                                    </select>
+                                  &nbsp;  entries per page
+                                </div>
+                                <div class="dataTable-search"><input
+                                        class="dataTable-input form-control form-control-sm" [(ngModel)]="Search" placeholder="Search..."
+                                        type="text"></div>
+                            </div>
+                            <div class="col-lg-12 table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                        <th>#</th>
+                                        <th style="cursor: pointer;" (click)="sort('CategoryName')">Category Name</th>
+                                        <th style="cursor: pointer;" (click)="sort('StatusName')">Status</th>
+                                        <th *ngIf="action.CanEdit">Edit</th>
+                                        <th *ngIf="action.CanDelete">Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            *ngFor="let model of CategoryList|filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; let i = index">
+                                            <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                                            <td>{{model.CategoryName}}</td>
+                                            <td><span [ngClass]="model.Status == 2 ?'badge bg-warning':'badge bg-success'">
+                                                    {{AllStatusList[model.Status]}}</span></td>
+                                            <td *ngIf="action.CanEdit">
+                                                <button class="btn btn-sm btn-warning" (click)="editCategory(model)"><i
+                                                        class="bi bi-pencil-square"></i> </button>
+                                            </td>
+                                            <td *ngIf="action.CanDelete">
+                                                <button class="btn btn-sm btn-danger" (click)="newCategory()"><i
+                                                        class="bi bi-trash-fill"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                            <div class="dataTable-bottom">
+                                <pagination-controls (pageChange)="onTableDataChange($event)" style="float: right;"
+                                class="my-pagination"></pagination-controls>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<div id="modal_popUp" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{Category.CategoryId > 0 ? 'Update' : 'New'}} Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #formCategory="ngForm">
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <label class="form-label">Category Name</label>
+                            <input type="text" placeholder="Enter Category Name" #CategoryName="ngModel"
+                                [(ngModel)]="Category.CategoryName" name="CategoryName" class="form-control"
+                                [ngClass]="{'is-invalid':submitted && CategoryName.invalid}" required autofocus>
+
+                            <div *ngIf="CategoryName.invalid && (CategoryName.dirty || CategoryName.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="CategoryName.errors?.['required']">
+                                    Category Name is required.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12 form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" #Status="ngModel" [(ngModel)]="Category.Status" name="Status"
+                                [ngClass]="{'is-invalid':submitted && Status.invalid}" required autofocus>
+                                <option value="">--Select Status--</option>
+                                <option [value]="model.Key" *ngFor="let model of StatusList">
+                                    {{model.Value}}</option>
+                            </select>
+                            <div *ngIf="Status.invalid && (Status.dirty || Status.touched || submitted)"
+                                class="text-danger">
+                                <div *ngIf="Status.errors?.['required']">
+                                    Status is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="newCategory()">{{Category.CategoryId > 0 ?"Update": "Save"}}</button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -13,14 +13,13 @@ import {
 import { LocalService } from '../../utils/local.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var $: any;
-
 @Component({
-  selector: 'app-package-bill',
-  templateUrl: './package-bill.component.html',
-  styleUrls: ['./package-bill.component.css'],
+  selector: 'app-surgery-bill',
+  templateUrl: './surgery-bill.component.html',
+  styleUrls: ['./surgery-bill.component.css']
 })
-export class PackageBillComponent {
-  dataLoading: boolean = false;
+export class SurgeryBillComponent {
+dataLoading: boolean = false;
   PatientList: any = [];
 
   AllChargeList: any[] = [];
@@ -125,7 +124,7 @@ export class PackageBillComponent {
       request: this.localService
         .encrypt(
           JSON.stringify({
-            Url: '/admin/PackageBill',
+            Url: '/admin/surgery-bill',
             StaffLoginId: this.staffLogin.StaffLoginId,
           })
         )

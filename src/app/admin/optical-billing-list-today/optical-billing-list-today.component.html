@@ -109,6 +109,9 @@
                 <th class="text-center" style="cursor: pointer; text-align: center" (click)="sort('Status')">
                   Payment Status
                 </th>
+                <th class="text-center" style="cursor: pointer; text-align: center" (click)="sort('Status')">
+                  Pay
+                </th>
                 <th class="text-center" style="cursor: pointer" (click)="sort('Description')">
                   Bill
                 </th>
@@ -163,7 +166,7 @@
                   </ng-container>
                 </td>
 
-                <td style="text-align: center">
+                <td class="text-center">
                   <span class="p-1" [ngClass]="
                       item.PaymentStatus == 1
                         ? 'badge text-bg-success'
@@ -171,12 +174,20 @@
                     ">
                     {{ AllStatusList[item.PaymentStatus] }}
                   </span>
-                  <ng-container *ngIf="item.PaymentStatus === 2">
-                    <button style="margin-left: 14px" class="btn btn-warning btn-sm"
-                      (click)="openViewModalForDue(item)">
+                </td>
+
+                <!-- Show Pay Due button only if PaymentStatus == 0 (due) -->
+                <td class="text-center">
+                  <ng-container *ngIf="item.PaymentStatus == 2; else paidTemplate">
+                    <button class="btn btn-sm btn btn-primary" (click)="openViewModalForDue(item)">
                       <i class="bi bi-currency-rupee"></i>
                     </button>
                   </ng-container>
+                  <ng-template #paidTemplate>
+                    <button class="btn btn-sm" style="pointer-events: none">
+                      <i class="bi bi-check-lg"></i>
+                    </button>
+                  </ng-template>
                 </td>
                 <td class="text-center">
                   <button class="btn btn-sm btn-success" (click)="getPrint(item)">

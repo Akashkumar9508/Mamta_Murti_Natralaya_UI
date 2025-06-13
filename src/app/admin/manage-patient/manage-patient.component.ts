@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AppService } from '../../utils/app.service';
 import { ConstantData } from '../../utils/constant-data';
-import { Gender, Status } from '../../utils/enum';
+import { Gender, Status ,Category} from '../../utils/enum';
 import { LoadDataService } from '../../utils/load-data.service';
 import { ActionModel, RequestModel, StaffLoginModel } from '../../utils/interface';
 import { LocalService } from '../../utils/local.service';
@@ -31,10 +31,12 @@ export class ManagePatientComponent {
   filterState: any[] = [];
   StatusList = this.loadData.GetEnumList(Status);
   GenderList = this.loadData.GetEnumList(Gender);
+  CategoryList = this.loadData.GetEnumList(Category);
   action: ActionModel = {} as ActionModel;
   staffLogin: StaffLoginModel = {} as StaffLoginModel;
   AllStatusList = Status;
   AllGenderList = Gender;
+  AllCategoryList = Category;
 
   sort(key: any) {
     this.sortKey = key;
@@ -127,6 +129,8 @@ export class ManagePatientComponent {
     }
     this.Patient.CreatedBy = this.staffLogin.StaffId;
     this.Patient.UpdatedBy = this.staffLogin.StaffId;
+    console.log(this.Patient);
+    
     var obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(this.Patient)).toString()
     }

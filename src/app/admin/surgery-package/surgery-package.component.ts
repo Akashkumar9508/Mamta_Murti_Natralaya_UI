@@ -15,11 +15,11 @@ import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
-  selector: 'app-package-detial',
-  templateUrl: './package-detial.component.html',
-  styleUrls: ['./package-detial.component.css'],
+  selector: 'app-surgery-package',
+  templateUrl: './surgery-package.component.html',
+  styleUrls: ['./surgery-package.component.css'],
 })
-export class PackageDetialComponent {
+export class SurgeryPackageComponent {
   dataLoading: boolean = false;
   PackageDetialList: any = [];
   PackageDetial: any = {};

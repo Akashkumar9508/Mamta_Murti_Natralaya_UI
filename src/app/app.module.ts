@@ -40,8 +40,6 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
 import { ManagePatientComponent } from './admin/manage-patient/manage-patient.component';
 import { OpdBookingComponent } from './admin/opd-booking/opd-booking.component';
 import { OpticalAddComponent } from './admin/optical-add/optical-add.component';
-import { PackageCollectionComponent } from './admin/package-collection/package-collection.component';
-import { PackageDetialComponent } from './admin/package-detial/package-detial.component';
 import { PackageBillComponent } from './admin/package-bill/package-bill.component';
 import { OpdListComponent } from './admin/opd-list/opd-list.component';
 import { SurgeryListComponent } from './admin/surgery-list/surgery-list.component';
@@ -49,11 +47,26 @@ import { GstComponent } from './admin/gst/gst.component';
 import { OpticalBillingComponent } from './admin/optical-billing/optical-billing.component';
 import { OpticalBillingListComponent } from './admin/optical-billing-list/optical-billing-list.component';
 import { OpticalBillingListTodayComponent } from './admin/optical-billing-list-today/optical-billing-list-today.component';
+import { MedicineComponent } from './admin/medicine/medicine.component';
+import { Category } from './utils/enum';
+import { CategoryComponent } from './admin/category/category.component';
+import { SurgeryListTodayComponent } from './admin/surgery-list-today/surgery-list-today.component';
+import { OpdListTodayComponent } from './admin/opd-list-today/opd-list-today.component';
+import { BillItemComponent } from './admin/bill-item/bill-item.component';
+import { BillingItemComponent } from './admin/billing-item/billing-item.component';
+import { BillingItemListComponent } from './admin/billing-item-list/billing-item-list.component';
+import { BillingItemListTodayComponent } from './admin/billing-item-list-today/billing-item-list-today.component';
+import { SurgeryPackageComponent } from './admin/surgery-package/surgery-package.component';
+import { SurgeryBillComponent } from './admin/surgery-bill/surgery-bill.component';
+import { ConsentFormComponent } from './admin/consent-form/consent-form.component';
 
 @NgModule({
   declarations: [
+    SurgeryPackageComponent,
     AppComponent,
+    CategoryComponent,
     GstComponent,
+    MedicineComponent,
     AdminDashboardComponent,
     AdminLoginComponent,
     AdminMasterComponent,
@@ -79,14 +92,20 @@ import { OpticalBillingListTodayComponent } from './admin/optical-billing-list-t
     ManagePatientComponent,
     OpdBookingComponent,
     OpticalAddComponent,
-    PackageCollectionComponent,
-    PackageDetialComponent,
     PackageBillComponent,
     OpdListComponent,
     SurgeryListComponent,
     OpticalBillingComponent,
     OpticalBillingListComponent,
-    OpticalBillingListTodayComponent
+    OpticalBillingListTodayComponent,
+    SurgeryListTodayComponent,
+    OpdListTodayComponent,
+    BillItemComponent,
+    BillingItemComponent,
+    BillingItemListComponent,
+    BillingItemListTodayComponent,
+    SurgeryBillComponent,
+    ConsentFormComponent
   ],
   imports: [
     BrowserModule,

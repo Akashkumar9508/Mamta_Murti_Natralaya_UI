@@ -13,6 +13,7 @@
         </ol>
       </nav>
     </div>
+
   </div>
 
   <section class="section dashboard">
@@ -71,49 +72,18 @@
               <tr>
                 <th>S.No</th>
                 <!-- <th>Print Bill</th> -->
-                <th class="text-center" style="cursor: pointer" (click)="sort('SurgeryDate')">
-                  Surgery Date
-                </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('SurgeryCode')">
-                  Surgery Code
-                </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('UHID')">
-                  UHID
-                </th>
-                <th style="cursor: pointer" (click)="sort('PatientName')">
-                  Patient Name
-                </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('Age')">
-                  Age
-                </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('ContactNo')">
-                  Contact
-                </th>
-                <th class="text-right" style="cursor: pointer" (click)="sort('PayableAmount')">
-                  Total Amount
-                </th>
-                <th class="text-right" style="cursor: pointer" (click)="sort('PayableAmount')">
-                  Discount Amount
-                </th>
-                <th class="text-right" style="cursor: pointer" (click)="sort('PayableAmount')">
-                  Payable Amount
-                </th>
-                <th class="text-right" style="cursor: pointer" (click)="sort('PaidAmount')">
-                  Paid Amount
-                </th>
-                <th class="text-right" style="cursor: pointer; color: red; font-weight: 600"
-                  (click)="sort('DueAmount')">
-                  Due Amount
-                </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('PaymentStatus')">
-                  Status
-                </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('PaymentStatus')">
-                  Pay
-                </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('Bill')">
-                  Bill
-                </th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('SurgeryDate')">Surgery Date</th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('SurgeryCode')">Surgery Code</th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('UHID')">UHID</th>
+                <th style="cursor: pointer" (click)="sort('PatientName')">Patient Name</th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('Age')">Age</th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('ContactNo')">Contact</th>
+                <th class="text-right" style="cursor: pointer" (click)="sort('PayableAmount')">Payable Amount</th>
+                <th class="text-right" style="cursor: pointer" (click)="sort('PaidAmount')">Paid Amount</th>
+                <th class="text-right" style="cursor: pointer ;color: red; font-weight: 600;" (click)="sort('DueAmount')">Due Amount</th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('PaymentStatus')">Status</th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('PaymentStatus')">Pay</th>
+                <th class="text-center" style="cursor: pointer" (click)="sort('Bill')">Bill</th>
                 <th class="text-center" *ngIf="action.CanEdit">Edit</th>
                 <th class="text-center" *ngIf="action.CanDelete">Delete</th>
               </tr>
@@ -128,30 +98,24 @@
                 ">
                 <!-- <td><Button (click)="PrintBill(item)">🖨️</Button></td> -->
                 <td class="text-center">{{ itemPerPage * (p - 1) + i + 1 }}</td>
-                <td class="text-center">
-                  {{ item.SurgeryDate | date : "dd-MM-yyyy" }}
-                </td>
+                <td class="text-center">{{ item.SurgeryDate | date:'dd-MM-yyyy' }}</td>
                 <td class="text-center">{{ item.SurgeryCode }}</td>
                 <td class="text-center">{{ item.UHID }}</td>
                 <td>{{ item.PatientName }}</td>
                 <td class="text-center">{{ item.Age }}</td>
                 <td class="text-center">{{ item.ContactNo }}</td>
-                <td class="text-right">{{ item.TotalAmount }}</td>
-                <td class="text-right">{{ item.DiscountAmount }}</td>
                 <td class="text-right">{{ item.PayableAmount }}</td>
                 <td class="text-right">{{ item.PaidAmount }}</td>
-                <td class="text-right" style="color: red; font-weight: 600">
-                  {{ item.DueAmount }}
-                </td>
+                <td class="text-right " style="color: red; font-weight: 600;" >{{ item.DueAmount }}</td>
                 <!-- <td>{{ item.PaidAmount }}</td> -->
                 <!-- <td>{{ item.CreatedOn | date: 'dd-MM-yyyy' }}</td>
                 <td>{{ item.UpdatedOn | date: 'dd-MM-yyyy' }}</td> -->
                 <td class="text-center">
                   <span class="p-1" [ngClass]="
-                      item.PaymentStatus == 1
-                        ? 'badge text-bg-success'
-                        : 'badge text-bg-danger'
-                    ">
+      item.PaymentStatus == 1
+        ? 'badge text-bg-success'
+        : 'badge text-bg-danger'
+    ">
                     {{ AllStatusList[item.PaymentStatus] }}
                   </span>
                 </td>
@@ -164,11 +128,12 @@
                     </button>
                   </ng-container>
                   <ng-template #paidTemplate>
-                    <button class="btn btn-sm" style="pointer-events: none">
+                    <button class="btn btn-sm " style="pointer-events: none;" >
                       <i class="bi bi-check-lg"></i>
                     </button>
                   </ng-template>
                 </td>
+
 
                 <td class="text-center">
                   <button class="btn btn-sm btn-success" (click)="getPrint(item)">
@@ -197,8 +162,6 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th class="text-end">{{ SurgeryTotal.AmountTotal }}</th>
-                <th class="text-end">{{ SurgeryTotal.DiscountAmountTotal }}</th>
                 <th class="text-end">{{ SurgeryTotal.TotalPayableAmount }}</th>
                 <th class="text-end">{{ SurgeryTotal.PaidAmount }}</th>
                 <th class="text-end">{{ SurgeryTotal.DueAmountTotal }}</th>
@@ -216,50 +179,63 @@
     </div>
   </section>
 
+
+
   <!-- Modal Form -->
 
   <div class="modal fade" id="viewDueModal" tabindex="-2" aria-labelledby="viewDueModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
+      <div class="modal-content"  >
+        <div class="modal-header" >
           <h5 class="modal-title" id="viewDueModalLabel">Due Details</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div style="padding: 30px">
-          <mat-form-field appearance="outline" class="col-lg-2">
-            <mat-label>Payment date</mat-label>
-            <input matInput [matDatepicker]="pickers" name="PaymentDate " required #PaymentDate="ngModel"
-              [(ngModel)]="DueBill.PaymentDate" />
-            <mat-datepicker-toggle matSuffix [for]="pickers" class="small-datepicker-icon"></mat-datepicker-toggle>
-            <mat-datepicker #pickers></mat-datepicker>
-          </mat-form-field>
+        <div style="padding: 30px;">
+          <mat-form-field appearance="outline" class="col-lg-2 ">
+          <mat-label>Payment date</mat-label>
+          <input matInput [matDatepicker]="pickers" name="PaymentDate " required #PaymentDate="ngModel"
+            [(ngModel)]="DueBill.PaymentDate" />
+          <mat-datepicker-toggle matSuffix [for]="pickers" class="small-datepicker-icon"></mat-datepicker-toggle>
+          <mat-datepicker #pickers></mat-datepicker>
+        </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-lg-2">
-            <mat-label>Amount</mat-label>
-            <input matInput type="number" name="Amount" [(ngModel)]="DueBill.DueAmount" required class="no-spinner"
-              readonly="true" />
-          </mat-form-field>
+        <mat-form-field appearance="outline" class="col-lg-2">
+          <mat-label>Amount</mat-label>
+          <input matInput type="number" name="Amount" [(ngModel)]="DueBill.DueAmount" required class="no-spinner"
+            readonly="true" />
+        </mat-form-field>
 
-          <mat-form-field appearance="outline" class="col-sm-3">
-            <mat-label>Payment Mode</mat-label>
-            <mat-select #PaymentMode="ngModel" name="PaymentMode" [(ngModel)]="DueBill.PaymentMode" required
-              class="no-spinner">
-              <mat-option [value]="PaymentMode.Key" *ngFor="let PaymentMode of PaymentModeList">{{ PaymentMode.Value
-                }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="
-                PaymentMode.dirty ||
-                PaymentMode.touched ||
-                (PaymentMode.invalid && isSubmitted)
-              ">
-              Payment Mode is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-          <button (click)="ClearDueAmount(DueBill)" mat-raised-button color="primary">
-            Make Payment
-          </button>
-        </div>
+        <mat-form-field appearance="outline" class="col-sm-3">
+                  <mat-label>Payment Mode</mat-label>
+                  <mat-select
+                    #PaymentMode="ngModel"
+                    name="PaymentMode"
+                    [(ngModel)]="DueBill.PaymentMode"
+                    required
+                    class="no-spinner"
+                  >
+                    <mat-option
+                      [value]="PaymentMode.Key"
+                      *ngFor="let PaymentMode of PaymentModeList"
+                      >{{ PaymentMode.Value }}</mat-option
+                    >
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      PaymentMode.dirty ||
+                      PaymentMode.touched ||
+                      (PaymentMode.invalid && isSubmitted)
+                    "
+                  >
+                    Payment Mode is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+        <button  (click)="ClearDueAmount(DueBill)" mat-raised-button
+          color="primary">
+          Make Payment
+        </button>
+      </div>
+
       </div>
     </div>
   </div>
-</main>

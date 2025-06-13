@@ -45,6 +45,14 @@ getSelectedOpticalData() {
   return this.selectedOpticalData;
 }
 
+  setgetSelectedBillingData(data: any) {
+  this.selectedOpticalData = data;
+}
+
+getSelectedBillingData() {
+  return this.selectedOpticalData;
+}
+
   // District
   getDistrictList(obj: any) {
     return this.http.post(this.apiUrl + "District/DistrictList", obj, { headers: this.headers })
@@ -113,6 +121,41 @@ getSelectedOpticalData() {
   deleteOptical(obj: any) {
     return this.http.post(this.apiUrl + "Opticals/OpticalDelete", obj, { headers: this.headers })
   }
+
+// Billing 
+
+    getBillingList(obj: any) {
+    return this.http.post(this.apiUrl + "Billing/BillingList", obj, { headers: this.headers })
+  }
+
+  saveBilling(obj: any) {
+    return this.http.post(this.apiUrl + "Billing/BillingSave", obj, { headers: this.headers })
+  }
+
+  deleteBilling(obj: any) {
+    return this.http.post(this.apiUrl + "Billing/BillingDelete", obj, { headers: this.headers })
+  }
+
+   saveBillingsBill(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/SaveBillingItem", obj, { headers: this.headers })
+  }
+
+  BillingItemList(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/BillingItemList", obj, { headers: this.headers })
+  }
+
+    UpdateListFromBillingItem(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/UpdateListFromBillingItem", obj, { headers: this.headers })
+  }
+
+  billItemSellList(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/BillItemSellList", obj, { headers: this.headers })
+  }
+
+    deleteBillingItem(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/DeleteBillingItem", obj, { headers: this.headers })
+  }
+
 
   /* ---------------------------------------------------------------------- */
 // opticals billing 
@@ -249,6 +292,10 @@ getSelectedOpticalData() {
 
       PrintOpticlalBill(ids : any) {
       window.open(this.baseUrl + "report/PrintOpticalBill/" + ids);
+  }
+
+     PrintBillItem(ids : any) {
+      window.open(this.baseUrl + "report/PrintBillingItem/" + ids);
   }
 OpticalSellList(obj: any) {
     return this.http.post(this.apiUrl + "OpticalBilling/OpticalSellList", obj, { headers: this.headers })
@@ -581,9 +628,14 @@ OpticalSellList(obj: any) {
   getTestMedicineList(obj: any) {
     return this.http.post(this.baseUrl + 'Medicine/TestMedicineList', obj)
   }
-  getMedicineList(obj: any) {
-    return this.http.post(this.baseUrl + 'Medicine/MedicineList', obj)
+  // getMedicineList(obj: any) {
+  //   return this.http.post(this.baseUrl + 'Medicine/MedicineList', obj, { headers: this.headers })
+  // }
+
+    getMedicineList(obj: any) {
+    return this.http.post(this.apiUrl + "Medicine/MedicineList", obj, { headers: this.headers })
   }
+
   getSearchMedicine(obj: any) {
     return this.http.post(this.baseUrl + 'Medicine/SearchMedicine', obj)
   }
@@ -593,6 +645,14 @@ OpticalSellList(obj: any) {
   deleteMedicine(obj: any) {
     return this.http.post(this.baseUrl + 'Medicine/deleteMedicine', obj)
   }
+
+  // getCategoryList(obj: any) {
+  //   return this.http.post(this.baseUrl + 'Medicine/MedicineList', obj)
+  // }
+
+  // getUnitList(obj: any) {
+  //   return this.http.post(this.baseUrl + 'Medicine/MedicineList', obj)
+  // }
 
   //Manufacturer
   getManufacturerList(obj: any) {
@@ -637,5 +697,13 @@ OpticalSellList(obj: any) {
   printMedicineReciept(ids: any) {
     window.open(this.baseUrl + "report/PrintMedicineReciept/" + ids);
   }
+
+
+  // catogery apis ?
+
+ getCategoryList(obj: any) {
+    return this.http.post(this.apiUrl + 'Category/CategoryList', obj, { headers: this.headers })
+  }
+
 
 }

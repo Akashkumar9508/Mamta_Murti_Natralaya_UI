@@ -54,7 +54,7 @@
                 </mat-select>
               </mat-form-field>
 
-              <button style="margin-top: 5px; margin-left: 10px" (click)="getOpticalsBillList()" mat-raised-button
+              <button style="margin-top: 5px; margin-left: 10px" (click)="getBillingItemList()" mat-raised-button
                 color="primary">
                 Search
               </button>
@@ -74,10 +74,8 @@
                 <th style="cursor: pointer; text-align: center" (click)="sort('BillingDate')">
                   Billing Date
                 </th>
-                <th style="cursor: pointer; text-align: center" (click)="sort('OpticalBillingCode')">
-                  Receipt No.
-                </th>
-                <th style="cursor: pointer" (click)="sort('UHID')">
+                
+                <th class="text-center" style="cursor: pointer" (click)="sort('UHID')">
                   UHID
                 </th>
                 <th style="cursor: pointer" (click)="sort('PatientName')">
@@ -89,10 +87,10 @@
                 <th class="text-center" style="cursor: pointer" (click)="sort('ContactNo')">
                   Contact
                 </th>
-                <th style="cursor: pointer" (click)="sort('PayableAmount')">
+                <th class="text-right" style="cursor: pointer" (click)="sort('PayableAmount')">
                   Payable Amount
                 </th>
-                <th class="text-center" style="cursor: pointer" (click)="sort('PaidAmount')">
+                <th class="text-right" style="cursor: pointer" (click)="sort('PaidAmount')">
                   Paid Amount
                 </th>
                 <th style="
@@ -103,13 +101,11 @@
                   " (click)="sort('DueAmount')">
                   Due Amount
                 </th>
-                <th class="text-center" style="cursor: pointer; text-align: center" (click)="sort('DeliveryStatus')">
-                  Delivery Status
-                </th>
+                
                 <th class="text-center" style="cursor: pointer; text-align: center" (click)="sort('PaymentStatus')">
                   Payment Status
                 </th>
-                <th class="text-center" style="cursor: pointer; text-align: center" (click)="sort('Status')">
+                <th class="text-center" style="cursor: pointer; text-align: center" (click)="sort('PaymentStatus')">
                   Pay
                 </th>
                 <th class="text-center" style="cursor: pointer" (click)="sort('Description')">
@@ -137,10 +133,7 @@
                 <td style="text-align: center">
                   {{ item.BillingDate | date : "dd-MM-yyyy" }}
                 </td>
-                <td style="text-align: center">
-                  {{ item.OpticalBillingCode }}
-                </td>
-                <td>{{ item.UHID }}</td>
+                <td class="text-center">{{ item.UHID }}</td>
                 <td>{{ item.PatientName }}</td>
                 <td class="text-center">{{ item.Age }}</td>
                 <td class="text-center">{{ item.ContactNo }}</td>
@@ -149,34 +142,15 @@
                 <td class="text-end" style="color: red; font-weight: 600">
                   {{ item.DueAmount }}
                 </td>
-
-                <td style="text-align: center">
-                  <span class="p-1" [ngClass]="
-                      item.DeliveryStatus === 1
-                        ? 'badge text-bg-success'
-                        : 'badge text-bg-danger'
-                    ">
-                    {{ getDeliveryStatus(item?.DeliveryStatus) }}
-                  </span>
-
-                  <ng-container *ngIf="item.DeliveryStatus === 2">
-                    <button style="margin-left: 14px" class="btn btn-primary btn-sm" (click)="DeliveryModal(item)">
-                      <i class="bi bi-check-circle"></i>
-                    </button>
-                  </ng-container>
-                </td>
-
                 <td class="text-center">
                   <span class="p-1" [ngClass]="
-                      item.PaymentStatus == 1
-                        ? 'badge text-bg-success'
-                        : 'badge text-bg-danger'
-                    ">
+      item.PaymentStatus == 1
+        ? 'badge text-bg-success'
+        : 'badge text-bg-danger'
+    ">
                     {{ AllStatusList[item.PaymentStatus] }}
                   </span>
                 </td>
-
-                <!-- Show Pay Due button only if PaymentStatus == 0 (due) -->
                 <td class="text-center">
                   <ng-container *ngIf="item.PaymentStatus == 2; else paidTemplate">
                     <button class="btn btn-sm btn btn-primary" (click)="openViewModalForDue(item)">
@@ -184,7 +158,7 @@
                     </button>
                   </ng-container>
                   <ng-template #paidTemplate>
-                    <button class="btn btn-sm" style="pointer-events: none">
+                    <button class="btn btn-sm " style="pointer-events: none;" >
                       <i class="bi bi-check-lg"></i>
                     </button>
                   </ng-template>
@@ -201,12 +175,12 @@
                 </td>
                 <td class="text-center" *ngIf="action.CanEdit">
                   <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                    (click)="editPackageCollection(item)">
+                    (click)="editBillingCollection(item)">
                     <i class="bi bi-pencil-square"></i>
                   </button>
                 </td>
                 <td class="text-center" *ngIf="action.CanDelete">
-                  <button class="btn btn-sm btn-danger" (click)="DeleteOpticalBilling(item)">
+                  <button class="btn btn-sm btn-danger" (click)="deleteBillingItem(item)">
                     <i class="bi bi-trash-fill"></i>
                   </button>
                 </td>
@@ -215,7 +189,6 @@
             <tfoot>
               <tr>
                 <th class=""></th>
-                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -258,22 +231,13 @@
                 {{ selectedBill.BillingDate | date : "dd-MM-yyyy" }}
               </div>
               <div class="col-6">
-                <strong>Receipt No.:</strong>
-                {{ selectedBill.OpticalBillingCode }}
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-6">
-                <strong>Patient Name:</strong> {{ selectedBill.PatientName }}
-              </div>
-              <div class="col-6">
                 <strong>Status :</strong>
                 {{ AllStatusList[selectedBill.PaymentStatus] }}
               </div>
             </div>
             <div class="row mb-2">
               <div class="col-6">
-                <strong>UHID:</strong> {{ selectedBill.UHID }}
+                <strong>Patient Name:</strong> {{ selectedBill.PatientName }}
               </div>
               <div class="col-6">
                 <strong>Payable Amount:</strong>
@@ -282,7 +246,7 @@
             </div>
             <div class="row mb-2">
               <div class="col-6">
-                <strong>Age:</strong> {{ selectedBill.Age }}
+                <strong>UHID:</strong> {{ selectedBill.UHID }}
               </div>
               <div class="col-6">
                 <strong>Paid Amount:</strong> {{ selectedBill.PaidAmount }}
@@ -290,7 +254,7 @@
             </div>
             <div class="row mb-2">
               <div class="col-6">
-                <strong>Contact:</strong> {{ selectedBill.ContactNo }}
+                <strong>Age:</strong> {{ selectedBill.Age }}
               </div>
               <div class="col-6">
                 <strong>Due Amount:</strong> {{ selectedBill.DueAmount }}
@@ -298,19 +262,20 @@
             </div>
             <div class="row mb-2">
               <div class="col-6">
-                <strong>Delivery Status:</strong>
-                {{ getDeliveryStatus(selectedBill?.DeliveryStatus) }}
+                <strong>Contact:</strong> {{ selectedBill.ContactNo }}
               </div>
+              
             </div>
+            
           </div>
 
           <!-- Optical Items Table -->
-          <div *ngIf="OpticalSellListALL?.length > 0">
+          <div *ngIf="BillSellList?.length > 0">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Item Name</th>
+                  <th>Bill Name</th>
                   <th>Rate</th>
                   <th>Qty</th>
                   <th>Amount</th>
@@ -319,10 +284,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of OpticalSellListALL; let i = index">
+                <tr *ngFor="let item of BillSellList; let i = index">
                   <td>{{ i + 1 }}</td>
-                  <td>{{ item.OpticalName }}</td>
-                  <td>{{ item.OpticalItemRate | number : "1.2-2" }}</td>
+                  <td>{{ item.BillingName }}</td>
+                  <td>{{ item.BillingRate | number : "1.2-2" }}</td>
                   <td>{{ item.Quantity }}</td>
                   <td>{{ item.Amount | number : "1.2-2" }}</td>
                   <td>{{ item.Discount | number : "1.2-2" }}</td>
@@ -333,7 +298,7 @@
           </div>
 
           <!-- Optional fallback -->
-          <div *ngIf="OpticalSellListALL?.length === 0" class="alert alert-warning mt-3">
+          <div *ngIf="BillSellList?.length === 0" class="alert alert-warning mt-3">
             No item details found for this bill.
           </div>
         </div>
@@ -361,7 +326,7 @@
         <mat-form-field appearance="outline" class="col-lg-2">
           <mat-label>Amount</mat-label>
           <input matInput type="number" name="Amount" [(ngModel)]="DueBill.DueAmount" required class="no-spinner"
-             />
+            readonly="true" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="col-sm-3">

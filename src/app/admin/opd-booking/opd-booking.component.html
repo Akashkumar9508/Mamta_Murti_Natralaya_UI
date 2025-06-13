@@ -88,12 +88,35 @@
                   </mat-form-field>
 
                   <mat-form-field appearance="outline" class="col-lg-2">
+                    <mat-label>Category</mat-label>
+                    <input
+                      matInput
+                      name="Category"
+                      [value]="AllCategoryList[Patient.Category]"
+                      required
+                      readonly="true"
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="col-lg-2">
                     <mat-label>Contact No</mat-label>
                     <input
                       matInput
                       type="tel"
                       name="ContactNo"
                       [(ngModel)]="Patient.ContactNo"
+                      required
+                      readonly="true"
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="col-lg-2">
+                    <mat-label>Aadhar No</mat-label>
+                    <input
+                      matInput
+                      type="tel"
+                      name="AadharNo"
+                      [(ngModel)]="Patient.AadharNo"
                       required
                       readonly="true"
                     />
@@ -332,7 +355,6 @@
                     matInput
                     type="number"
                     [(ngModel)]="Patient.PayableAmount"
-                    (Change)="updatePayment()"
                     name="PayableAmount"
                     required
                   />
@@ -370,24 +392,12 @@
             <form #formPaymentCollection="ngForm">
               <div class="row">
                 <!-- Particular -->
-                <mat-form-field
-                  appearance="outline"
-                  class="col-lg-4"
-                >
-                  <mat-label>Search Particular</mat-label>
-                  <input
-                    matInput
-                    name="RegistrationChargeId"
-                    [(ngModel)]="currentPayment.Particular"
-                    required
-                  />
-                  <mat-error>Required field !!</mat-error>
-                </mat-form-field>
+                
 
                 <!-- Remarks -->
                 <mat-form-field
                   appearance="outline"
-                  class="col-lg-2"
+                  class="col-lg-5"
                 >
                   <mat-label>Remarks</mat-label>
                   <input
@@ -401,7 +411,7 @@
                 <!-- Amount -->
                 <mat-form-field
                   appearance="outline"
-                  class="col-lg-2"
+                  class="col-lg-3"
                 >
                   <mat-label>Amount</mat-label>
                   <input

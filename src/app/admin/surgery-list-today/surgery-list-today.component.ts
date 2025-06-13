@@ -13,13 +13,14 @@ import {
 } from '../../utils/interface';
 import { Router } from '@angular/router';
 declare var $: any;
+
 @Component({
-  selector: 'app-surgery-list',
-  templateUrl: './surgery-list.component.html',
-  styleUrls: ['./surgery-list.component.css']
+  selector: 'app-surgery-list-today',
+  templateUrl: './surgery-list-today.component.html',
+  styleUrls: ['./surgery-list-today.component.css']
 })
-export class SurgeryListComponent {
-  DueBill: any = {};
+export class SurgeryListTodayComponent {
+DueBill: any = {};
   dataLoading: boolean = false;
     PackageDetialList: any = [];
     PackageDetial: any = {};
@@ -59,13 +60,14 @@ export class SurgeryListComponent {
     ngOnInit(): void {
       this.staffLogin = this.localService.getEmployeeDetail();
       this.validiateMenu();
-      this.getSurgeryDetial();
       this.resetForm();
-       this.filterModel = {
-      StartFrom: null,
-      EndFrom: null,
-      PaymentStatus: 0,
-    };
+      const date = new Date();
+      this.filterModel = {
+        StartFrom: date,
+        EndFrom: date,
+        PaymentStatus: 0,
+      };
+      this.getSurgeryDetial();
       // this.PackageCollectiontypeList({})
     }
   
@@ -161,8 +163,6 @@ export class SurgeryListComponent {
           this.SurgeryTotal.PaidAmount = response.PaidAmountTotal;
           this.SurgeryTotal.TotalPayableAmount = response.TotalPayableAmount;
           this.SurgeryTotal.DueAmountTotal = response.DueAmountTotal;
-          this.SurgeryTotal.DiscountAmountTotal = response.DiscountAmountTotal;
-          this.SurgeryTotal.AmountTotal = response.AmountTotal;
           
           
             console.log(response.SurgeryList);
@@ -322,10 +322,4 @@ editPackageCollection(data: any) {
   }
     
   
-  
-  
-  
-  
-  
- 
 }

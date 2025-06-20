@@ -9,6 +9,11 @@ export class AppService {
   private readonly apiUrl: string = ConstantData.getApiUrl();
   private readonly baseUrl: string = ConstantData.getBaseUrl();
   private readonly headers: HttpHeaders = new HttpHeaders({ 'AppKey': ConstantData.getAdminKey() });
+  private selectedSurgeryData: any;
+  private selectedOpdData: any;
+  private selectedOpticalData: any;
+  private selectedDsData: any;
+
 
   constructor(private http: HttpClient) {
   }
@@ -16,6 +21,44 @@ export class AppService {
   getImageUrl(): string {
     return ConstantData.getBaseUrl();
   }
+
+setSelectedSurgeryData(data: any) {
+  this.selectedSurgeryData = data;
+}
+
+getSelectedSurgeryData() {
+  return this.selectedSurgeryData;
+}
+
+  setSelectedOpdData(data: any) {
+  this.selectedOpdData = data;
+}
+
+getSelectedOpdData() {
+  return this.selectedOpdData;
+}
+
+  setSelectedOpticalData(data: any) {
+  this.selectedOpticalData = data;
+}
+getSelectedOpticalData() {
+  return this.selectedOpticalData;
+}
+getSelectedDsData() {
+  return this.selectedDsData;
+}
+
+ setSelectedDsData(data: any) {
+  this.selectedDsData = data;
+}
+
+  setgetSelectedBillingData(data: any) {
+  this.selectedOpticalData = data;
+}
+
+getSelectedBillingData() {
+  return this.selectedOpticalData;
+}
 
   // District
   getDistrictList(obj: any) {
@@ -73,6 +116,219 @@ export class AppService {
 
   /* ---------------------------------------------------------------------- */
 
+    //Opticals 
+  getOpticalList(obj: any) {
+    return this.http.post(this.apiUrl + "Opticals/opticalsList", obj, { headers: this.headers })
+  }
+
+  saveOptical(obj: any) {
+    return this.http.post(this.apiUrl + "Opticals/OpticalSave", obj, { headers: this.headers })
+  }
+
+  deleteOptical(obj: any) {
+    return this.http.post(this.apiUrl + "Opticals/OpticalDelete", obj, { headers: this.headers })
+  }
+
+// Billing 
+
+    getBillingList(obj: any) {
+    return this.http.post(this.apiUrl + "Billing/BillingList", obj, { headers: this.headers })
+  }
+
+  saveBilling(obj: any) {
+    return this.http.post(this.apiUrl + "Billing/BillingSave", obj, { headers: this.headers })
+  }
+
+  deleteBilling(obj: any) {
+    return this.http.post(this.apiUrl + "Billing/BillingDelete", obj, { headers: this.headers })
+  }
+
+   saveBillingsBill(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/SaveBillingItem", obj, { headers: this.headers })
+  }
+
+  BillingItemList(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/BillingItemList", obj, { headers: this.headers })
+  }
+
+    UpdateListFromBillingItem(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/UpdateListFromBillingItem", obj, { headers: this.headers })
+  }
+
+  billItemSellList(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/BillItemSellList", obj, { headers: this.headers })
+  }
+
+    deleteBillingItem(obj: any) {
+    return this.http.post(this.apiUrl + "BillingItem/DeleteBillingItem", obj, { headers: this.headers })
+  }
+
+
+  /* ---------------------------------------------------------------------- */
+// opticals billing 
+
+  saveOpticalsBill(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/SaveOpticalBilling", obj, { headers: this.headers })
+  }
+
+    OpticalsBillList(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/OpticalBillingList", obj, { headers: this.headers })
+  }
+
+    saveOpticalsBillDue(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/ClearDueAmount", obj, { headers: this.headers })
+  }
+
+     DeliveryStatus(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/DeliveryStatus", obj, { headers: this.headers })
+  }
+
+
+  //ChargeDetails
+
+  getChargeList(obj: any) {
+    return this.http.post(this.apiUrl + "ChargeDetails/ChargeList", obj, { headers: this.headers })
+  }
+
+  saveCharge(obj: any) {
+    return this.http.post(this.apiUrl + "ChargeDetails/SaveCharge", obj, { headers: this.headers })
+  }
+  
+  deleteCharge(obj: any) {
+    return this.http.post(this.apiUrl + "ChargeDetails/DeleteCharge", obj, { headers: this.headers })
+  }
+  /* ---------------------------------------------------------------------- */
+
+  //OPD booking services
+    getOpdList(obj: any) {
+    return this.http.post(this.apiUrl + "OpdBooking/OpdBookingList", obj, { headers: this.headers })
+  }
+
+  saveOpd(obj: any) {
+    return this.http.post(this.apiUrl + "OpdBooking/SaveOpdBooking", obj, { headers: this.headers })
+  }
+
+  deleteOpd(obj: any) {
+    return this.http.post(this.apiUrl + "OpdBooking/DeleteOpdBooking", obj, { headers: this.headers })
+  }
+
+       getOpdAllList(obj: any) {
+    return this.http.post(this.apiUrl + "OpdBooking/ListOpd", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+  //PaymentBooking Services
+    getPaymentDetailList(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/PaymentDetailList", obj, { headers: this.headers })
+  }
+
+  savePaymentBooking(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/SavePaymentDetail", obj, { headers: this.headers })
+  }
+
+  deletePaymentBooking(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/DeletePaymentDetail", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+  //PaymentCollection Services
+    getPaymentCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentCollection/PaymentCollectionList", obj, { headers: this.headers })
+  }
+
+  savePaymentCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentCollection/SavePaymentCollection", obj, { headers: this.headers })
+  }
+
+  deletePaymentCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentCollection/DeletePaymentCollection", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+    //PaymentDetails Services
+    getPaymentDetail(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/PaymentDetailList", obj, { headers: this.headers })
+  }
+
+  savePaymentDetail(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/SavePaymentDetail", obj, { headers: this.headers })
+  }
+
+  deletePaymentDetail(obj: any) {
+    return this.http.post(this.apiUrl + "PaymentDetail/DeletePaymentDetail", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+ // Surgery
+
+  saveSurgery(obj: any) {
+    return this.http.post(this.apiUrl + "Surgery/SaveSurgery", obj, { headers: this.headers })
+  }
+
+  getSurgeryDetial(obj: any) {
+    return this.http.post(this.apiUrl + "Surgery/SurgeryList", obj, { headers: this.headers })
+  }
+
+    getSurgeryRecipt(obj: any) {
+    return this.http.post(this.apiUrl + "Surgery/SurgeryReceiptDetails", obj, { headers: this.headers })
+  }
+
+    SurgeryBill(obj: any) {
+    return this.http.post(this.apiUrl + "Surgery/SurgeryBill", obj, { headers: this.headers })
+  }
+
+     getsurgeryAllList(obj: any) {
+    return this.http.post(this.apiUrl + "Surgery/ListSurgery", obj, { headers: this.headers })
+  }
+
+   deleteSurgeryDetial(obj: any) {
+    return this.http.post(this.apiUrl + "Surgery/DeleteSurgery", obj, { headers: this.headers })
+  }
+
+
+    PrintSurgeryBill(ids : any) {
+      window.open(this.baseUrl + "report/PrintSurgeryBill/" + ids);
+  }
+
+      PrintOpdBill(ids : any) {
+      window.open(this.baseUrl + "report/PrintOpdBill/" + ids);
+  }
+
+      PrintOpticlalBill(ids : any) {
+      window.open(this.baseUrl + "report/PrintOpticalBill/" + ids);
+  }
+
+     PrintBillItem(ids : any) {
+      window.open(this.baseUrl + "report/PrintBillingItem/" + ids);
+  }
+
+      PrintConsentForm(ids : any) {
+      window.open(this.baseUrl + "report/PrintConsentForm/" + ids);
+  }
+
+      PrintDischargeSummary(ids : any) {
+      window.open(this.baseUrl + "report/PrintDischargeSummary/" + ids);
+  }
+OpticalSellList(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/OpticalSellList", obj, { headers: this.headers })
+  }
+
+  DeleteOpticalBilling(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/DeleteOpticalBilling", obj, { headers: this.headers })
+  }
+
+    UpdateListFromOptical(obj: any) {
+    return this.http.post(this.apiUrl + "OpticalBilling/UpdateListFromOptical", obj, { headers: this.headers })
+  }
+
+
+
+
+
+  
   // Staff
   getStaffList(obj: any) {
     return this.http.post(this.apiUrl + "Staff/StaffList", obj, { headers: this.headers })
@@ -99,7 +355,79 @@ export class AppService {
     return this.http.post(this.apiUrl + "Patient/DeletePatient", obj, { headers: this.headers })
   }
 
+
+  //doctor
+
+   getDoctorList(obj: any) {
+    return this.http.post(this.apiUrl + "Doctor/DoctorList", obj, { headers: this.headers })
+  }
+  saveDoctor(obj: any) {
+    return this.http.post(this.apiUrl + "Doctor/SaveDoctor", obj, { headers: this.headers })
+  }
+  deleteDoctor(obj: any) {
+    return this.http.post(this.apiUrl + "Doctor/DeleteDoctor", obj, { headers: this.headers })
+  }
+
+  // discharge Summary
+
+     DischargeSummary(obj: any) {
+    return this.http.post(this.apiUrl + "DischargeSummary/ListDischargeSummary", obj, { headers: this.headers })
+  }
+  saveDischargeSummary(obj: any) {
+    return this.http.post(this.apiUrl + "DischargeSummary/SaveDischargeSummary", obj, { headers: this.headers })
+  }
+  deleteDischargeSummary(obj: any) {
+    return this.http.post(this.apiUrl + "DischargeSummary/deleteDischargeSummaryList", obj, { headers: this.headers })
+  }
+// consent 
+
+ getConsentList(obj: any) {
+    return this.http.post(this.apiUrl + "Consent/ConsentList", obj, { headers: this.headers })
+  }
+saveConsent(obj: any) {
+    return this.http.post(this.apiUrl + "Consent/saveConsent", obj, { headers: this.headers })
+  }
+
+   deleteConsent(obj: any) {
+    return this.http.post(this.apiUrl + "Consent/DeleteConsent", obj, { headers: this.headers })
+  }
+
   /* ---------------------------------------------------------------------- */
+
+    // PackageCollection
+  getPackageCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PackageCollection/PackageCollection", obj, { headers: this.headers })
+  }
+  savePackageCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PackageCollection/SavePackageCollection", obj, { headers: this.headers })
+  }
+  deletePackageCollection(obj: any) {
+    return this.http.post(this.apiUrl + "PackageCollection/DeletePackageCollection", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+
+     //    // PackageCollection
+  getPackageDetial(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/PackageDetialList", obj, { headers: this.headers })
+  }
+  savePackageDetial(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/SavePackageDetial", obj, { headers: this.headers })
+  }
+  deletePackageDetial(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/DeletePackageDetial", obj, { headers: this.headers })
+  }
+
+   PackageDetailtypeListAll(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/PackageDetialList", obj, { headers: this.headers })
+  }
+
+  PackageCollectiontypeListAll(obj: any) {
+    return this.http.post(this.apiUrl + "PackageDetial/PackageCollectiontypeList", obj, { headers: this.headers })
+  }
+
+  /* ---------------------------------------------------------------------- */
+  
   
   /* ---------------------------------------------------------------------- */
 
@@ -253,4 +581,215 @@ export class AppService {
   deleteCity(obj: any) {
     return this.http.post(this.apiUrl + "City/deleteCity", obj, { headers: this.headers })
   }
+
+//get medicine list
+    getMedicineTypeList(obj: any) {
+    return this.http.post(this.apiUrl + "MedicineType/MedicineTypeList", obj,{ headers: this.headers })
+  }
+  saveMedicineType(obj: any) {
+    return this.http.post(this.apiUrl + "MedicineType/SaveMedicineType", obj,{ headers: this.headers })
+  }
+  deleteMedicineType(obj: any) {
+    return this.http.post(this.apiUrl + "MedicineType/DeleteMedicineType", obj,{ headers: this.headers })
+  }
+
+
+
+  //unit list 
+
+      getUnitList(obj: any) {
+    return this.http.post(this.apiUrl + "Unit/UnitList", obj,{ headers: this.headers })
+  }
+  saveUnit(obj: any) {
+    return this.http.post(this.apiUrl + "Unit/SaveUnit", obj,{ headers: this.headers })
+  }
+  deleteUnit(obj: any) {
+    return this.http.post(this.apiUrl + "Unit/DeleteUnit", obj,{ headers: this.headers })
+  }
+
+
+
+
+
+  // pharmasy
+
+  //Patient Medicine Return
+
+  // getStockCompareReport(obj: any) {
+  //   return this.http.post(this.baseUrl + "PaymentCollection/StockCompareReport", obj)
+  // }
+  getPatientMedicineReturnDetailCollectionList(obj: any) {
+    return this.http.post(this.baseUrl + "MedReturn/PatientMedicineReturnDetailCollectionList", obj)
+  }
+  getPatientMedicineReturnDetailList(obj: any) {
+    return this.http.post(this.baseUrl + "MedReturn/PatientMedicineReturnDetailList", obj)
+  }
+  getPatientMedicineReturnDetailCollectionReport(obj: any) {
+    return this.http.post(this.baseUrl + 'MedReturn/PatientMedicineReturnDetailCollectionReport', obj)
+  }
+  // getMedicineBillList(obj: any) {
+  //   return this.http.post(this.baseUrl + 'MedReturn/MedicineBillList', obj)
+  // }
+  saveMedicalReturnPayment(obj: any) {
+    return this.http.post(this.baseUrl + 'MedReturn/saveMedicalReturnPayment', obj)
+  }
+  deletePatientMedicineReturn(obj: any) {
+    return this.http.post(this.baseUrl + 'MedReturn/DeletePatientMedicineReturn', obj)
+  }
+  getPatientMedicineReturnList(obj: any) {
+    return this.http.post(this.baseUrl + 'MedReturn/PatientMedicineReturnList', obj)
+  }
+  getReturnDetail(obj: any) {
+    return this.http.post(this.baseUrl + 'MedReturn/ReturnDetail', obj)
+  }
+
+  //PaymentCollection
+
+  getStockCompareReport(obj: any) {
+    return this.http.post(this.baseUrl + "PaymentCollection/StockCompareReport", obj)
+  }
+  getPharmacyReport(obj: any) {
+    return this.http.post(this.baseUrl + "PaymentCollection/PharmacyReport", obj)
+  }
+  getPaymentMedicineCollectionReport(obj: any) {
+    return this.http.post(this.baseUrl + "PaymentCollection/PaymentMedicineCollectionReport", obj)
+  }
+  getPaymentMedicineCollectionList(obj: any) {
+    return this.http.post(this.baseUrl + "PaymentCollection/PaymentMedicineCollectionList", obj)
+  }
+  getPaymentCollectionList(obj: any) {
+    return this.http.post(this.baseUrl + 'PaymentCollection/PaymentCollectionList', obj)
+  }
+  getMedicineBillList(obj: any) {
+    return this.http.post(this.baseUrl + 'returnProduct/MedicineBillList', obj)
+  }
+  saveMedicalPayment(obj: any) {
+    return this.http.post(this.baseUrl + 'PaymentCollection/saveMedicalPayment', obj)
+  }
+
+  getPaymentMedicineList(obj: any) {
+    return this.http.post(this.baseUrl + 'PaymentCollection/PaymentMedicineList', obj)
+  }
+
+  //MedicineStock
+  EditMedicineStock(obj: any) {
+    return this.http.post(this.baseUrl + 'MedicineStock/EditMedicineStock', obj)
+  }
+  getMedicineStockListBySupplier(obj: any) {
+    return this.http.post(this.baseUrl + 'MedicineStock/MedicineStockListBySupplier', obj)
+  }
+  getMedicineStockListForSell(obj: any) {
+    return this.http.post(this.baseUrl + 'MedicineStock/MedicineStockListForSell', obj)
+  }
+  getMedicineStockListForReturn(obj: any) {
+    return this.http.post(this.baseUrl + 'MedicineStock/MedicineStockListForReturn', obj)
+  }
+  getMedicineStockList(obj: any) {
+    return this.http.post(this.baseUrl + 'MedicineStock/MedicineStockList', obj)
+  }
+
+  //PurchaseProduct
+  getPurchaseProductList(obj: any) {
+    return this.http.post(this.baseUrl + 'PurchaseProduct/PurchaseProductList', obj)
+  }
+  getPurchaseChallanProductList(obj: any) {
+    return this.http.post(this.baseUrl + 'PurchaseProduct/PurchaseChallanProductList', obj)
+  }
+
+
+  //Medicine
+  getMedicineListForPrescription(obj: any) {
+    return this.http.post(this.baseUrl + 'Medicine/MedicineListForPrescription', obj)
+  }
+  getTestMedicineList(obj: any) {
+    return this.http.post(this.baseUrl + 'Medicine/TestMedicineList', obj)
+  }
+  // getMedicineList(obj: any) {
+  //   return this.http.post(this.baseUrl + 'Medicine/MedicineList', obj, { headers: this.headers })
+  // }
+
+    getMedicineList(obj: any) {
+    return this.http.post(this.apiUrl + "Medicine/MedicineList", obj, { headers: this.headers })
+  }
+
+  getSearchMedicine(obj: any) {
+    return this.http.post(this.baseUrl + 'Medicine/SearchMedicine', obj)
+  }
+  saveMedicine(obj: any) {
+    return this.http.post(this.baseUrl + 'Medicine/saveMedicine', obj)
+  }
+  deleteMedicine(obj: any) {
+    return this.http.post(this.baseUrl + 'Medicine/deleteMedicine', obj)
+  }
+
+  // getCategoryList(obj: any) {
+  //   return this.http.post(this.baseUrl + 'Medicine/MedicineList', obj)
+  // }
+
+  // getUnitList(obj: any) {
+  //   return this.http.post(this.baseUrl + 'Medicine/MedicineList', obj)
+  // }
+
+  //Manufacturer
+  getManufacturerList(obj: any) {
+    return this.http.post(this.apiUrl + "Manufacturer/ManufacturerList", obj,{ headers: this.headers })
+  }
+  saveManufacturer(obj: any) {
+    return this.http.post(this.apiUrl + "Manufacturer/SaveManufacturer", obj,{ headers: this.headers })
+  }
+  deleteManufacturer(obj: any) {
+    return this.http.post(this.apiUrl + "Manufacturer/DeleteManufacturer", obj,{ headers: this.headers })
+  }
+
+
+  
+
+  //Unit
+
+  getUnitValueList(obj: any) {
+    return this.http.post(this.baseUrl + 'Unit/UnitValueList', obj)
+  }
+
+  //GST
+  saveGST(obj: any) {
+    return this.http.post(this.apiUrl + "gst/saveGST", obj,{ headers: this.headers })
+  }
+  
+
+  getGSTList(obj: any) {
+    return this.http.post(this.apiUrl + 'gst/GstList', obj, { headers: this.headers })
+  }
+
+  
+  deleteGST(obj: any) {
+        return this.http.post(this.apiUrl + 'gst/DeleteGST', obj, { headers: this.headers })
+  }
+
+
+// print reciept
+  printIPDMedicineReciept(ids: any) {
+    window.open(this.baseUrl + "report/PrintIPDMedicineReciept/" + ids);
+  }
+  printOPDMedicineReciept(ids: any) {
+    window.open(this.baseUrl + "report/PrintOPDMedicineReciept/" + ids);
+  }
+  printMedicineReciept(ids: any) {
+    window.open(this.baseUrl + "report/PrintMedicineReciept/" + ids);
+  }
+
+
+  // catogery apis ?
+
+ getCategoryList(obj: any) {
+    return this.http.post(this.apiUrl + 'Category/CategoryList', obj, { headers: this.headers })
+  }
+
+  saveCategory(obj: any) {
+    return this.http.post(this.apiUrl + 'Category/SaveCategory', obj, { headers: this.headers })
+  }
+   deleteCategory(obj: any) {
+    return this.http.post(this.apiUrl + 'Category/DeleteCategory', obj, { headers: this.headers })
+  }
+
+
 }

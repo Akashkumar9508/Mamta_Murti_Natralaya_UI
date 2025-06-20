@@ -19,12 +19,50 @@ import { ChangePasswordComponent } from './admin/change-password/change-password
 import { CompanyComponent } from './admin/company/company.component';
 import { ManagePatientComponent } from './admin/manage-patient/manage-patient.component';
 import { OpdBookingComponent } from './admin/opd-booking/opd-booking.component';
+import { OpticalAddComponent } from './admin/optical-add/optical-add.component';
+import { OpdListComponent } from './admin/opd-list/opd-list.component';
+import { SurgeryListComponent } from './admin/surgery-list/surgery-list.component';
+import { GstComponent } from './admin/gst/gst.component';
+import { OpticalBillingComponent } from './admin/optical-billing/optical-billing.component';
+import { OpticalBillingListComponent } from './admin/optical-billing-list/optical-billing-list.component';
+import { OpticalBillingListTodayComponent } from './admin/optical-billing-list-today/optical-billing-list-today.component';
+import { MedicineComponent } from './admin/medicine/medicine.component';
+import { CategoryComponent } from './admin/category/category.component';
+import { OpdListTodayComponent } from './admin/opd-list-today/opd-list-today.component';
+import { SurgeryListTodayComponent } from './admin/surgery-list-today/surgery-list-today.component';
+import { BillItemComponent } from './admin/bill-item/bill-item.component';
+import { BillingItemComponent } from './admin/billing-item/billing-item.component';
+import { BillingItemListComponent } from './admin/billing-item-list/billing-item-list.component';
+import { BillingItemListTodayComponent } from './admin/billing-item-list-today/billing-item-list-today.component';
+import { SurgeryPackageComponent } from './admin/surgery-package/surgery-package.component';
+import { SurgeryBillComponent } from './admin/surgery-bill/surgery-bill.component';
+import { ConsentFormComponent } from './admin/consent-form/consent-form.component';
+import { DoctorComponent } from './admin/doctor/doctor.component';
+import { DischargeSummaryComponent } from './admin/discharge-summary/discharge-summary.component';
+import { DischargeSummaryListComponent } from './admin/discharge-summary-list/discharge-summary-list.component';
+import { ManufacturerComponent } from './admin/manufacturer/manufacturer.component';
+import { MedicineTypeListComponent } from './admin/medicine-type-list/medicine-type-list.component';
+import { UnitComponent } from './admin/unit/unit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/admin-login", pathMatch: 'full' },
   { path: 'admin-login', component: AdminLoginComponent },
   {
     path: 'admin', component: AdminMasterComponent, children: [
+      { path: 'gst', component: GstComponent },
+      { path: 'unit', component: UnitComponent },
+      { path: 'medicine-type-list', component: MedicineTypeListComponent },
+      { path: 'manufacturer', component: ManufacturerComponent },
+      { path: 'discharge-summary', component: DischargeSummaryComponent },
+      { path: 'discharge-summary-list', component: DischargeSummaryListComponent },
+      { path: 'doctor', component: DoctorComponent },
+      { path: 'consent-form', component: ConsentFormComponent },
+      { path: 'bill-item', component: BillItemComponent },
+      { path: 'billing-item', component: BillingItemComponent },
+      { path: 'billing-item-list', component: BillingItemListComponent },
+      { path: 'billing-item-list-today', component: BillingItemListTodayComponent },
+      { path: 'category', component:CategoryComponent },
+      { path: 'medicine', component: MedicineComponent },
       { path: 'admin-dashboard', component: AdminDashboardComponent },
       { path: 'designation', component: DesignationComponent },
       { path: 'department', component: DepartmentComponent },
@@ -42,6 +80,16 @@ const routes: Routes = [
       { path: 'company', component: CompanyComponent },
       { path: 'manage-patient', component: ManagePatientComponent },
       { path: 'opd-booking', component: OpdBookingComponent},
+      {path:'OpticalAdd',component:OpticalAddComponent},
+      {path:'surgery-package',component:SurgeryPackageComponent},
+      {path:'surgery-bill',component:SurgeryBillComponent},
+      {path:'opd-List',component:OpdListComponent},
+      {path:'opd-List-today', component: OpdListTodayComponent },
+      {path:'surgery-List',component:SurgeryListComponent},
+      {path:'surgery-List-today',component:SurgeryListTodayComponent},
+      {path:'optical-billing',component:OpticalBillingComponent},
+      {path:'optical-billing-list',component:OpticalBillingListComponent},
+      {path:'optical-billing-list-today',component:OpticalBillingListTodayComponent}
     ]
   },
   { path: 'page-not-found', component: PageNotFoundComponent },

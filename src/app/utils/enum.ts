@@ -8,7 +8,8 @@ export enum Category {
 }
 export enum PaymentStatus {
     Paid = 1,
-    Due = 2
+    Due = 2,
+    
 }
 export enum CouponStatus {
     NotGenerated = 5,
@@ -32,6 +33,8 @@ export enum Gender {
     Female = 1,
     Other = 3
 }
+
+
 export enum StaffType {
     SuperAdmin = 1,
     Admin = 2,
@@ -47,16 +50,24 @@ export enum BookingType {
     Enquiry = 2
 }
 export enum PaymentMode {
-    CASH = 1,
-    ONLINE = 2,
-    CHEQUE = 3,
+    Cash = 1,
+    Online = 2,
+    Cheque = 3,
     DD = 5,
-    OTHERS = 4
+    Others = 4
 }
+
 export enum BillStatus {
+    Cancel = 0,
     Paid = 1,
-    Cancel = 2
+    Due = 2,
 }
+
+export enum DeliveryStatus {
+    Delivery = 1,
+    Pending = 2
+}
+
 export enum BookingStatus {
     "Tour Pending" = 1,
     "Tour Completed" = 2,
@@ -66,6 +77,13 @@ export enum Status {
     Active = 1,
     Inactive = 2
 }
+
+export enum Eye {
+    Left = 1,
+    Right = 2
+}
+
+
 export enum BookletStatus {
     NotSale = 1,
     Sold = 2

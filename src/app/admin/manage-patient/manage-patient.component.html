@@ -14,7 +14,7 @@
         <div class="col-sm-4">
             <button mat-raised-button class="float-right" color="primary" *ngIf="action.CanCreate"
                 data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="resetForm()">New
-                Patient</button>
+                Patient Registration</button>
         </div>
     </div>
 
@@ -37,48 +37,52 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>S.No</th>
-                                <th>Booking</th>
+                                <th class="text-center" >S.No</th>
+                                <th class="text-center" *ngIf="action.CanCreate">Booking</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('UHID')">UHID No.</th>
                                 <th style="cursor:pointer;" (click)="sort('PatientName')">Patient</th>
-                                <th style="cursor:pointer;" (click)="sort('Age')">Age</th>
-                                <th style="cursor:pointer;" (click)="sort('Gender')">Gender</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('Age')">Age</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('Gender')">Gender</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('Category')">Category</th>
                                 <th style="cursor:pointer;" (click)="sort('Address')">Address</th>
-                                <th style="cursor:pointer;" (click)="sort('ContactNo')">Contact No.</th>
-                                <th style="cursor:pointer;" (click)="sort('UHID')">UHID</th>
-                                <th style="cursor:pointer;" (click)="sort('Status')">Status</th>
-                                <th *ngIf="action.CanEdit">Edit</th>
-                                <th *ngIf="action.CanDelete">Delete</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('AadharNo')">Aadhar No</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('ContactNo')">Contact No.</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('Status')">Status</th>
+                                <th class="text-center" *ngIf="action.CanEdit">Edit</th>
+                                <th class="text-center" *ngIf="action.CanDelete">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr
+                            <tr 
                                 *ngFor="let item of PatientList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
-                                <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
-                                <td *ngIf="action.CanEdit">
-                                    <a class="btn btn-sm btn-success" [routerLink]="['/admin/opd-booking']">
+                                <td class="text-center">{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                                <td class="text-center" *ngIf="action.CanCreate">
+                                    <button class="btn btn-sm btn-success" (click)="GotoOPDBooking(item)">
                                         <i class="bi bi-pencil-square"></i>
-                                    </a>
+                                    </button>
                                 </td>
+                                <td  class="text-success text-center">{{item.UHID}}</td>
 
                                 <td>{{item.PatientName}}</td>
-                                <td>{{item.Age}}</td>
-                                <td>{{item.Gender}}</td>
+                                <td class="text-center">{{item.Age}}</td>
+                                <td class="text-center">{{AllGenderList[item.Gender]}}</td>
+                                <td class="text-center">{{AllCategoryList[item.Category]}}</td>
                                 <td>{{item.Address}}</td>
-                                <td>{{item.ContactNo}}</td>
-                                <td>{{item.UHID}}</td>
-                                <td>
+                                <td class="text-center">{{item.AadharNo}}</td>
+                                <td class="text-center">{{item.ContactNo}}</td>
+                                <td class="text-center">
                                     <span class="p-1"
                                         [ngClass]="item.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
                                         {{AllStatusList[item.Status]}}
                                     </span>
                                 </td>
-                                <td *ngIf="action.CanEdit">
+                                <td class="text-center" *ngIf="action.CanEdit">
                                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop" (click)="editPatient(item)">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                </td>
-                                <td *ngIf="action.CanDelete">
+                                </td >
+                                <td class="text-center" *ngIf="action.CanDelete">
                                     <button class="btn btn-sm btn-danger" (click)="deletePatient(item)">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
@@ -123,9 +127,15 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" class="col-sm-6">
+                                    <mat-label>Patient Guardian Name</mat-label>
+                                    <input matInput #PatientGuardianName="ngModel" name="PatientGuardianName"
+                                        [(ngModel)]="Patient.PatientGuardianName"  autofocus>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6">
                                     <mat-label>Age</mat-label>
                                     <input matInput #Age="ngModel" name="Age" [(ngModel)]="Patient.Age" required
-                                        autofocus>
+                                        autofocus maxlength="2" min="0" max="99">
                                     <mat-error *ngIf="(Age.dirty  || Age.touched) || (Age.invalid && isSubmitted)">
                                         Age is <strong>required</strong>
                                     </mat-error>
@@ -142,13 +152,20 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label>ContactNo</mat-label>
-                                    <input matInput #ContactNo="ngModel" name="ContactNo"
-                                        [(ngModel)]="Patient.ContactNo" required autofocus>
+                                    <mat-label>Contact No</mat-label>
+                                    <input type="tel" matInput #ContactNo="ngModel" name="ContactNo"
+                                        [(ngModel)]="Patient.ContactNo" required autofocus maxlength="10" min="0000000000" max="9999999999" >
                                     <mat-error
                                         *ngIf="(ContactNo.dirty  || ContactNo.touched) || (ContactNo.invalid && isSubmitted)">
                                         ContactNo is <strong>required</strong>
                                     </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6">
+                                    <mat-label>Aadhar No</mat-label>
+                                    <input type="tel" matInput #AadharNo="ngModel" name="AadharNo"
+                                        [(ngModel)]="Patient.AadharNo" autofocus maxlength="12" min="000000000000" max="999999999999" >
+                                    
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" class="col-sm-6">
@@ -159,6 +176,18 @@
                                     </mat-select>
                                     <mat-error
                                         *ngIf="(Gender.dirty  || Gender.touched) || (Gender.invalid && isSubmitted)">
+                                        Gender is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6">
+                                    <mat-label>Category</mat-label>
+                                    <mat-select #Category="ngModel" name="Category" [(ngModel)]="Patient.Category" required>
+                                        <mat-option [value]="Category.Key"
+                                            *ngFor="let Category of CategoryList">{{Category.Value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="(Category.dirty  || Category.touched) || (Category.invalid && isSubmitted)">
                                         Gender is <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
@@ -184,6 +213,8 @@
                         (click)="resetForm()">Cancel</button>
                     <button mat-raised-button color="primary" (click)="savePatient()">{{Patient.PatientID >
                         0 ? 'Update':'Submit'}}</button>
+                    <button mat-raised-button color="primary" (click)="savePatientAndRediectToOPD()">OPD
+                        Booking</button>
                 </div>
             </div>
         </div>

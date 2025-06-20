@@ -12,6 +12,7 @@ export class AppService {
   private selectedSurgeryData: any;
   private selectedOpdData: any;
   private selectedOpticalData: any;
+  private selectedDsData: any;
 
 
   constructor(private http: HttpClient) {
@@ -40,9 +41,15 @@ getSelectedOpdData() {
   setSelectedOpticalData(data: any) {
   this.selectedOpticalData = data;
 }
-
 getSelectedOpticalData() {
   return this.selectedOpticalData;
+}
+getSelectedDsData() {
+  return this.selectedDsData;
+}
+
+ setSelectedDsData(data: any) {
+  this.selectedDsData = data;
 }
 
   setgetSelectedBillingData(data: any) {
@@ -297,6 +304,14 @@ getSelectedBillingData() {
      PrintBillItem(ids : any) {
       window.open(this.baseUrl + "report/PrintBillingItem/" + ids);
   }
+
+      PrintConsentForm(ids : any) {
+      window.open(this.baseUrl + "report/PrintConsentForm/" + ids);
+  }
+
+      PrintDischargeSummary(ids : any) {
+      window.open(this.baseUrl + "report/PrintDischargeSummary/" + ids);
+  }
 OpticalSellList(obj: any) {
     return this.http.post(this.apiUrl + "OpticalBilling/OpticalSellList", obj, { headers: this.headers })
   }
@@ -338,6 +353,43 @@ OpticalSellList(obj: any) {
   }
   deletePatient(obj: any) {
     return this.http.post(this.apiUrl + "Patient/DeletePatient", obj, { headers: this.headers })
+  }
+
+
+  //doctor
+
+   getDoctorList(obj: any) {
+    return this.http.post(this.apiUrl + "Doctor/DoctorList", obj, { headers: this.headers })
+  }
+  saveDoctor(obj: any) {
+    return this.http.post(this.apiUrl + "Doctor/SaveDoctor", obj, { headers: this.headers })
+  }
+  deleteDoctor(obj: any) {
+    return this.http.post(this.apiUrl + "Doctor/DeleteDoctor", obj, { headers: this.headers })
+  }
+
+  // discharge Summary
+
+     DischargeSummary(obj: any) {
+    return this.http.post(this.apiUrl + "DischargeSummary/ListDischargeSummary", obj, { headers: this.headers })
+  }
+  saveDischargeSummary(obj: any) {
+    return this.http.post(this.apiUrl + "DischargeSummary/SaveDischargeSummary", obj, { headers: this.headers })
+  }
+  deleteDischargeSummary(obj: any) {
+    return this.http.post(this.apiUrl + "DischargeSummary/deleteDischargeSummaryList", obj, { headers: this.headers })
+  }
+// consent 
+
+ getConsentList(obj: any) {
+    return this.http.post(this.apiUrl + "Consent/ConsentList", obj, { headers: this.headers })
+  }
+saveConsent(obj: any) {
+    return this.http.post(this.apiUrl + "Consent/saveConsent", obj, { headers: this.headers })
+  }
+
+   deleteConsent(obj: any) {
+    return this.http.post(this.apiUrl + "Consent/DeleteConsent", obj, { headers: this.headers })
   }
 
   /* ---------------------------------------------------------------------- */
@@ -530,6 +582,30 @@ OpticalSellList(obj: any) {
     return this.http.post(this.apiUrl + "City/deleteCity", obj, { headers: this.headers })
   }
 
+//get medicine list
+    getMedicineTypeList(obj: any) {
+    return this.http.post(this.apiUrl + "MedicineType/MedicineTypeList", obj,{ headers: this.headers })
+  }
+  saveMedicineType(obj: any) {
+    return this.http.post(this.apiUrl + "MedicineType/SaveMedicineType", obj,{ headers: this.headers })
+  }
+  deleteMedicineType(obj: any) {
+    return this.http.post(this.apiUrl + "MedicineType/DeleteMedicineType", obj,{ headers: this.headers })
+  }
+
+
+
+  //unit list 
+
+      getUnitList(obj: any) {
+    return this.http.post(this.apiUrl + "Unit/UnitList", obj,{ headers: this.headers })
+  }
+  saveUnit(obj: any) {
+    return this.http.post(this.apiUrl + "Unit/SaveUnit", obj,{ headers: this.headers })
+  }
+  deleteUnit(obj: any) {
+    return this.http.post(this.apiUrl + "Unit/DeleteUnit", obj,{ headers: this.headers })
+  }
 
 
 
@@ -656,14 +732,17 @@ OpticalSellList(obj: any) {
 
   //Manufacturer
   getManufacturerList(obj: any) {
-    return this.http.post(this.baseUrl + 'Manufacturer/ManufacturerList', obj)
+    return this.http.post(this.apiUrl + "Manufacturer/ManufacturerList", obj,{ headers: this.headers })
   }
   saveManufacturer(obj: any) {
-    return this.http.post(this.baseUrl + 'Manufacturer/saveManufacturer', obj)
+    return this.http.post(this.apiUrl + "Manufacturer/SaveManufacturer", obj,{ headers: this.headers })
   }
   deleteManufacturer(obj: any) {
-    return this.http.post(this.baseUrl + 'Manufacturer/deleteManufacturer', obj)
+    return this.http.post(this.apiUrl + "Manufacturer/DeleteManufacturer", obj,{ headers: this.headers })
   }
+
+
+  
 
   //Unit
 
@@ -683,7 +762,7 @@ OpticalSellList(obj: any) {
 
   
   deleteGST(obj: any) {
-    return this.http.post(this.apiUrl + 'gst/SaveGST', obj)
+        return this.http.post(this.apiUrl + 'gst/DeleteGST', obj, { headers: this.headers })
   }
 
 
@@ -703,6 +782,13 @@ OpticalSellList(obj: any) {
 
  getCategoryList(obj: any) {
     return this.http.post(this.apiUrl + 'Category/CategoryList', obj, { headers: this.headers })
+  }
+
+  saveCategory(obj: any) {
+    return this.http.post(this.apiUrl + 'Category/SaveCategory', obj, { headers: this.headers })
+  }
+   deleteCategory(obj: any) {
+    return this.http.post(this.apiUrl + 'Category/DeleteCategory', obj, { headers: this.headers })
   }
 
 

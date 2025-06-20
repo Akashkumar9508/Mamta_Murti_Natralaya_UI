@@ -14,7 +14,7 @@
         <div class="col-sm-4">
             <button mat-raised-button class="float-right" color="primary" *ngIf="action.CanCreate"
                 data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="resetForm()">New
-                Patient Registration</button>
+                Doctor Registration</button>
         </div>
     </div>
 
@@ -37,39 +37,35 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th class="text-center" >S.No</th>
-                                <th class="text-center" *ngIf="action.CanCreate">Booking</th>
-                                <th class="text-center" style="cursor:pointer;" (click)="sort('UHID')">UHID No.</th>
-                                <th style="cursor:pointer;" (click)="sort('PatientName')">Patient</th>
+                                <th class="text-center">S.No</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('UHID')">Doctor No.</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('JoiningDate')">Joining Date</th>
+                                <th style="cursor:pointer;" (click)="sort('DoctorName')">Doctor Name</th>
                                 <th class="text-center" style="cursor:pointer;" (click)="sort('Age')">Age</th>
                                 <th class="text-center" style="cursor:pointer;" (click)="sort('Gender')">Gender</th>
-                                <th class="text-center" style="cursor:pointer;" (click)="sort('Category')">Category</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('Specialization')">Specialization</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('Qualification')">Qualification</th>
                                 <th style="cursor:pointer;" (click)="sort('Address')">Address</th>
-                                <th class="text-center" style="cursor:pointer;" (click)="sort('AadharNo')">Aadhar No</th>
-                                <th class="text-center" style="cursor:pointer;" (click)="sort('ContactNo')">Contact No.</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('MobileNo')">Mobile No.</th>
                                 <th class="text-center" style="cursor:pointer;" (click)="sort('Status')">Status</th>
                                 <th class="text-center" *ngIf="action.CanEdit">Edit</th>
                                 <th class="text-center" *ngIf="action.CanDelete">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr 
-                                *ngFor="let item of PatientList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                            <tr
+                                *ngFor="let item of DoctorList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
                                 <td class="text-center">{{(itemPerPage * (p -1)) +i+ 1}}</td>
-                                <td class="text-center" *ngIf="action.CanCreate">
-                                    <button class="btn btn-sm btn-success" (click)="GotoOPDBooking(item)">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-                                </td>
-                                <td  class="text-success text-center">{{item.UHID}}</td>
+                                <td class="text-success text-center">{{item.DoctorCode}}</td>
+                                <td class=" text-center">{{item.JoiningDate | date : "dd-MM-yyyy"}}</td>
 
-                                <td>{{item.PatientName}}</td>
+                                <td>{{item.DoctorName}}</td>
                                 <td class="text-center">{{item.Age}}</td>
                                 <td class="text-center">{{AllGenderList[item.Gender]}}</td>
-                                <td class="text-center">{{AllCategoryList[item.Category]}}</td>
+                                <td class="text-center">{{item.Specialization}}</td>
+                                <td class="text-center">{{item.Qualification}}</td>
                                 <td>{{item.Address}}</td>
-                                <td class="text-center">{{item.AadharNo}}</td>
-                                <td class="text-center">{{item.ContactNo}}</td>
+                                <td class="text-center">{{item.MobileNo}}</td>
                                 <td class="text-center">
                                     <span class="p-1"
                                         [ngClass]="item.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
@@ -78,12 +74,12 @@
                                 </td>
                                 <td class="text-center" *ngIf="action.CanEdit">
                                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop" (click)="editPatient(item)">
+                                        data-bs-target="#staticBackdrop" (click)="editDoctor(item)">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                </td >
+                                </td>
                                 <td class="text-center" *ngIf="action.CanDelete">
-                                    <button class="btn btn-sm btn-danger" (click)="deletePatient(item)">
+                                    <button class="btn btn-sm btn-danger" (click)="deleteDoctor(item)">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </td>
@@ -106,71 +102,38 @@
         <div class="modal-dialog  modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{Patient.PatientID > 0 ? 'Update':'New'}}
-                        Patient
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{Doctor.DoctorId > 0 ? 'Update':'New'}}
+                        Doctor
                     </h1>
                     <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         (click)="resetForm()"></button>
                 </div>
                 <div class="modal-body">
-                    <form #formPatient="ngForm">
+                    <form #formDoctor="ngForm">
                         <div class="container">
                             <div class="row">
                                 <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label>Patient Name</mat-label>
-                                    <input matInput #PatientName="ngModel" name="PatientName"
-                                        [(ngModel)]="Patient.PatientName" required autofocus>
+                                    <mat-label>Doctor Name</mat-label>
+                                    <input matInput #DoctorName="ngModel" name="DoctorName"
+                                        [(ngModel)]="Doctor.DoctorName" required autofocus>
                                     <mat-error
-                                        *ngIf="(PatientName.dirty  || PatientName.touched) || (PatientName.invalid && isSubmitted)">
-                                        Patient name is <strong>required</strong>
+                                        *ngIf="(DoctorName.dirty  || DoctorName.touched) || (DoctorName.invalid && isSubmitted)">
+                                        Doctor name is <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label>Patient Guardian Name</mat-label>
-                                    <input matInput #PatientGuardianName="ngModel" name="PatientGuardianName"
-                                        [(ngModel)]="Patient.PatientGuardianName"  autofocus>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" class="col-sm-6">
+                                <mat-form-field appearance="outline" class="col-sm-3">
                                     <mat-label>Age</mat-label>
-                                    <input matInput #Age="ngModel" name="Age" [(ngModel)]="Patient.Age" required
+                                    <input matInput #Age="ngModel" name="Age" [(ngModel)]="Doctor.Age" required
                                         autofocus maxlength="2" min="0" max="99">
                                     <mat-error *ngIf="(Age.dirty  || Age.touched) || (Age.invalid && isSubmitted)">
                                         Age is <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label>Address</mat-label>
-                                    <textarea matInput #Address="ngModel" name="Address" [(ngModel)]="Patient.Address"
-                                        required autofocus></textarea>
-                                    <mat-error
-                                        *ngIf="(Address.dirty  || Address.touched) || (Address.invalid && isSubmitted)">
-                                        Address is <strong>required</strong>
-                                    </mat-error>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label>Contact No</mat-label>
-                                    <input type="tel" matInput #ContactNo="ngModel" name="ContactNo"
-                                        [(ngModel)]="Patient.ContactNo" required autofocus maxlength="10" min="0000000000" max="9999999999" >
-                                    <mat-error
-                                        *ngIf="(ContactNo.dirty  || ContactNo.touched) || (ContactNo.invalid && isSubmitted)">
-                                        ContactNo is <strong>required</strong>
-                                    </mat-error>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label>Aadhar No</mat-label>
-                                    <input type="tel" matInput #AadharNo="ngModel" name="AadharNo"
-                                        [(ngModel)]="Patient.AadharNo" autofocus maxlength="12" min="000000000000" max="999999999999" >
-                                    
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" class="col-sm-6">
+                                <mat-form-field appearance="outline" class="col-sm-3">
                                     <mat-label>Gender</mat-label>
-                                    <mat-select #Gender="ngModel" name="Gender" [(ngModel)]="Patient.Gender" required>
+                                    <mat-select #Gender="ngModel" name="Gender" [(ngModel)]="Doctor.Gender" required>
                                         <mat-option [value]="Gender.Key"
                                             *ngFor="let Gender of GenderList">{{Gender.Value}}</mat-option>
                                     </mat-select>
@@ -181,20 +144,57 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" class="col-sm-6">
-                                    <mat-label>Category</mat-label>
-                                    <mat-select #Category="ngModel" name="Category" [(ngModel)]="Patient.Category" required>
-                                        <mat-option [value]="Category.Key"
-                                            *ngFor="let Category of CategoryList">{{Category.Value}}</mat-option>
-                                    </mat-select>
+                                    <mat-label>Address</mat-label>
+                                    <textarea matInput #Address="ngModel" name="Address" [(ngModel)]="Doctor.Address"
+                                        required autofocus></textarea>
                                     <mat-error
-                                        *ngIf="(Category.dirty  || Category.touched) || (Category.invalid && isSubmitted)">
-                                        Gender is <strong>required</strong>
+                                        *ngIf="(Address.dirty  || Address.touched) || (Address.invalid && isSubmitted)">
+                                        Address is <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
 
+                                <mat-form-field appearance="outline" class="col-sm-3">
+                                    <mat-label>Contact No</mat-label>
+                                    <input type="tel" matInput #MobileNo="ngModel" name="MobileNo"
+                                        [(ngModel)]="Doctor.MobileNo" required autofocus maxlength="10" min="0000000000"
+                                        max="9999999999">
+                                    <mat-error
+                                        *ngIf="(MobileNo.dirty  || MobileNo.touched) || (MobileNo.invalid && isSubmitted)">
+                                        MobileNo is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-3">
+                                    <mat-label>Alternative No.</mat-label>
+                                    <input type="tel" matInput #AlternativeNo="ngModel" name="AlternativeNo"
+                                        [(ngModel)]="Doctor.AlternativeNo" autofocus maxlength="10" min="0000000000"
+                                        max="9999999999">
+                                </mat-form-field>
+
+                                
+
                                 <mat-form-field appearance="outline" class="col-sm-6">
+                                    <mat-label>Specialization</mat-label>
+                                    <input matInput #Specialization="ngModel" name="Specialization"
+                                        [(ngModel)]="Doctor.Specialization" required autofocus>
+                                    <mat-error
+                                        *ngIf="(Specialization.dirty  || Specialization.touched) || (Specialization.invalid && isSubmitted)">
+                                        Doctor name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                 <mat-form-field appearance="outline" class="col-lg-3">
+                                    <mat-label>Joining Date</mat-label>
+                                    <input matInput [matDatepicker]="pickers" [(ngModel)]="Doctor.JoiningDate"
+                                        name="JoiningDate" required />
+                                    <mat-datepicker-toggle matSuffix [for]="pickers"
+                                        class="small-datepicker-icon"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickers></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-3">
                                     <mat-label>Status</mat-label>
-                                    <mat-select #Status="ngModel" name="Status" [(ngModel)]="Patient.Status" required>
+                                    <mat-select #Status="ngModel" name="Status" [(ngModel)]="Doctor.Status" required>
                                         <mat-option [value]="status.Key"
                                             *ngFor="let status of StatusList">{{status.Value}}</mat-option>
                                     </mat-select>
@@ -203,6 +203,18 @@
                                         Status is <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6">
+                                    <mat-label>Qualification</mat-label>
+                                    <input matInput #Qualification="ngModel" name="Qualification"
+                                        [(ngModel)]="Doctor.Qualification" required autofocus>
+                                    <mat-error
+                                        *ngIf="(Qualification.dirty  || Qualification.touched) || (Qualification.invalid && isSubmitted)">
+                                        Doctor name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                               
                             </div>
 
                         </div>
@@ -211,10 +223,8 @@
                 <div class="modal-footer">
                     <button type="button" mat-raised-button color="warn" class="me-2" data-bs-dismiss="modal"
                         (click)="resetForm()">Cancel</button>
-                    <button mat-raised-button color="primary" (click)="savePatient()">{{Patient.PatientID >
+                    <button mat-raised-button color="primary" (click)="saveDoctor()">{{Doctor.DoctorId >
                         0 ? 'Update':'Submit'}}</button>
-                    <button mat-raised-button color="primary" (click)="savePatientAndRediectToOPD()">OPD
-                        Booking</button>
                 </div>
             </div>
         </div>

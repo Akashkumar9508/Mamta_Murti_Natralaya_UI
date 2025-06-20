@@ -59,10 +59,17 @@ import { BillingItemListTodayComponent } from './admin/billing-item-list-today/b
 import { SurgeryPackageComponent } from './admin/surgery-package/surgery-package.component';
 import { SurgeryBillComponent } from './admin/surgery-bill/surgery-bill.component';
 import { ConsentFormComponent } from './admin/consent-form/consent-form.component';
+import { DoctorComponent } from './admin/doctor/doctor.component';
+import { DischargeSummaryComponent } from './admin/discharge-summary/discharge-summary.component';
+import { DischargeSummaryListComponent } from './admin/discharge-summary-list/discharge-summary-list.component';
+import { ManufacturerComponent } from './admin/manufacturer/manufacturer.component';
+import { MedicineTypeListComponent } from './admin/medicine-type-list/medicine-type-list.component';
+import { UnitComponent } from './admin/unit/unit.component';
 
 @NgModule({
   declarations: [
     SurgeryPackageComponent,
+    UnitComponent,
     AppComponent,
     CategoryComponent,
     GstComponent,
@@ -105,9 +112,15 @@ import { ConsentFormComponent } from './admin/consent-form/consent-form.componen
     BillingItemListComponent,
     BillingItemListTodayComponent,
     SurgeryBillComponent,
-    ConsentFormComponent
+    ConsentFormComponent,
+    DoctorComponent,
+    DischargeSummaryComponent,
+    DischargeSummaryListComponent,
+    ManufacturerComponent,
+    MedicineTypeListComponent
   ],
   imports: [
+    
     BrowserModule,
     AppRoutingModule,
     FormsModule,

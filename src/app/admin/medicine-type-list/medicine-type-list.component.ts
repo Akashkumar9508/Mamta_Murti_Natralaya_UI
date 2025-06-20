@@ -12,16 +12,16 @@ import { ActionModel,RequestModel, StaffLoginModel } from '../../utils/interface
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css']
+  selector: 'app-medicine-type-list',
+  templateUrl: './medicine-type-list.component.html',
+  styleUrls: ['./medicine-type-list.component.css']
 })
-export class CategoryComponent implements OnInit {
-  Category: any = {};
+export class MedicineTypeListComponent {
+ MedicineType: any = {};
   employeeDetail: any;
   StatusList = this.loadData.GetEnumList(Status);
   AllStatusList= Status;
-  CategoryList: any[];
+  MedicineTypeList: any[];
   dataLoading: boolean = false;
   submitted: boolean;
   Search: string;
@@ -45,8 +45,7 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
     this.staffLogin = this.localService.getEmployeeDetail();
     this.validiateMenu();
-    this.getCategoryList();
-    this.employeeDetail = this.localService.getEmployeeDetail();
+    this.getMedicineTypeList();
     this.resetForm();
   }
 
@@ -64,24 +63,24 @@ export class CategoryComponent implements OnInit {
      }))
    }
 
-  @ViewChild('formCategory') formCategory: NgForm;
+  @ViewChild('formMedicineType') formMedicineType: NgForm;
   resetForm() {
-    this.Category = {};
-    this.Category.Status = 1
-    if (this.formCategory) {
-      this.formCategory.control.markAsPristine();
-      this.formCategory.control.markAsUntouched();
+    this.MedicineType = {};
+    this.MedicineType.Status = 1
+    if (this.formMedicineType) {
+      this.formMedicineType.control.markAsPristine();
+      this.formMedicineType.control.markAsUntouched();
     }
     this.submitted = false
   }
 
-  newCategory() {
+  newMedicineType() {
     this.resetForm();
     $('#modal_popUp').modal('show');
   }
 
-  editCategory(obj: any) {
-    this.Category = obj;
+  editMedicineType(obj: any) {
+    this.MedicineType = obj;
     $('#modal_popUp').modal('show');
   }
 
@@ -94,19 +93,19 @@ export class CategoryComponent implements OnInit {
     this.reverse = !this.reverse;
   }
 
-getCategoryList() {
+getMedicineTypeList() {
   const obj: RequestModel = {
     request: this.localService.encrypt(JSON.stringify({})).toString()
   };
 
   this.dataLoading = true;
 
-  this.service.getCategoryList(obj).subscribe({
+  this.service.getMedicineTypeList(obj).subscribe({
     next: r1 => {
       let response = r1 as any;
       if (response.Message == ConstantData.SuccessMessage) {
-        this.CategoryList = response.CategoryList;
-        console.log();
+        this.MedicineTypeList = response.MedicineTypeList;
+        console.log(response.MedicineTypeList);
         
       } else {
         this.toastr.error(response.Message);
@@ -122,32 +121,34 @@ getCategoryList() {
 }
 
 
-  saveCategory() {
+  saveMedicineType() {
     this.submitted = true;
-    if (this.formCategory.invalid) {
+    if (this.formMedicineType.invalid) {
       toastr.warning("Fill all the Required Fields.", "Invailid Form")
       this.dataLoading = false;
       return;
     }
-    this.Category.UpdatedBy = this.employeeDetail.EmployeeId;
-    this.Category.CreatedBy = this.employeeDetail.EmployeeId;
+          this.MedicineType.CreatedBy = this.staffLogin.StaffId;
+      this.MedicineType.UpdatedBy = this.staffLogin.StaffId;
     this.dataLoading = true;
+    console.log(this.MedicineType);
+    
     var obj: RequestModel = {
-        request: this.localService.encrypt(JSON.stringify(this.Category)).toString()
+        request: this.localService.encrypt(JSON.stringify(this.MedicineType)).toString()
       }
-    this.service.saveCategory(obj).subscribe(r1 => {
+    this.service.saveMedicineType(obj).subscribe(r1 => {
       let response = r1 as any;
       console.log(response);
       
       if (response.Message == ConstantData.SuccessMessage) {
-       if (this.Category.CategoryId > 0) {
-            this.toastr.success("Category Updated successfully")
+       if (this.MedicineType.MedicineTypeId > 0) {
+            this.toastr.success("MedicineType Updated successfully")
             $('#staticBackdrop').modal('hide')
+            this.dataLoading = false;
           } else {
-            this.toastr.success("Category added successfully")
+            this.toastr.success("MedicineType added successfully")
           }
-        this.getCategoryList();
-        this.dataLoading = false;
+        this.getMedicineTypeList();
         $('#staticBackdrop').modal('hide');
       } else {
         toastr.error(response.Message);
@@ -159,17 +160,17 @@ getCategoryList() {
   }
 
   
-  deleteCategory(obj: any) {
+  deleteMedicineType(obj: any) {
     if (confirm("Are your sure you want to delete this recored")) {
       var request: RequestModel = {
         request: this.localService.encrypt(JSON.stringify(obj)).toString()
       }
       this.dataLoading = true;
-      this.service.deleteCategory(request).subscribe(r1 => {
+      this.service.deleteMedicineType(request).subscribe(r1 => {
         let response = r1 as any
         if (response.Message == ConstantData.SuccessMessage) {
           this.toastr.success("Record Deleted successfully")
-          this.getCategoryList()
+          this.getMedicineTypeList()
         } else {
           this.toastr.error(response.Message)
           this.dataLoading = false;
@@ -182,4 +183,3 @@ getCategoryList() {
   }
 
 }
-

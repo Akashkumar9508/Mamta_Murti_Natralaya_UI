@@ -93,24 +93,7 @@ export class GstComponent {
     $('#modal_popUp').modal('show');
   }
 
-  // getGSTLst() {
-  //   this.dataLoading = true;
-  //   this.service.getGSTList({}).subscribe({
-  //     next: (response: any) => {
-  //       if (response.Message === ConstantData.SuccessMessage) {
-  //         this.GSTList = response.GSTList;
-  //       } else {
-  //         this.toastr.error(response.Message);
-  //       }
-  //       this.dataLoading = false;
-  //     },
 
-  //     error: (err) => {
-  //       this.toastr.error("Error occurred while fetching data.");
-  //       this.dataLoading = false;
-  //     }
-  //   });
-  // }
   getGSTList() {
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify({})).toString()
@@ -177,24 +160,27 @@ export class GstComponent {
   
 
 
-  deleteGST(obj: any) {
-    if (confirm("Are you sure you want to delete this record?")) {
+
+
+    deleteGST(obj: any) {
+    if (confirm("Are your sure you want to delete this recored")) {
+      var request: RequestModel = {
+        request: this.localService.encrypt(JSON.stringify(obj)).toString()
+      }
       this.dataLoading = true;
-      this.service.deleteGST(obj).subscribe({
-        next: (response: any) => {
-          if (response.Message === ConstantData.SuccessMessage) {
-            this.toastr.success("Record deleted successfully");
-            this.getGSTList();
-          } else {
-            this.toastr.error(response.Message);
-          }
-          this.dataLoading = false;
-        },
-        error: (err) => {
-          this.toastr.error("Error occurred while deleting the record");
+      this.service.deleteGST(request).subscribe(r1 => {
+        let response = r1 as any
+        if (response.Message == ConstantData.SuccessMessage) {
+          this.toastr.success("Record Deleted successfully")
+          this.getGSTList()
+        } else {
+          this.toastr.error(response.Message)
           this.dataLoading = false;
         }
-      });
+      }, (err => {
+        this.toastr.error("Error occured while deleteing the recored")
+        this.dataLoading = false;
+      }))
     }
   }
 }

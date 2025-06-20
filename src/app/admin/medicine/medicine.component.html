@@ -5,8 +5,11 @@
 
     <div class="pagetitle">
         <h1>Medicine Master
-            <button *ngIf="action.CanCreate" class="btn btn-primary btn-sm" style="float: right;" (click)="newMedicine()"> Add
-                New</button>
+            <!-- <button *ngIf="action.CanCreate" class="btn btn-primary btn-sm" style="float: right;" (click)="newMedicine()"> Add
+                New</button> -->
+                <button mat-raised-button class="float-right" color="primary" *ngIf="action.CanCreate"
+                data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="newMedicine()">
+                New Medicine</button>
         </h1>
         <nav>
             <ol class="breadcrumb">
@@ -99,33 +102,25 @@
             <div class="modal-body">
                 <form #formMedicine="ngForm">
                     <div class="row">
-                        <div class="col-sm-4 form-group">
-                            <label class="form-label">Name</label>
-                            <input type="text" placeholder="Enter Name" #Name="ngModel"
-                                [(ngModel)]="Medicine.Name" name="Name" class="form-control"
-                                [ngClass]="{'is-invalid':submitted && Name.invalid}" required autofocus>
+                        <mat-form-field appearance="outline" class="col-sm-6">
+                                    <mat-label>Medicine Name</mat-label>
+                                    <input matInput #MedicineName="ngModel" name="MedicineName"
+                                        [(ngModel)]="Medicine.Name" required autofocus>
+                                    <mat-error
+                                        *ngIf="(MedicineName.dirty  || MedicineName.touched) || (MedicineName.invalid && submitted)">
+                                        Medicine Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
 
-                            <div *ngIf="Name.invalid && (Name.dirty || Name.touched || submitted)"
-                                class="text-danger">
-                                <div *ngIf="Name.errors?.['required']">
-                                    Name is required.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4 form-group">
-                            <label class="form-label">HSN Code</label>
-                            <input type="text" placeholder="Enter HSN Code" #HSNCode="ngModel"
-                                [(ngModel)]="Medicine.HSNCode" name="HSNCode" class="form-control"
-                                [ngClass]="{'is-invalid':submitted && HSNCode.invalid}" required autofocus>
-
-                            <div *ngIf="HSNCode.invalid && (HSNCode.dirty || HSNCode.touched || submitted)"
-                                class="text-danger">
-                                <div *ngIf="HSNCode.errors?.['required']">
-                                    HSN Code is required.
-                                </div>
-                            </div>
-                        </div>
+                        <mat-form-field appearance="outline" class="col-sm-6">
+                                    <mat-label>HSN Code</mat-label>
+                                    <input matInput #HSNCode="ngModel" name="HSNCode"
+                                        [(ngModel)]="Medicine.HSNCode" required autofocus>
+                                    <mat-error
+                                        *ngIf="(HSNCode.dirty  || HSNCode.touched) || (HSNCode.invalid && submitted)">
+                                        HSN Code is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
                         
 
                         <div class="col-sm-4 form-group">
@@ -211,8 +206,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="saveMedicine()">{{Medicine.MedicineId > 0 ?"Update": "Save"}}</button>
+                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="saveMedicine()">{{Medicine.MedicineId > 0 ?"Update": "Save"}}</button> -->
+          <button mat-raised-button color="warn" data-bs-dismiss="modal">Close</button>
+          <button mat-raised-button color="primary" (click)="saveMedicine()">{{Medicine.MedicineId > 0 ? 'Update':'Submit'}}</button>
             </div>
 
         </div>

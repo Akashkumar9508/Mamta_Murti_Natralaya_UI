@@ -78,6 +78,11 @@ export enum Status {
     Inactive = 2
 }
 
+export enum Eye {
+    Left = 1,
+    Right = 2
+}
+
 
 export enum BookletStatus {
     NotSale = 1,

@@ -36,6 +36,13 @@ import { BillingItemListComponent } from './admin/billing-item-list/billing-item
 import { BillingItemListTodayComponent } from './admin/billing-item-list-today/billing-item-list-today.component';
 import { SurgeryPackageComponent } from './admin/surgery-package/surgery-package.component';
 import { SurgeryBillComponent } from './admin/surgery-bill/surgery-bill.component';
+import { ConsentFormComponent } from './admin/consent-form/consent-form.component';
+import { DoctorComponent } from './admin/doctor/doctor.component';
+import { DischargeSummaryComponent } from './admin/discharge-summary/discharge-summary.component';
+import { DischargeSummaryListComponent } from './admin/discharge-summary-list/discharge-summary-list.component';
+import { ManufacturerComponent } from './admin/manufacturer/manufacturer.component';
+import { MedicineTypeListComponent } from './admin/medicine-type-list/medicine-type-list.component';
+import { UnitComponent } from './admin/unit/unit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/admin-login", pathMatch: 'full' },
@@ -43,6 +50,13 @@ const routes: Routes = [
   {
     path: 'admin', component: AdminMasterComponent, children: [
       { path: 'gst', component: GstComponent },
+      { path: 'unit', component: UnitComponent },
+      { path: 'medicine-type-list', component: MedicineTypeListComponent },
+      { path: 'manufacturer', component: ManufacturerComponent },
+      { path: 'discharge-summary', component: DischargeSummaryComponent },
+      { path: 'discharge-summary-list', component: DischargeSummaryListComponent },
+      { path: 'doctor', component: DoctorComponent },
+      { path: 'consent-form', component: ConsentFormComponent },
       { path: 'bill-item', component: BillItemComponent },
       { path: 'billing-item', component: BillingItemComponent },
       { path: 'billing-item-list', component: BillingItemListComponent },

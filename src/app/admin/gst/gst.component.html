@@ -16,76 +16,74 @@
       <button mat-raised-button color="primary" *ngIf="action.CanCreate"
               data-bs-toggle="modal" data-bs-target="#staticBackdrop"
               (click)="newGST()">
-        Add New
+        Add New GST
       </button>
     </div>
   </div>
-
   <section class="section dashboard">
-    <div class="card">
-      <div class="card-body">
-        <div class="dataTable-top d-flex justify-content-between align-items-center">
-          <div class="dataTable-dropdown d-flex align-items-center">
-            <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
-              <option *ngFor="let option of PageSize" [value]="option">{{ option }}</option>
-            </select>
-            <span class="ms-2">Entries per page</span>
-          </div>
-          <div class="dataTable-search">
-            <input class="dataTable-input form-control form-control-sm"
-                   [(ngModel)]="Search"
-                   placeholder="Search..." type="text">
-          </div>
+        <div class="card">
+            <div class="card-body ">
+                <div class="dataTable-top">
+                    <div class="dataTable-dropdown d-flex">
+                        <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                            <option *ngFor="let option of PageSize" [value]="option">{{option}} </option>
+                        </select>
+                        <span class="ms-2">Entries per page</span>
+                    </div>
+                    <div class="dataTable-search">
+                        <input class="dataTable-input form-control form-control-sm" [(ngModel)]="Search"
+                            placeholder="Search..." type="text">
+                    </div>
+                </div>
+                <div class="table-container overflow-auto">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">S.No</th>
+                                <th class="text-left" *ngIf="action.CanCreate" (click)="sort('GSTName')">GST Name</th>
+                                <th class="text-left" style="cursor:pointer;" (click)="sort('GSTValue')">GST (%)</th>
+                                <th class="text-center" style="cursor:pointer;" (click)="sort('Status')">Status</th>
+                                <th class="text-center" *ngIf="action.CanEdit">Edit</th>
+                                <th class="text-center" *ngIf="action.CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr 
+                                *ngFor="let item of GSTList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                                <td class="text-center">{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                               
+                                <td  class=" text-left">{{item.GSTName}}</td>
+                                <td class="text-left">{{item.GSTValue}}</td>
+                                <td class="text-center">
+                                    <span class="p-1"
+                                        [ngClass]="item.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
+                                        {{AllStatusList[item.Status]}}
+                                    </span>
+                                </td>
+                                <td class="text-center" *ngIf="action.CanEdit">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" (click)="editGST(item)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </td >
+                                <td class="text-center" *ngIf="action.CanDelete">
+                                    <button class="btn btn-sm btn-danger" (click)="deleteGST(item)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dataTable-bottom">
+                    <pagination-controls (pageChange)="onTableDataChange($event)" style="float:right;"
+                        class="my-pagination"></pagination-controls>
+                </div>
+
+            </div>
         </div>
 
-        <div class="table-container overflow-auto">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th style="cursor: pointer;" (click)="sort('GSTName')">GST Name</th>
-                <th style="cursor: pointer;" (click)="sort('GSTValue')">GST (%)</th>
-                <th style="cursor: pointer;" (click)="sort('StatusName')">Status</th>
-                <th *ngIf="action.CanEdit">Edit</th>
-                <th *ngIf="action.CanDelete">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let model of GSTList | filter: Search | orderBy: sortKey : reverse | paginate: { itemsPerPage: itemPerPage, currentPage: p }; let i = index;">
-                <td>{{ (itemPerPage * (p - 1)) + i + 1 }}</td>
-                <td>{{ model.GSTName }}</td>
-                <td>{{ model.GSTValue }}</td>
-                <td>
-                  <span class="p-1"
-                        [ngClass]="model.Status == 2 ? 'badge text-bg-warning' : 'badge text-bg-success'">
-                    {{ AllStatusList[model.Status] }}
-                  </span>
-                </td>
-                <td *ngIf="action.CanEdit">
-                  <button class="btn btn-sm btn-warning"
-                          data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-                          (click)="editGST(model)">
-                    <i class="bi bi-pencil-square"></i>
-                  </button>
-                </td>
-                <td *ngIf="action.CanDelete">
-                  <button class="btn btn-sm btn-danger" (click)="deleteGST(model)">
-                    <i class="bi bi-trash-fill"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="dataTable-bottom">
-          <pagination-controls (pageChange)="onTableDataChange($event)"
-                               class="my-pagination float-end">
-          </pagination-controls>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
   <!-- Modal -->
   <div *ngIf="action.CanEdit || action.CanCreate"
@@ -115,6 +113,8 @@
                   </mat-error>
                 </mat-form-field>
 
+
+
                 <mat-form-field appearance="outline" class="col-sm-4">
                   <mat-label>GST (%)</mat-label>
                   <input matInput #GSTValue="ngModel" name="GSTValue"
@@ -132,20 +132,15 @@
                       {{ model.Value }}
                     </mat-option>
                   </mat-select>
-                  <!-- <mat-error *ngIf="Status.invalid && (Status.dirty || Status.touched || isSubmitted)">
-                    Status is <strong>required</strong>
-                  </mat-error> -->
                 </mat-form-field>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                  (click)="resetForm()">Close</button>
-          <button type="button" class="btn btn-primary" (click)="saveGST()">
-            {{ GST.GSTId > 0 ? 'Update' : 'Save' }}
-          </button>
+          
+          <button mat-raised-button color="warn"  data-bs-dismiss="modal"  (click)="resetForm()">Cancel</button>
+          <button mat-raised-button color="primary" (click)="saveGST()">{{GST.GSTId > 0 ? 'Update':'Submit'}}</button>
         </div>
       </div>
     </div>

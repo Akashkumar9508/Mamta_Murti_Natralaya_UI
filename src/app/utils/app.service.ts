@@ -934,4 +934,35 @@ deletePurchase(obj: any) {
     return this.http.post(this.apiUrl + 'Purchase/deletePurchase', obj, { headers: this.headers })
   }
 
+    getExpiryMedicineList(obj: any) {
+    return this.http.post(this.apiUrl + 'Medicine/ExpiryMedicineList', obj, { headers: this.headers })
+
+  }
+    getSearchPatientList(obj: any) {
+    return this.http.post(this.apiUrl + 'patient/PatientList', obj, { headers: this.headers })
+
+  }
+
+
+
+
+  // General Patient
+
+  deleteGeneralPatient(obj: any) {
+    return this.http.post(this.apiUrl + 'generalPatient/DeleteGeneralPatient', obj, { headers: this.headers })
+  }
+  getSearchGeneralPatientReport(obj: any) {
+    return this.http.post(this.apiUrl + 'generalPatient/SearchGeneralPatientReport', obj, { headers: this.headers })
+  }
+  getGeneralPatientList(obj: any) {
+    return this.http.post(this.apiUrl + 'generalPatient/GeneralPatientList', obj, { headers: this.headers })
+  }
+  getSearchGeneralPatientList(obj: any) {
+    return this.http.post(this.apiUrl + 'patient/PatientList', obj, { headers: this.headers })
+  }
+
+  saveGeneralPatient(obj: any) {
+    return this.http.post(this.apiUrl + 'generalPatient/SaveGeneralPatient', obj, { headers: this.headers })
+  }
+
 }

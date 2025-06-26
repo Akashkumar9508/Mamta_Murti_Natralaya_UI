@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-declare var toastr: any;
 declare var $: any;
-
 import { AppService } from "../../utils/app.service";
 import { ConstantData } from "../../utils/constant-data";
 import { LocalService } from "../../utils/local.service";
 import { LoadDataService } from '../../utils/load-data.service';
 import { Status } from '../../utils/enum';
+import { ActionModel, RequestModel, StaffLoginModel } from '../../utils/interface';
+import { ToastrService } from 'ngx-toastr';
+
 
 import * as XLSX from 'xlsx';
 import * as ExcelJS from 'exceljs';
@@ -33,7 +34,7 @@ export class ExpirymedicineDetailComponent implements OnInit {
 
 
   setFileName() {
-    const dateStr = this.loadData.loadDateDMY1(this.exportDate); // Format date as yyyy-mm-dd
+    const dateStr = this.loadData.loadDateYMD(this.exportDate); // Format date as yyyy-mm-dd
     this.fileName = `Expired_Medicine_Report_${dateStr}.xlsx`;
   }
 
@@ -49,7 +50,7 @@ export class ExpirymedicineDetailComponent implements OnInit {
       [],
       ['Expiry Date', 'Medicine', 'Batch No.', 'HSN Code', 'Unit', 'Manufacturer', 'Category', 'Qty.', 'MRP', 'C.P'],
       ...this.ExpiryMedicineList.map(item => [
-        this.loadData.loadDateDMY1(item.ExpiredDate),
+        this.loadData.loadDateYMD(item.ExpiredDate),
         item.MedicineName,
         item.BatchNo,
         item.HSNCode,
@@ -88,7 +89,7 @@ export class ExpirymedicineDetailComponent implements OnInit {
 
   opd: any = {};
   Sale: any = {};
-  employeeDetail: any;
+  staffLogin: StaffLoginModel = {} as StaffLoginModel;
   StatusList = this.loadData.GetEnumList(Status);
   AllStatusList = Status;
   ExpiryMedicineList: any[];
@@ -106,16 +107,19 @@ export class ExpirymedicineDetailComponent implements OnInit {
     private service: AppService,
     private localService: LocalService,
     private router: Router,
-    private loadData: LoadDataService
+    private loadData: LoadDataService,
+         private toastr: ToastrService,
+
   ) {
     this.setFileName();
   }
 
   ngOnInit(): void {
-    this.opd.FromDate = this.loadData.loadDateYDM(new Date());
-    this.opd.ToDate = this.loadData.loadDateYDM(new Date());
+    this.opd.FromDate = this.loadData.loadDateYMD(new Date());
+    this.opd.ToDate = this.loadData.loadDateYMD(new Date());
     this.getExpiryMedicineList();
-    this.employeeDetail = this.localService.getEmployeeDetail();
+    this.staffLogin = this.localService.getEmployeeDetail();
+
   }
 
   @ViewChild('TABLE', { read: ElementRef }) table: ElementRef;
@@ -132,10 +136,13 @@ export class ExpirymedicineDetailComponent implements OnInit {
   SaleTotal: any = {};
   PatientType: number = 0;
   getExpiryMedicineList() {
-    var obj = {
+    var data = {
       FromDate: this.loadData.loadDateYMD(this.opd.FromDate),
       ToDate: this.loadData.loadDateYMD(this.opd.ToDate),
     }
+    var obj: RequestModel = {
+         request: this.localService.encrypt(JSON.stringify(data)).toString()
+       }
     this.dataLoading = true;
     this.service.getExpiryMedicineList(obj).subscribe(r1 => {
       let response = r1 as any;
@@ -150,11 +157,11 @@ export class ExpirymedicineDetailComponent implements OnInit {
           this.SaleTotal.CostPrice += e1.CostPrice;
         });
       } else {
-        toastr.error(response.Message);
+        this.toastr.error(response.Message);
       }
       this.dataLoading = false;
     }, (err => {
-      toastr.error("Error Occured while fetching data.");
+      this.toastr.error("Error Occured while fetching data.");
       this.dataLoading = false;
     }));
   }

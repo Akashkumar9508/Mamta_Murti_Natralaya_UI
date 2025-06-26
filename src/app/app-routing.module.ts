@@ -50,6 +50,8 @@ import { MedicineReturnComponent } from './admin/medicine-return/medicine-return
 import { PurchaseReturnComponent } from './admin/purchase-return/purchase-return.component';
 import { PurchaseReturnListComponent } from './admin/purchase-return-list/purchase-return-list.component';
 import { MedicineStockListComponent } from './admin/medicine-stock-list/medicine-stock-list.component';
+import { ExpirymedicineDetailComponent } from './admin/expirymedicine-detail/expirymedicine-detail.component';
+import { MedicineSaleComponent } from './admin/medicine-sale/medicine-sale.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/admin-login", pathMatch: 'full' },
@@ -63,9 +65,11 @@ const routes: Routes = [
       { path: 'purchase-return', component: PurchaseReturnComponent },
       { path: 'purchase-return-list', component: PurchaseReturnListComponent },
       { path: 'medicine-return', component: MedicineReturnComponent },
+      { path: 'patient-medicine-sale', component: MedicineSaleComponent },
       { path: 'unit', component: UnitComponent },
       { path: 'medicine-type-list', component: MedicineTypeListComponent },
       { path: 'medicine-stock-list', component: MedicineStockListComponent },
+      { path: 'expiry-medicine-list', component: ExpirymedicineDetailComponent },
       { path: 'manufacturer', component: ManufacturerComponent },
       { path: 'discharge-summary', component: DischargeSummaryComponent },
       { path: 'discharge-summary-list', component: DischargeSummaryListComponent },

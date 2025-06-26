@@ -72,6 +72,8 @@ import { MedicineReturnComponent } from './admin/medicine-return/medicine-return
 import { PurchaseReturnComponent } from './admin/purchase-return/purchase-return.component';
 import { PurchaseReturnListComponent } from './admin/purchase-return-list/purchase-return-list.component';
 import { MedicineStockListComponent } from './admin/medicine-stock-list/medicine-stock-list.component';
+import { ExpirymedicineDetailComponent } from './admin/expirymedicine-detail/expirymedicine-detail.component';
+import { MedicineSaleComponent } from './admin/medicine-sale/medicine-sale.component';
 
 @NgModule({
   declarations: [
@@ -131,7 +133,9 @@ import { MedicineStockListComponent } from './admin/medicine-stock-list/medicine
     MedicineReturnComponent,
     PurchaseReturnComponent,
     PurchaseReturnListComponent,
-    MedicineStockListComponent
+    MedicineStockListComponent,
+    ExpirymedicineDetailComponent,
+    MedicineSaleComponent
   ],
   imports: [
     

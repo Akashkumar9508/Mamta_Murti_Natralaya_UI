@@ -43,6 +43,13 @@ import { DischargeSummaryListComponent } from './admin/discharge-summary-list/di
 import { ManufacturerComponent } from './admin/manufacturer/manufacturer.component';
 import { MedicineTypeListComponent } from './admin/medicine-type-list/medicine-type-list.component';
 import { UnitComponent } from './admin/unit/unit.component';
+import { SupplierComponent } from './admin/supplier/supplier.component';
+import { MedicinePurchaseComponent } from './admin/medicine-purchase/medicine-purchase.component';
+import { MedicinePurchaseListComponent } from './admin/medicine-purchase-list/medicine-purchase-list.component';
+import { MedicineReturnComponent } from './admin/medicine-return/medicine-return.component';
+import { PurchaseReturnComponent } from './admin/purchase-return/purchase-return.component';
+import { PurchaseReturnListComponent } from './admin/purchase-return-list/purchase-return-list.component';
+import { MedicineStockListComponent } from './admin/medicine-stock-list/medicine-stock-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/admin-login", pathMatch: 'full' },
@@ -50,8 +57,15 @@ const routes: Routes = [
   {
     path: 'admin', component: AdminMasterComponent, children: [
       { path: 'gst', component: GstComponent },
+      { path: 'supplier', component: SupplierComponent },
+      { path: 'medicine-purchase', component: MedicinePurchaseComponent },
+      { path: 'medicine-purchase-list', component: MedicinePurchaseListComponent },
+      { path: 'purchase-return', component: PurchaseReturnComponent },
+      { path: 'purchase-return-list', component: PurchaseReturnListComponent },
+      { path: 'medicine-return', component: MedicineReturnComponent },
       { path: 'unit', component: UnitComponent },
       { path: 'medicine-type-list', component: MedicineTypeListComponent },
+      { path: 'medicine-stock-list', component: MedicineStockListComponent },
       { path: 'manufacturer', component: ManufacturerComponent },
       { path: 'discharge-summary', component: DischargeSummaryComponent },
       { path: 'discharge-summary-list', component: DischargeSummaryListComponent },

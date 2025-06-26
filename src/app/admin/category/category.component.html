@@ -3,12 +3,12 @@
 <main id="main" class="main" *ngIf="action.ResponseReceived">
   <div class="row">
     <div class="pagetitle dashboard col-sm-8">
-      <h1>{{ action.MenuTitle || 'GST Master' }}</h1>
+      <h1>{{ action.MenuTitle || 'Category Master' }}</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a routerLink="/admin/admin-dashboard">Home</a></li>
           <li class="breadcrumb-item">{{ action.ParentMenuTitle || 'Pharmacy' }}</li>
-          <li class="breadcrumb-item active">{{ action.MenuTitle || 'GST Master' }}</li>
+          <li class="breadcrumb-item active">{{ action.MenuTitle || 'Category Master' }}</li>
         </ol>
       </nav>
     </div>
@@ -16,7 +16,7 @@
       <button mat-raised-button color="primary" *ngIf="action.CanCreate"
               data-bs-toggle="modal" data-bs-target="#staticBackdrop"
               (click)=" newCategory()">
-        Add New GST
+        Add New Category
       </button>
     </div>
   </div>
@@ -92,7 +92,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">
-            {{ Category.CategoryId > 0 ? 'Update' : 'New' }} GST
+            {{ Category.CategoryId > 0 ? 'Update' : 'New' }} Category
           </h1>
           <button type="button" class="btn-close"
                   data-bs-dismiss="modal" aria-label="Close"

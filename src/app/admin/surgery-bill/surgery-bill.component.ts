@@ -438,7 +438,7 @@ dataLoading: boolean = false;
             this.Patient.OpdId > 0 ? 'Booking updated successfully' : 'Booking added successfully'
           );
           
-          this.service.PrintSurgeryBill(response.SurgeryId);
+          // this.service.PrintSurgeryBill(response.SurgeryId);
           this.resetAllForms();
           $('hashtag#staticBackdrop').modal('hide');
         } else {

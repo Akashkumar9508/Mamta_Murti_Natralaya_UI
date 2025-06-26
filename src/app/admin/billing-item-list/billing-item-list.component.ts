@@ -142,7 +142,9 @@ export class BillingItemListComponent {
     }
   
     getPrint(data: any) {
-      this.service.PrintOpticlalBill(data.OpticalBillingId);
+      console.log(data);
+      
+      this.service.PrintBillItem(data.BillingItemId);
     }
   
     getBillingItemList() {

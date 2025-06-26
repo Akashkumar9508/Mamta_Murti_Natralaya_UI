@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoadDataService {
 
+
   constructor() { }
 
   

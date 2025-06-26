@@ -129,8 +129,10 @@ export class ManufacturerComponent implements OnInit {
        this.dataLoading = false;
        return;
      }
-     this.Manufacturer.UpdatedBy = this.employeeDetail.EmployeeId;
-     this.Manufacturer.CreatedBy = this.employeeDetail.EmployeeId;
+    //  this.Manufacturer.UpdatedBy = this.employeeDetail.EmployeeId;
+    //  this.Manufacturer.CreatedBy = this.employeeDetail.EmployeeId;
+         this.Manufacturer.CreatedBy = this.staffLogin.StaffId;
+    this.Manufacturer.UpdatedBy = this.staffLogin.StaffId;
      this.dataLoading = true;
      var obj: RequestModel = {
          request: this.localService.encrypt(JSON.stringify(this.Manufacturer)).toString()

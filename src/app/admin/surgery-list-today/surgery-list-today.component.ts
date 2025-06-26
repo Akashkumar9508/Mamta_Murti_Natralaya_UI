@@ -265,7 +265,7 @@ editPackageCollection(data: any) {
         
 
         // Then navigate using only necessary params
-        this.router.navigate(['/admin/PackageBill'], {
+        this.router.navigate(['/admin/surgery-bill'], {
           queryParams: { id: this.alldata.GetSurgery.SurgeryId, redUrl: '/admin/surgery-List' }
         });
 

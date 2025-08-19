@@ -202,7 +202,6 @@ throw new Error('Method not implemented.');
     this.PackageDetial.CreatedBy = this.staffLogin.StaffId;
     this.PackageDetial.UpdatedBy = this.staffLogin.StaffId;
 
-    console.log(this.PackageDetial);
 
     var obj: RequestModel = {
       request: this.localService
@@ -237,7 +236,6 @@ throw new Error('Method not implemented.');
       var request: RequestModel = {
         request: this.localService.encrypt(JSON.stringify(obj)).toString(),
       };
-      console.log(obj);
 
       this.dataLoading = true;
       this.service.DeleteOpticalBilling(request).subscribe(
@@ -262,7 +260,6 @@ throw new Error('Method not implemented.');
   alldata: any;
 
   editPackageCollection(data: any) {
-    console.log(data);
 
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),
@@ -274,7 +271,6 @@ throw new Error('Method not implemented.');
 
           // Store in a shared service (better approach)
           this.service.setSelectedOpticalData(this.alldata);
-          console.log('mera datra', this.alldata);
 
           // Then navigate using only necessary params
           this.router.navigate(['/admin/optical-billing'], {
@@ -308,7 +304,6 @@ throw new Error('Method not implemented.');
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.OpticalSellListALL = response.OpticalSellList;
-          console.log(this.OpticalSellListALL);
 
           this.dataLoading = false;
         } else {
@@ -323,7 +318,6 @@ throw new Error('Method not implemented.');
   }
 
   openViewModalForDue(item: any) {
-    console.log(item);
     this.DueBill = item;
     this.DueBill.PaymentDate= new Date();
     $('#viewDueModal').modal('show');
@@ -331,7 +325,6 @@ throw new Error('Method not implemented.');
 
     DeliveryModal(item: any) {
     this.Deliverystatus = item;
-    console.log(this.Deliverystatus);
     
      this.Deliverystatus.DeliveryDate=new Date();
     $('#DeliveryModal').modal('show');
@@ -340,7 +333,6 @@ throw new Error('Method not implemented.');
   DeliveryStatusUpdate(obj:any){
     this.Deliverystatus.DeliveryStatuss = obj.DeliveryStatus;  
     this.Deliverystatus.DeliveryDate= this.loadData.loadDateYMD(this.Deliverystatus.DeliveryDate);
-    console.log(this.Deliverystatus);
     
       var request: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(this.Deliverystatus)).toString(),
@@ -366,7 +358,6 @@ throw new Error('Method not implemented.');
 
 
   ClearDueAmount(obj: any) {
-    console.log(obj);
 
     this.DueBill = obj;
     this.DueBill.CreatedBy = this.staffLogin.StaffId;

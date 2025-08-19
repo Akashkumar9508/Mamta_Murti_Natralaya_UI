@@ -74,7 +74,13 @@ import { PurchaseReturnListComponent } from './admin/purchase-return-list/purcha
 import { MedicineStockListComponent } from './admin/medicine-stock-list/medicine-stock-list.component';
 import { ExpirymedicineDetailComponent } from './admin/expirymedicine-detail/expirymedicine-detail.component';
 import { MedicineSaleComponent } from './admin/medicine-sale/medicine-sale.component';
-
+import { MedicineSaleListComponent } from './admin/medicine-sale-list/medicine-sale-list.component';
+import { MedicineReturnListComponent } from './admin/medicine-return-list/medicine-return-list.component';
+import { MedicinePurchaseReportComponent } from './admin/medicine-purchase-report/medicine-purchase-report.component';
+import { MedicineSaleReportComponent } from './admin/medicine-sale-report/medicine-sale-report.component';
+import { CanteenComponent } from './admin/canteen/canteen.component';
+import { CanteenSellComponent } from './admin/canteen-sell/canteen-sell.component';
+import { CanteenBillingListComponent } from './admin/canteen-billing-list/canteen-billing-list.component';
 @NgModule({
   declarations: [
     SurgeryPackageComponent,
@@ -135,7 +141,14 @@ import { MedicineSaleComponent } from './admin/medicine-sale/medicine-sale.compo
     PurchaseReturnListComponent,
     MedicineStockListComponent,
     ExpirymedicineDetailComponent,
-    MedicineSaleComponent
+    MedicineSaleComponent,
+    MedicineSaleListComponent,
+    MedicineReturnListComponent,
+    MedicinePurchaseReportComponent,
+    MedicineSaleReportComponent,
+    CanteenComponent,
+    CanteenSellComponent,
+    CanteenBillingListComponent,
   ],
   imports: [
     

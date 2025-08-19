@@ -76,52 +76,52 @@
                                             <table class="table table-bordered table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>#</th>
-                                                        <th>Return Item</th>
+                                                        <th class="text-center">#</th>
+                                                        <th class="text-center">Return</th>
                                                         <!-- <th>Return Qty.</th> -->
                                                         <!-- <th>Stock Code</th> -->
-                                                        <th>Medicine</th>
-                                                        <th>HSN Code</th>
-                                                        <th>MRP</th>
-                                                        <th>Qty.</th>
-                                                        <th>Unit</th>
-                                                        <th>Discount (%)</th>
-                                                        <th>Discount (₹)</th>
-                                                        <th>Taxable Amount</th>
-                                                        <th>GST (%)</th>
-                                                        <th>CGST</th>
-                                                        <th>SGST</th>
-                                                        <th>IGST</th>
-                                                        <th>Gross Amount</th>
-                                                        <th>Status</th>
+                                                        <th class="text-center">Medicine</th>
+                                                        <th class="text-center">HSN Code</th>
+                                                        <th class="text-center">MRP</th>
+                                                        <th class="text-center">Qty.</th>
+                                                        <th class="text-center">Unit</th>
+                                                        <th class="text-right">Discount (%)</th>
+                                                        <th class="text-right">Discount (₹)</th>
+                                                        <th class="text-right">Taxable Amount</th>
+                                                        <th class="text-right">GST (%)</th>
+                                                        <th class="text-right">CGST</th>
+                                                        <th class="text-right">SGST</th>
+                                                        <th class="text-right">IGST</th>
+                                                        <th class="text-right">Gross Amount</th>
+                                                        <th class="text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr *ngFor="let model of BillDetailList; let i = index">
-                                                        <td>{{i+ 1}}</td>
-                                                        <td><button (click)="addReturnList(model)"
+                                                        <td class="text-center">{{i+ 1}}</td>
+                                                        <td class="text-center"><button (click)="addReturnList(model)"
                                                                 class="btn btn-primary"><i
-                                                                    class="bx bxs-hand-right"></i></button></td>
+                                                                    class="bi bi-arrow-counterclockwise"></i></button></td>
                                                         <!-- <td><input type="number" placeholder="Qty." class="form-control" name="ReturnQuantity"
                                                         #ReturnQuantity="ngModel" [(ngModel)]="model.ReturnQuantity" ></td> -->
                                                         <!-- <td>{{model.StockCode}}</td> -->
-                                                        <td>{{model.Name}}</td>
-                                                        <td>{{model.HSNCode}}</td>
-                                                        <td>{{model.Amount}}</td>
-                                                        <td>{{model.Quantity}}</td>
-                                                        <td>{{model.UnitName}}</td>
-                                                        <td>{{model.DiscountPercentages}}</td>
-                                                        <td>{{model.DiscountAmount}}</td>
-                                                        <td>{{model.TaxableAmount}}</td>
-                                                        <td>{{model.GSTValue}}</td>
-                                                        <td>{{model.CGSTAmount}}</td>
-                                                        <td>{{model.SGSTAmount}}</td>
-                                                        <td>{{model.IGSTAmount}}</td>
-                                                        <td>{{model.TotalAmount}}</td>
+                                                        <td>{{model.MedicineName}}</td>
+                                                        <td class="text-center">{{model.HSNCode}}</td>
+                                                        <td class="text-center">{{model.Amount}}</td>
+                                                        <td class="text-center">{{model.Quantity}}</td>
+                                                        <td class="text-center">{{model.UnitName}}</td>
+                                                        <td class="text-right">{{model.DiscountPercentages}}</td>
+                                                        <td class="text-right">{{model.DiscountAmount}}</td>
+                                                        <td class="text-right">{{model.TaxableAmount}}</td>
+                                                        <td class="text-right">{{model.GSTValue}}</td>
+                                                        <td class="text-right">{{model.CGSTAmount}}</td>
+                                                        <td class="text-right">{{model.SGSTAmount}}</td>
+                                                        <td class="text-right">{{model.IGSTAmount}}</td>
+                                                        <td class="text-right">{{model.TotalAmount}}</td>
                                                         <!-- <td
                                                             ng-class="model.SellingStatus==1?'text-primary':'text-danger'">
                                                             {{model.SellingStatus==1?'SOLD':'RETURN'}}</td> -->
-                                                        <td
+                                                        <td class="text-center"
                                                             [ngClass]="model.SellingStatus==1?'text-primary':'text-danger'">
                                                             {{model.SellingStatus==1?'SOLD':'RETURN'}}</td>
                                                     </tr>

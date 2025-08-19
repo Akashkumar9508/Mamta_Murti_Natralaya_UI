@@ -100,7 +100,6 @@ dataLoading: boolean = false;
       } else {
         // Optional: fallback to fetch data again using surgeryId
       }
-      console.log(data);
       
     });
   }
@@ -152,12 +151,10 @@ dataLoading: boolean = false;
       request: this.localService.encrypt(JSON.stringify(data)).toString(),
     };
 
-    // console.log("Sending request:", obj);
     this.dataLoading = true;
 
     this.service.getPatientList(obj).subscribe({
       next: (r1) => {
-        // console.log("API Response:", r1);
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.PatientList = response.PatientList;
@@ -189,7 +186,6 @@ dataLoading: boolean = false;
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.BillingList = response.BillingList;
-          console.log(response.BillingList);
         } else {
           this.toastr.error(response.Message);
         }
@@ -355,7 +351,6 @@ clearCurrentPayment() {
       GetBillingItemDetails: this.SelectedPaymentDetailList,
       GetPaymentDetails: this.SelectedPaymentCollectionList,
     };
-    console.log(data);
 
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),
@@ -460,17 +455,14 @@ addToPaymentList() {
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),
     };
-    // console.log("Sending request:", obj);
     this.dataLoading = true;
 
     this.service.getPatientList(obj).subscribe({
       next: (r1) => {
-        // console.log("API Response:", r1);
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.PatientListAll = response.PatientList;
           this.filteredPatientList = [...this.PatientListAll];
-          // console.log(this.filteredPatientList);
         } else {
           this.toastr.error(response.Message);
         }

@@ -199,7 +199,6 @@ export class BillingItemListTodayComponent {
         this.PackageDetial.CreatedBy = this.staffLogin.StaffId;
         this.PackageDetial.UpdatedBy = this.staffLogin.StaffId;
     
-        console.log(this.PackageDetial);
     
         var obj: RequestModel = {
           request: this.localService
@@ -234,7 +233,6 @@ export class BillingItemListTodayComponent {
           var request: RequestModel = {
             request: this.localService.encrypt(JSON.stringify(obj)).toString(),
           };
-          console.log(obj);
     
           this.dataLoading = true;
           this.service.deleteBillingItem(request).subscribe(
@@ -259,7 +257,6 @@ export class BillingItemListTodayComponent {
       alldata: any;
     
       editBillingCollection(data: any) {
-        console.log(data);
     
         const obj: RequestModel = {
           request: this.localService.encrypt(JSON.stringify(data)).toString(),
@@ -271,7 +268,6 @@ export class BillingItemListTodayComponent {
     
               // Store in a shared service (better approach)
               this.service.setgetSelectedBillingData(this.alldata);
-              console.log('mera datra', this.alldata);
     
               // Then navigate using only necessary params
               this.router.navigate(['/admin/billing-item'], {
@@ -319,7 +315,6 @@ export class BillingItemListTodayComponent {
       }
     
       openViewModalForDue(item: any) {
-        console.log(item);
         this.DueBill = item;
         this.DueBill.PaymentDate= new Date();
         $('#viewDueModal').modal('show');
@@ -327,7 +322,6 @@ export class BillingItemListTodayComponent {
     
         DeliveryModal(item: any) {
         this.Deliverystatus = item;
-        console.log(this.Deliverystatus);
         
          this.Deliverystatus.DeliveryDate=new Date();
         $('#DeliveryModal').modal('show');
@@ -336,7 +330,6 @@ export class BillingItemListTodayComponent {
       DeliveryStatusUpdate(obj:any){
         this.Deliverystatus.DeliveryStatuss = obj.DeliveryStatus;  
         this.Deliverystatus.DeliveryDate= this.loadData.loadDateYMD(this.Deliverystatus.DeliveryDate);
-        console.log(this.Deliverystatus);
         
           var request: RequestModel = {
           request: this.localService.encrypt(JSON.stringify(this.Deliverystatus)).toString(),
@@ -362,7 +355,6 @@ export class BillingItemListTodayComponent {
     
     
       ClearDueAmount(obj: any) {
-        console.log(obj);
     
         this.DueBill = obj;
         this.DueBill.CreatedBy = this.staffLogin.StaffId;

@@ -53,10 +53,10 @@ export class MedicineReturnComponent implements OnInit {
     this.staffLogin = this.localService.getEmployeeDetail();
     this.validiateMenu();
     this.getEmployeeList();
-    this.employeeDetail = this.localService.getEmployeeDetail();
     this.returnItem.ReturnDate = this.loadDataService.loadDateYMD(new Date());
   }
   medicine: any = {};
+
     validiateMenu() {
     var obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify({ Url: this.router.url,StaffLoginId:this.staffLogin.StaffLoginId })).toString()
@@ -95,6 +95,7 @@ export class MedicineReturnComponent implements OnInit {
       SGSTAmount: productModel.SGSTAmount,
       IGSTAmount: productModel.IGSTAmount,
       TotalAmount: productModel.TotalAmount,
+      
     };
     this.ReturnList.push(obj);
     for (let i = 0; i < this.BillDetailList.length; i++) {
@@ -442,7 +443,6 @@ export class MedicineReturnComponent implements OnInit {
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.BillDetailList = response.BillDetailList;
-          console.log(response.BillDetailList);
           
         } else {
           this.toastr.error(response.Message);
@@ -469,6 +469,7 @@ export class MedicineReturnComponent implements OnInit {
   }
 
   SaveReturnProduct() {
+    this.calculateTotal();
     this.submitted = true;
     this.dataLoading = true;
     this.returnItem.ReceiptNo = this.medicine.ReceiptNo;
@@ -476,13 +477,14 @@ export class MedicineReturnComponent implements OnInit {
     var data = {
       //returnItem: this.returnItem,
       //SellProductList: this.SellProductList,
-      EmployeeId: this.employeeDetail.EmployeeId,
+      EmployeeId: this.staffLogin.StaffId,
       returns: this.returnItem,
       returnItems: this.ReturnList,
       Quantity: this.ReturnProduct.Quantity,
     };
+    
     var obj: RequestModel = {
-          request: this.localService.encrypt(JSON.stringify({data})).toString(),
+          request: this.localService.encrypt(JSON.stringify(data)).toString(),
         };
     this.service.saveReturnProduct(obj).subscribe(
       (r1) => {

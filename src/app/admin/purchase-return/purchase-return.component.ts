@@ -151,7 +151,6 @@ export class PurchaseReturnComponent implements OnInit {
       let response = r1 as any;
       if (response.Message == ConstantData.SuccessMessage) {
         this.MedicineStockListBySupplier = response.MedicineStockListBySupplier;
-        console.log(this.MedicineStockListBySupplier);
         this.MedicineStockListBySupplier.map(x1 => x1.SearchMedicineForReturn = `${x1.MedicineName} - ${x1.HSNCode}`)
       } else {
         this.toastr.error(response.Message);
@@ -402,7 +401,6 @@ export class PurchaseReturnComponent implements OnInit {
       ReturnItem: this.PurchaseProductList,
       EmployeeId: this.staffLogin.StaffId
     }
-    console.log(data);
     
          var obj: RequestModel = {
     request: this.localService.encrypt(JSON.stringify(data)).toString()
@@ -473,14 +471,12 @@ export class PurchaseReturnComponent implements OnInit {
   }
 
 afterMedicineSelected(event: any) {
-    console.log(event);
     
     this.PurchaseProduct.MedicineId = event.option.id;
     this.PurchaseProduct.MedicineName = event.option.value;
     var selected = this.MedicineStockListBySupplier.find(
       (x: any) => x.MedicineId == this.PurchaseProduct.MedicineId
     );
-   console.log(selected);
    
     this.Purchase.MedicineName = selected.MedicineName;
     // this.Purchase.SupplierId = SelectedMedicine.SupplierId;
@@ -505,7 +501,6 @@ afterMedicineSelected(event: any) {
     this.PurchaseProduct.IGSTAmount = selected.IGSTAmount;
     this.PurchaseProduct.ExpiredDate = this.loadData.loadDateYMD(selected.ExpiredDate);
     this.PurchaseProduct.SearchMedicineForReturn = selected.SearchMedicineForReturn;
-    console.log(this.PurchaseProduct);
     
 
   }

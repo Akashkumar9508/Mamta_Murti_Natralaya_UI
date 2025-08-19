@@ -63,16 +63,16 @@ export class MedicinePurchaseComponent implements OnInit {
     this.route.queryParams.subscribe((params: any) => {
       this.Purchase.PurchaseId = params.id;
       this.redUrl = params.redUrl;
-      // if (this.Purchase.PurchaseId > 0)
-      //   this.getPurchaseDetail(this.Purchase.PurchaseId);
-      // else
-      //   this.Purchase.PurchaseId = 0;
+      if (this.Purchase.PurchaseId > 0)
+        this.getPurchaseDetail(this.Purchase.PurchaseId);
+      else
+        this.Purchase.PurchaseId = 0;
     });
   }
 
  validiateMenu() {
     var obj: RequestModel = {
-      request: this.localService.encrypt(JSON.stringify({ Url: this.router.url,StaffLoginId:this.staffLogin.StaffLoginId })).toString()
+      request: this.localService.encrypt(JSON.stringify({ Url: "/admin/medicine-purchase",StaffLoginId:this.staffLogin.StaffLoginId })).toString()
     }
     this.dataLoading = true
     this.service.validiateMenu(obj).subscribe((response: any) => {
@@ -273,7 +273,10 @@ export class MedicinePurchaseComponent implements OnInit {
 
   getPurchaseDetail(PurchaseId: number) {
     this.dataLoading = true;
-    this.service.getPurchaseDetail({ PurchaseId: PurchaseId }).subscribe(
+       var obj: RequestModel = {
+      request: this.localService.encrypt(JSON.stringify({ PurchaseId: PurchaseId })).toString(),
+    };
+    this.service.getPurchaseDetail(obj).subscribe(
       (r1) => {
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
@@ -326,7 +329,6 @@ export class MedicinePurchaseComponent implements OnInit {
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.SupplierList = response.SupplierList;
-          console.log(this.SupplierList);
 
           for (let i = 0; i < this.SupplierList.length; i++) {
             const e = this.SupplierList[i];
@@ -360,7 +362,6 @@ export class MedicinePurchaseComponent implements OnInit {
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.UnitList = response.UnitList;
-          console.log(this.UnitList);
         } else {
           this.toastr.error(response.Message);
         }
@@ -412,7 +413,6 @@ export class MedicinePurchaseComponent implements OnInit {
         if (response.Message == ConstantData.SuccessMessage) {
           this.MedicineList = response.MedicineList;
           this.filterMedicineList(this.Medicine.MedicineName);
-          console.log(this.MedicineList);
 
           for (let i = 0; i < this.MedicineList.length; i++) {
             const e = this.MedicineList[i];
@@ -496,7 +496,6 @@ export class MedicinePurchaseComponent implements OnInit {
   }
 
   afterMedicineSelected(event: any) {
-    console.log(event);
     
     this.Medicine.MedicineId = event.option.id;
     this.Medicine.MedicineName = event.option.value;
@@ -669,7 +668,6 @@ export class MedicinePurchaseComponent implements OnInit {
     //        return;
     //    }
     //}
-console.log("this is pueere", this.PurchaseProduct);
 
     this.PurchaseProductList.push(this.PurchaseProduct);
     this.resetFormPurchaseProduct();
@@ -728,12 +726,13 @@ console.log("this is pueere", this.PurchaseProduct);
       this.toastr.warning('No product is added!!');
       return;
     }
+
     var data = {
       Purchase: this.Purchase,
       PurchaseProductList: this.PurchaseProductList,
-      CreatedBy : this.staffLogin.StaffId
+      CreatedBy : this.staffLogin.StaffId,
+       UpdatedBy : this.staffLogin.StaffId
     };
-    console.log(data);
       const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),
     };
@@ -746,6 +745,9 @@ console.log("this is pueere", this.PurchaseProduct);
             'One record created successfully.',
             'Operation Success'
           );
+          
+          this.service.PrintMedicinePurchase(response.PurchaseId);
+
           this.resetForm();
           this.resetFormPurchaseProduct();
         } else {

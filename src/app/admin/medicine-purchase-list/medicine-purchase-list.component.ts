@@ -136,6 +136,10 @@ export class MedicinePurchaseListComponent implements OnInit {
     }));
   }
 
+    getPrint(data:any){
+      this.service.PrintMedicinePurchase(data.PurchaseId)
+    }
+
 
   PurchaseProductList: any[] = [];
   getPurchaseProductList(purchase: any) {

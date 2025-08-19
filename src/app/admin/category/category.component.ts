@@ -106,7 +106,6 @@ getCategoryList() {
       let response = r1 as any;
       if (response.Message == ConstantData.SuccessMessage) {
         this.CategoryList = response.CategoryList;
-        console.log();
         
       } else {
         this.toastr.error(response.Message);
@@ -137,7 +136,6 @@ getCategoryList() {
       }
     this.service.saveCategory(obj).subscribe(r1 => {
       let response = r1 as any;
-      console.log(response);
       
       if (response.Message == ConstantData.SuccessMessage) {
        if (this.Category.CategoryId > 0) {

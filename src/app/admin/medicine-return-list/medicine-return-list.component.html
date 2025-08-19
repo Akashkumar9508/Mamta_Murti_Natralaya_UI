@@ -3,13 +3,13 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Purchase Return List
+        <h1>Medicine Return List
         </h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a routerLink="/admin/admin-dashboard">Home</a></li>
                 <li class="breadcrumb-item">Pharmacy</li>
-                <li class="breadcrumb-item active">Purchase Return List</li>
+                <li class="breadcrumb-item active">Medicine Return List</li>
             </ol>
         </nav>
     </div>
@@ -19,11 +19,6 @@
                 <div class="card recent-sales">
                     <div class="card-body pt-2">
                         <div class="row">
-                            <!-- <div class="col-md-3 form-group">
-                                <label>From Date</label>
-                                <input type="date" #FromDate="ngModel" [(ngModel)]="opd.FromDate" class="form-control" >
-                            </div> -->
-
                             <mat-form-field appearance="outline" class="col-lg-4">
                                 <mat-label>From Date</mat-label>
                                 <input matInput [matDatepicker]="pickers" [(ngModel)]="opd.FromDate" name="FromDate"
@@ -32,10 +27,6 @@
                                     class="small-datepicker-icon"></mat-datepicker-toggle>
                                 <mat-datepicker #pickers></mat-datepicker>
                             </mat-form-field>
-                            <!-- <div class="col-md-3 form-group">
-                                <label>To Date</label>
-                                <input type="date" #ToDate="ngModel" [(ngModel)]="opd.ToDate" class="form-control">
-                            </div> -->
 
                             <mat-form-field appearance="outline" class="col-lg-4">
                                 <mat-label>To Date</mat-label>
@@ -47,11 +38,11 @@
                             </mat-form-field>
                             <div class="col-md-2 form-group">
                                 <button type="submit" mat-raised-button color="primary" style="margin-top: 5px;"
-                                    (click)="getPurchaseReturnReport()" class="px-3 py-1 text-sm">
+                                    (click)="getMedicineReturnList()" class="px-3 py-1 text-sm">
                                     Search
                                 </button>
                             </div>
-                            <div class="dataTable-top" style="padding:10px 10px 10px 10px;">
+                            <div class="dataTable-top" style="padding: 10px 10px 10px 10px;">
                                 <div class="dataTable-dropdown">
                                     <select class="dataTable-selector form-select form-select-sm"
                                         [(ngModel)]="itemPerPage">
@@ -67,65 +58,63 @@
                                 <table class="table table-sm table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th class="text-center ">#</th>
-                                            <th class="text-center ">Return Date</th>
-                                            <th  style="cursor: pointer;" (click)="sort('SupplierName')">Supplier</th>
-                                            <th class="text-right ">CostAmount</th>
-                                            <th class="text-right ">Taxable Amount</th>
-                                            <th class="text-right ">CGST Amount</th>
-                                            <th class="text-right ">SGST Amount</th>
-                                            <th class="text-right ">IGST Amount</th>
-                                            <th class="text-right ">Grand Total</th>
-                                            <th class="text-center ">View</th>
-                                            <th>Edit</th>
-                                        <th>Delete</th>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">Return Date</th>
+                                            <th class="text-center">Return Code</th>
+                                            <th class="text-center">Receipt No.</th>
+                                            <th class="text-right">Amount</th>
+                                            <th class="text-right">Disc.</th>
+                                            <th class="text-right">Taxable Amount</th>
+                                            <th class="text-right">CGST</th>
+                                            <th class="text-right">SGST</th>
+                                            <th class="text-right">IGST</th>
+                                            <th class="text-right">Total Amount</th>
+                                            <th class="text-center">Action</th>
+                                            <!-- <th>Edit</th>
+                                        <th>Delete</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr
-                                            *ngFor="let model of PurchaseReturnReport|filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; let i = index">
-                                            <td class="text-center ">{{(itemPerPage * (p -1)) +i+ 1}}</td>
-                                            <td class="text-center ">{{model.ReturnDate | date:'dd-MM-yyyy'}}</td>
-                                            <td >{{model.SupplierName }}</td>
-                                            <td class="text-right ">{{model.TotalCostAmount }}</td>
-                                            <td class="text-right ">{{model.TotalTaxableAmount}}</td>
-                                            <td class="text-right ">{{model.TotalCGSTAmount}}</td>
-                                            <td class="text-right ">{{model.TotalSGSTAmount}}</td>
-                                            <td class="text-right ">{{model.TotalIGSTAmount}}</td>
-                                            <td class="text-right ">{{model.TotalGrandTotal}}</td>
-
+                                            *ngFor="let model of MedicineReturnList|filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; let i = index">
+                                            <td class="text-center">{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                                            <td class="text-center">{{model.ReturnDate | date:'dd-MM-yyyy'}}</td>
+                                            <td class="text-center">{{model.ReturnCode}}</td>
+                                            <td class="text-center">{{model.ReceiptNo}}</td>
+                                            <td class="text-right">{{model.TotalAmount}}</td>
+                                            <td class="text-right">{{model.TotalDiscountAmount}}</td>
+                                            <td class="text-right">{{model.TotalTaxableAmount}}</td>
+                                            <td class="text-right">{{model.TotalCGSTAmount }}</td>
+                                            <td class="text-right">{{model.TotalSGSTAmount }}</td>
+                                            <td class="text-right">{{model.TotalIGSTAmount }}</td>
+                                            <td class="text-right">{{model.TotalGrossAmount}}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-warning" (click)="getMedicineReturnItemList(model)"><i
+                                                        class="bi bi-pencil-square"></i> </button>
+                                            </td>
                                             <!-- <td>
-                                                <a (click)="getPurchaseReturnItemList(model.PurchaseReturnId)"><i
-                                                        class="bx bx-news" style="font-size: 24px;"></i> </a>
-                                            </td> -->
-                                            <td class="text-center ">
-                                                <button class="btn btn-sm btn btn-primary "
-                                                    (click)="getPurchaseReturnItemList(model.PurchaseReturnId)">
-                                                    <i class="bi bi-eye-fill"></i>
-                                                </button>
-                                            </td >
-                                            <td>
-                                                <button class="btn btn-sm btn-warning" (click)="editPurchase(model)"><i
+                                                <button class="btn btn-sm btn-warning" (click)="editSale(model)"><i
                                                         class="bi bi-pencil-square"></i> </button>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger" (click)="deletePurchase(model)"><i
+                                                <button class="btn btn-sm btn-danger" (click)="deleteSale(model)"><i
                                                         class="bi bi-trash-fill"></i></button>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td></td>
                                             <td></td>
-                                            <td class="text-center " style="font-weight: 600;">TOTAL</td>
-                                            <td class="text-right " style="font-weight: 600;">{{PurchaseTotal.TotalCostAmount|number}}</td>
-                                            <td class="text-right " style="font-weight: 600;">{{PurchaseTotal.TotalTaxableAmount|number}}</td>
-                                            <td class="text-right  " style="font-weight: 600;">{{PurchaseTotal.TotalCGSTAmount|number}}</td>
-                                            <td class="text-right " style="font-weight: 600;">{{PurchaseTotal.TotalSGSTAmount|number}}</td>
-                                            <td class="text-right " style="font-weight: 600;">{{PurchaseTotal.TotalIGSTAmount|number}}</td>
-                                            <td class="text-right " style="font-weight: 600;">{{PurchaseTotal.TotalGrandTotal|number}}</td>
                                             <td></td>
+                                            <td class="text-center" style="font-weight: 600;">TOTAL</td>
+                                            <td class="text-right" style="font-weight: 600;">{{SaleTotal.TotalAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">{{SaleTotal.TotalDiscountAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">{{SaleTotal.TotalTaxableAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">{{SaleTotal.TotalCGSTAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">{{SaleTotal.TotalSGSTAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">{{SaleTotal.TotalIGSTAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">{{SaleTotal.TotalGrossAmount|number}}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -150,7 +139,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Purchase Medicine Detail</h5>
+                <h5 class="modal-title">Medicine Detail</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -161,44 +150,38 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Medicine Name</th>
-                                    <th>Batch No.</th>
-                                    <th>HSN Code</th>
-                                    <th>MRP</th>
-                                    <th>Rate</th>
-                                    <th>Discount %</th>
-                                    <th>Cost Price</th>
-                                    <th>Quantity</th>
                                     <th>Unit</th>
+                                    <th>Amount</th>
+                                    <th>Qty.</th>
+                                    <th>Return Qty.</th>
+                                    <th>Disc. %</th>
+                                    <th>Disc. Amt.</th>
                                     <th>Taxable Amt.</th>
                                     <th>GST %</th>
                                     <th>CGST</th>
                                     <th>SGST</th>
                                     <th>IGST</th>
-                                    <th>Grand Total</th>
-                                    <th>Expiry Date</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
 
                             <tbody>
 
-                                <tr *ngFor="let model of PurchaseReturnItemList;let i = index">
+                                <tr *ngFor="let model of MedicineReturnItemList;let i = index">
                                     <td>{{ i+1}}</td>
                                     <td>{{model.MedicineName}}</td>
-                                    <td>{{model.BatchNo}}</td>
-                                    <td>{{model.HSNCode}}</td>
-                                    <td>{{model.MRP}}</td>
-                                    <td>{{model.Rate}}</td>
-                                    <td>{{model.DiscountPercentage}}</td>
-                                    <td>{{model.CostPrice}}</td>
-                                    <td>{{model.Quantity}}</td>
                                     <td>{{model.UnitName}}</td>
+                                    <td>{{model.Amount}}</td>
+                                    <td>{{model.Quantity}}</td>
+                                    <td>{{model.ReturnQuantity}}</td>
+                                    <td>{{model.DiscountPercentages}}</td>
+                                    <td>{{model.DiscountAmount}}</td>
                                     <td>{{model.TaxableAmount}}</td>
                                     <td>{{model.GSTValue}}</td>
                                     <td>{{model.CGSTAmount}}</td>
                                     <td>{{model.SGSTAmount}}</td>
                                     <td>{{model.IGSTAmount}}</td>
-                                    <td>{{model.GrandTotal}}</td>
-                                    <td>{{model.ExpiredDate | date:'dd-MM-yyyy'}}</td>
+                                    <td>{{model.TotalAmount}}</td>
                                 </tr>
                             </tbody>
                         </table>

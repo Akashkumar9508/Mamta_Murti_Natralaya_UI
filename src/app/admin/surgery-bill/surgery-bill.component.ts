@@ -89,7 +89,6 @@ dataLoading: boolean = false;
     this.staffLogin = this.localService.getEmployeeDetail();
     this.validiateMenu();
     this.tempData = this.service.getSelectedSurgeryData();
-    console.log(this.tempData);
 
     this.resetForm();
     this.initializeCurrentPayment();
@@ -115,7 +114,6 @@ dataLoading: boolean = false;
         this.SelectedPaymentDetailList = data.GetPackageBookingDetail || [];
         this.SelectedPaymentCollectionList = data.GetPaymentDetails || [];
       }
-      console.log(data);
     });
   }
 
@@ -423,7 +421,6 @@ dataLoading: boolean = false;
       GetPaymentDetails: this.SelectedPaymentCollectionList,
     };
 
-    console.log('Submitting data:', data);
 
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),

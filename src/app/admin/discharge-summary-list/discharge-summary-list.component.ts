@@ -158,7 +158,6 @@ export class DischargeSummaryListComponent {
           if (response.Message == ConstantData.SuccessMessage) {
             this.TotalRecords = response.dischargeSummaryList;
           
-            console.log(response.dischargeSummaryList);
           } else {
             this.toastr.error(response.Message);
           }
@@ -171,7 +170,6 @@ export class DischargeSummaryListComponent {
     }
 
     editPackageCollection(data: any) {
-    console.log(data);
 
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),
@@ -182,7 +180,6 @@ export class DischargeSummaryListComponent {
           this.alldata = response.dischargeSummaryList;
 
           this.service.setSelectedDsData(this.alldata);
-          console.log('mera datra', this.alldata);
         if(this.alldata && this.alldata.length > 0)  {
           const item = this.alldata[0];
         

@@ -88,7 +88,6 @@ export class OpdBookingComponent implements OnInit {
           ...data.GetOpdBooking,
           ...data.GetPaymentCollection,
         };
-        console.log(this.Patient);
         
         this.SelectedPaymentDetailList = data.GetPaymentBookingDetails;
         this.SelectedPaymentCollectionList = data.GetPaymentDetails;
@@ -531,7 +530,6 @@ export class OpdBookingComponent implements OnInit {
       GetPaymentDetails: this.SelectedPaymentCollectionList,
     };
 
-    console.log(data);
 
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),

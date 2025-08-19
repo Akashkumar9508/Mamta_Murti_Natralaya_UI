@@ -104,7 +104,7 @@ export class ManagePatientComponent {
         let response = r1 as any;
         if (response.Message == ConstantData.SuccessMessage) {
           this.PatientList = response.PatientList;
-          // console.log(this.PatientList);
+          console.log(this.PatientList);
           
         } else {
           this.toastr.error(response.Message);

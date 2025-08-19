@@ -255,7 +255,6 @@ export class OpticalBillingListTodayComponent {
      alldata: any;
    
      editPackageCollection(data: any) {
-       console.log(data);
    
        const obj: RequestModel = {
          request: this.localService.encrypt(JSON.stringify(data)).toString(),
@@ -267,7 +266,6 @@ export class OpticalBillingListTodayComponent {
    
              // Store in a shared service (better approach)
              this.service.setSelectedOpticalData(this.alldata);
-             console.log('mera datra', this.alldata);
    
              // Then navigate using only necessary params
              this.router.navigate(['/admin/optical-billing'], {
@@ -301,7 +299,6 @@ export class OpticalBillingListTodayComponent {
            let response = r1 as any;
            if (response.Message == ConstantData.SuccessMessage) {
              this.OpticalSellListALL = response.OpticalSellList;
-             console.log(this.OpticalSellListALL);
    
              this.dataLoading = false;
            } else {
@@ -316,7 +313,6 @@ export class OpticalBillingListTodayComponent {
      }
    
      openViewModalForDue(item: any) {
-       console.log(item);
        this.DueBill = item;
        this.DueBill.PaymentDate= new Date();
        $('#viewDueModal').modal('show');
@@ -324,7 +320,6 @@ export class OpticalBillingListTodayComponent {
    
        DeliveryModal(item: any) {
        this.Deliverystatus = item;
-       console.log(this.Deliverystatus);
    
        confirm('Are you sure you want to Delivery this record?');
          this.Deliverystatus.DeliveryStatuss = 1;
@@ -352,7 +347,6 @@ export class OpticalBillingListTodayComponent {
    
    
      ClearDueAmount(obj: any) {
-       console.log(obj);
    
        this.DueBill = obj;
        this.DueBill.CreatedBy = this.staffLogin.StaffId;

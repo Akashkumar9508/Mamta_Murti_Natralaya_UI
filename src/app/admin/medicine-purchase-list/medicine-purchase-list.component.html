@@ -35,20 +35,23 @@
                                 <table class="table table-sm table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th  class="text-center">#</th>
-                                            <th  class="text-center">Invoice No.</th>
-                                            <th class="text-center">Invoice Date</th>
+                                            <th class="text-center" (click)="sort('itemPerPage')">#</th>
+                                            <th class="text-center" (click)="sort('InvoiceNo')">Invoice No.</th>
+                                            <th class="text-center" (click)="sort('InvoiceDate')">Invoice Date</th>
                                             <th style="cursor: pointer;" (click)="sort('SupplierName')">Supplier</th>
-                                            <th class="text-right">Basic Amount</th>
-                                            <th class="text-right">Discount Amount</th>
-                                            <th class="text-right">Taxable Amount</th>
-                                            <th class="text-right">CGST Amount</th>
-                                            <th class="text-right">SGST Amount</th>
-                                            <th class="text-right">IGST Amount</th>
-                                            <th class="text-right">Grand Total</th>
+                                            <th class="text-right" (click)="sort('TotalBasicAmount')">Basic Amount</th>
+                                            <th class="text-right" (click)="sort('TotalDiscountAmount')">Discount Amount</th>
+                                            <th class="text-right" (click)="sort('TotalTaxableAmount')">Taxable Amount</th>
+                                            <th class="text-right" (click)="sort('TotalCGSTAmount')">CGST Amount</th>
+                                            <th class="text-right" (click)="sort('TotalSGSTAmount')">SGST Amount</th>
+                                            <th class="text-right" (click)="sort('TotalIGSTAmount')">IGST Amount</th>
+                                            <th class="text-right" (click)="sort('TotalGrandTotal')">Grand Total</th>
                                             <!-- <th>Paid Amount</th>
                                             <th>Dues Amount</th> -->
                                             <th>Created On</th>
+                                            <th class="text-center" style="cursor: pointer" (click)="sort('Bill')">
+                                                Bill
+                                            </th>
                                             <th style="cursor: pointer;" (click)="sort('StatusName')">Status</th>
                                             <th>Veiw</th>
                                             <th *ngIf="action.CanEdit">Edit</th>
@@ -72,6 +75,11 @@
                                             <!-- <td>{{model.PaidAmount}}</td>
                                             <td>{{model.DuesAmount}}</td> -->
                                             <td>{{model.CreatedOn | date:'dd-MM-yyyy'}}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-success" (click)="getPrint(model)">
+                                                    <i class="bi bi-printer"></i>
+                                                </button>
+                                            </td>
                                             <td class="text-center"><span
                                                     [ngClass]="model.Status == 2 ?'badge bg-warning':'badge bg-success'">
                                                     {{AllStatusList[model.Status]}}</span></td>
@@ -80,7 +88,7 @@
                                                     (click)="getPurchaseProductList(model)">
                                                     <i class="bi bi-eye-fill"></i>
                                                 </button>
-                                            </td >
+                                            </td>
                                             <td class="text-center" *ngIf="action.CanEdit">
                                                 <button class="btn btn-sm btn-warning" (click)="editPurchase(model)"><i
                                                         class="bi bi-pencil-square"></i> </button>
@@ -97,13 +105,20 @@
                                             <td></td>
                                             <td></td>
                                             <td>TOTAL</td>
-                                            <td class="text-right" style="font-weight: 600;">{{PurchaseTotal.TotalBasicAmount|number}}</td>
-                                            <td class="text-right" style="font-weight: 600;">{{PurchaseTotal.TotalDiscountAmount|number}}</td>
-                                            <td class="text-right" style="font-weight: 600;">{{PurchaseTotal.TotalTaxableAmount|number}}</td>
-                                            <td class="text-right" style="font-weight: 600;">{{PurchaseTotal.TotalCGSTAmount|number}}</td>
-                                            <td class="text-right" style="font-weight: 600;">{{PurchaseTotal.TotalSGSTAmount|number}}</td>
-                                            <td class="text-right" style="font-weight: 600;">{{PurchaseTotal.TotalIGSTAmount|number}}</td>
-                                            <td class="text-right" style="font-weight: 600;">{{PurchaseTotal.TotalGrandTotal|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">
+                                                {{PurchaseTotal.TotalBasicAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">
+                                                {{PurchaseTotal.TotalDiscountAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">
+                                                {{PurchaseTotal.TotalTaxableAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">
+                                                {{PurchaseTotal.TotalCGSTAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">
+                                                {{PurchaseTotal.TotalSGSTAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">
+                                                {{PurchaseTotal.TotalIGSTAmount|number}}</td>
+                                            <td class="text-right" style="font-weight: 600;">
+                                                {{PurchaseTotal.TotalGrandTotal|number}}</td>
                                             <!-- <td>{{PurchaseTotal.PaidAmount|number}}</td>
                                             <td>{{PurchaseTotal.DuesAmount|number}}</td> -->
                                             <td></td>

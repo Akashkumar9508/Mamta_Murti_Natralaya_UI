@@ -21,11 +21,11 @@ import {
 import { Router } from '@angular/router';
 declare var $: any;
 @Component({
-  selector: 'app-billing-item-list',
-  templateUrl: './billing-item-list.component.html',
-  styleUrls: ['./billing-item-list.component.css']
+  selector: 'app-canteen-billing-list',
+  templateUrl: './canteen-billing-list.component.html',
+  styleUrls: ['./canteen-billing-list.component.css']
 })
-export class BillingItemListComponent {
+export class CanteenBillingListComponent {
   DueDate: any;
   DuePayment: any;
     Deliverystatus: any={};
@@ -60,9 +60,9 @@ export class BillingItemListComponent {
     Patient: any;
     Filter: any = {};
     filterModel: any = {};
-    OpticalTotal: any = {};
+    CanteenTotal: any = {};
     selectedBill: any = {};
-    BillSellList: any = {};
+    CanteenSellListALL: any = {};
     DueBill: any={};
     constructor(
       private service: AppService,
@@ -89,9 +89,12 @@ export class BillingItemListComponent {
       };
   
       // Fetch data
-      this.getBillingItemList();
+      this.getCateenBillList();
     }
-  
+    getDeliveryStatus(value: number): string {
+      const status = this.DeliveryStatusList.find((x) => x.Key === value);
+      return status ? status.Value : '-';
+    }
   
     validiateMenu() {
       var obj: RequestModel = {
@@ -142,11 +145,10 @@ export class BillingItemListComponent {
     }
   
     getPrint(data: any) {
-      
-      this.service.PrintBillItem(data.BillingItemId);
+      this.service.PrintCanteenBillItem(data.CanteenBillingId);
     }
   
-    getBillingItemList() {
+    getCateenBillList() {
       if (this.filterModel.StartFrom) {
         this.filterModel.StartFrom = this.loadData.loadDateYMD(
           this.filterModel.StartFrom
@@ -170,14 +172,13 @@ export class BillingItemListComponent {
       };
   
       this.dataLoading = true;
-      this.service.BillingItemList(obj).subscribe(
+      this.service.CanteensBillList(obj).subscribe(
         (r1) => {
           let response = r1 as any;
           if (response.Message === ConstantData.SuccessMessage) {
-            this.TotalRecords = response.BillingItemList;
-            this.OpticalTotal.PaidAmount = response.PaidAmountTotal;
-            this.OpticalTotal.TotalPayableAmount = response.TotalPayableAmount;
-            this.OpticalTotal.DueAmountTotal = response.DueAmountTotal;
+            this.TotalRecords = response.CanteenBillingList;
+            
+            this.CanteenTotal.TotalAmount = response.PaidAmountTotal;
           } else {
             this.toastr.error(response.Message);
           }
@@ -218,7 +219,7 @@ export class BillingItemListComponent {
             }
             $('#staticBackdrop').modal('hide');
             this.resetForm();
-            this.getBillingItemList();
+            this.getCateenBillList();
           } else {
             this.toastr.error(response.Message);
           }
@@ -229,19 +230,19 @@ export class BillingItemListComponent {
       );
     }
   
-    deleteBillingItem(obj: any) {
+    DeleteCanteenBilling(obj: any) {
       if (confirm('Are your sure you want to delete this recored')) {
         var request: RequestModel = {
           request: this.localService.encrypt(JSON.stringify(obj)).toString(),
         };
   
         this.dataLoading = true;
-        this.service.deleteBillingItem(request).subscribe(
+        this.service.DeleteCanteenBilling(request).subscribe(
           (r1) => {
             let response = r1 as any;
             if (response.Message == ConstantData.SuccessMessage) {
               this.toastr.success('the recored deleted', response.Message);
-              this.getBillingItemList();
+              this.getCateenBillList();
             } else {
               this.toastr.error(response.Message);
               this.dataLoading = false;
@@ -257,24 +258,23 @@ export class BillingItemListComponent {
   
     alldata: any;
   
-    editBillingCollection(data: any) {
+    editPackageCollection(data: any) {
   
       const obj: RequestModel = {
         request: this.localService.encrypt(JSON.stringify(data)).toString(),
       };
-      this.service.UpdateListFromBillingItem(obj).subscribe(
+      this.service.UpdateListFromCanteen(obj).subscribe(
         (response: any) => {
           try {
-            this.alldata = response.BillingList;
+            this.alldata = response.CanteenList;
   
             // Store in a shared service (better approach)
-            this.service.setgetSelectedBillingData(this.alldata);
-  
+            this.service.setSelectedCanteenData(this.alldata);
             // Then navigate using only necessary params
-            this.router.navigate(['/admin/billing-item'], {
+            this.router.navigate(['/admin/canteen-billing'], {
               queryParams: {
-                id: this.alldata.GetBillingItem.BillingItemId,
-                redUrl: '/admin/billing-item-list',
+                id: this.alldata.GetCanteenBilling.CanteenBillingId,
+                redUrl: '/admin/canteen-billing-list',
               },
             });
           } catch (error) {
@@ -289,19 +289,19 @@ export class BillingItemListComponent {
     openViewModal(item: any) {
       this.selectedBill = item;
       $('#viewDetailsModal').modal('show');
-      this.billItemSellList(item);
+      this.CanteenSellList(item);
     }
   
-    billItemSellList(obj: any) {
+    CanteenSellList(obj: any) {
       var request: RequestModel = {
         request: this.localService.encrypt(JSON.stringify(obj)).toString(),
       };
       this.dataLoading = true;
-      this.service.billItemSellList(request).subscribe(
+      this.service.CanteenSellList(request).subscribe(
         (r1) => {
           let response = r1 as any;
           if (response.Message == ConstantData.SuccessMessage) {
-            this.BillSellList = response.BillSellList;
+            this.CanteenSellListALL = response.CanteenSellList;
   
             this.dataLoading = false;
           } else {
@@ -341,8 +341,8 @@ export class BillingItemListComponent {
           let response = r1 as any;
           if (response.Message == ConstantData.SuccessMessage) {
             this.dataLoading = false;
-            this.toastr.success("Optical Delivered successfully");
-            this.getBillingItemList();
+            this.toastr.success("Canteen Delivered successfully");
+            this.getCateenBillList();
           } else {
             this.toastr.error('Error occured while Fetching  the recored');
           }
@@ -366,13 +366,13 @@ export class BillingItemListComponent {
         request: this.localService.encrypt(JSON.stringify(this.DueBill)).toString(),
       };
       this.dataLoading = true;
-      this.service.saveOpticalsBillDue(request).subscribe(
+      this.service.saveCanteensBillDue(request).subscribe(
         (r1) => {
           let response = r1 as any;
           if (response.Message == ConstantData.SuccessMessage) {
             this.dataLoading = false;
             this.toastr.success("Due amount cleared successfully");
-            this.getBillingItemList();
+            this.getCateenBillList();
           } else {
             this.toastr.error('Error occured while Clearing  the Due');
           }

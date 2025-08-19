@@ -90,7 +90,6 @@ export class PackageBillComponent {
     this.staffLogin = this.localService.getEmployeeDetail();
     this.validiateMenu();
     this.tempData = this.service.getSelectedSurgeryData();
-    console.log(this.tempData);
 
     this.resetForm();
     this.initializeCurrentPayment();
@@ -116,7 +115,6 @@ export class PackageBillComponent {
         this.SelectedPaymentDetailList = data.GetPackageBookingDetail || [];
         this.SelectedPaymentCollectionList = data.GetPaymentDetails || [];
       }
-      console.log(data);
     });
   }
 
@@ -424,7 +422,6 @@ export class PackageBillComponent {
       GetPaymentDetails: this.SelectedPaymentCollectionList,
     };
 
-    console.log('Submitting data:', data);
 
     const obj: RequestModel = {
       request: this.localService.encrypt(JSON.stringify(data)).toString(),

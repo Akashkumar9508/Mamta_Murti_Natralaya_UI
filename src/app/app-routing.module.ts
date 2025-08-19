@@ -52,6 +52,13 @@ import { PurchaseReturnListComponent } from './admin/purchase-return-list/purcha
 import { MedicineStockListComponent } from './admin/medicine-stock-list/medicine-stock-list.component';
 import { ExpirymedicineDetailComponent } from './admin/expirymedicine-detail/expirymedicine-detail.component';
 import { MedicineSaleComponent } from './admin/medicine-sale/medicine-sale.component';
+import { MedicineSaleListComponent } from './admin/medicine-sale-list/medicine-sale-list.component';
+import { MedicineReturnListComponent } from './admin/medicine-return-list/medicine-return-list.component';
+import { MedicinePurchaseReportComponent } from './admin/medicine-purchase-report/medicine-purchase-report.component';
+import { MedicineSaleReportComponent } from './admin/medicine-sale-report/medicine-sale-report.component';
+import { CanteenComponent } from './admin/canteen/canteen.component';
+import { CanteenSellComponent } from './admin/canteen-sell/canteen-sell.component';
+import { CanteenBillingListComponent } from './admin/canteen-billing-list/canteen-billing-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/admin-login", pathMatch: 'full' },
@@ -61,11 +68,16 @@ const routes: Routes = [
       { path: 'gst', component: GstComponent },
       { path: 'supplier', component: SupplierComponent },
       { path: 'medicine-purchase', component: MedicinePurchaseComponent },
+      { path: 'medicine-purchase/:id', component: MedicinePurchaseComponent },
       { path: 'medicine-purchase-list', component: MedicinePurchaseListComponent },
+      { path: 'medicine-purchase-report', component: MedicinePurchaseReportComponent },
       { path: 'purchase-return', component: PurchaseReturnComponent },
       { path: 'purchase-return-list', component: PurchaseReturnListComponent },
-      { path: 'medicine-return', component: MedicineReturnComponent },
+      { path: 'patient-medicine-return', component: MedicineReturnComponent },
+      { path: 'patient-medicine-return-list', component: MedicineReturnListComponent },
       { path: 'patient-medicine-sale', component: MedicineSaleComponent },
+      { path: 'patient-medicine-sale-list', component: MedicineSaleListComponent },
+      { path: 'patient-medicine-sale-Report', component: MedicineSaleReportComponent },
       { path: 'unit', component: UnitComponent },
       { path: 'medicine-type-list', component: MedicineTypeListComponent },
       { path: 'medicine-stock-list', component: MedicineStockListComponent },
@@ -107,7 +119,10 @@ const routes: Routes = [
       {path:'surgery-List-today',component:SurgeryListTodayComponent},
       {path:'optical-billing',component:OpticalBillingComponent},
       {path:'optical-billing-list',component:OpticalBillingListComponent},
-      {path:'optical-billing-list-today',component:OpticalBillingListTodayComponent}
+      {path:'optical-billing-list-today',component:OpticalBillingListTodayComponent},
+      {path:'canteen',component:CanteenComponent},
+      {path:'canteen-billing',component:CanteenSellComponent},
+      {path:'canteen-billing-list',component:CanteenBillingListComponent},
     ]
   },
   { path: 'page-not-found', component: PageNotFoundComponent },
